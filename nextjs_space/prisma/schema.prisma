@@ -29,6 +29,7 @@ model User {
   leaderboardEvents LeaderboardEvent[]
   userStreak        UserStreak?
   streakEvents      StreakEvent[]
+  subscription      Subscription?
   
   // Social relationships
   sentFriendRequests     Friendship[]   @relation("FriendshipUser")
@@ -615,4 +616,45 @@ model OnboardingSession {
   @@index([expiresAt])
   @@index([convertedToUserId])
   @@map("onboarding_sessions")
+}
+
+// ============== MONETIZATION / SUBSCRIPTIONS ==============
+
+model Subscription {
+  id            String    @id @default(uuid())
+  userId        String    @unique @map("user_id")
+  planType      String    @default("free") @map("plan_type") // free, pro
+  status        String    @default("active") // active, trialing, past_due, canceled, expired
+  billingCycle  String?   @map("billing_cycle") // monthly, yearly (null for free)
+  trialStart    DateTime? @map("trial_start")
+  trialEnd      DateTime? @map("trial_end")
+  currentPeriodStart DateTime? @map("current_period_start")
+  currentPeriodEnd   DateTime? @map("current_period_end")
+  canceledAt    DateTime? @map("canceled_at")
+  stripeCustomerId    String? @map("stripe_customer_id")
+  stripeSubscriptionId String? @map("stripe_subscription_id")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@index([planType])
+  @@map("subscriptions")
+}
+
+model SubscriptionEvent {
+  id            String   @id @default(uuid())
+  userId        String?  @map("user_id")
+  eventType     String   @map("event_type") // trial_started, trial_converted, subscription_started, subscription_canceled, upgrade_prompt_shown, upgrade_prompt_clicked
+  planType      String?  @map("plan_type")
+  billingCycle  String?  @map("billing_cycle")
+  source        String?  // Where the event occurred (e.g., "meal_plan", "ai_coach", "analytics")
+  metadata      Json?
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@index([userId])
+  @@index([eventType])
+  @@index([createdAt])
+  @@map("subscription_events")
 }

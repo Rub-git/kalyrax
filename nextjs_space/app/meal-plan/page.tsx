@@ -7,6 +7,8 @@ import { useLanguage } from '@/components/providers';
 import { Header } from '@/components/header';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Paywall, usePaywall } from '@/components/paywall';
+import { UpgradeBanner } from '@/components/upgrade-banner';
 import {
   Calendar,
   Loader2,
@@ -22,6 +24,7 @@ import {
   X,
   ArrowRightLeft,
   Check,
+  Crown,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -110,14 +113,33 @@ export default function MealPlanPage() {
   const [swapItem, setSwapItem] = useState<{ dayIndex: number; mealIndex: number; itemIndex: number; foodName: string } | null>(null);
   const [swapSuggestions, setSwapSuggestions] = useState<FoodSuggestion[]>([]);
   const [loadingSwap, setLoadingSwap] = useState(false);
+  
+  // Subscription state
+  const [mealPlanUsage, setMealPlanUsage] = useState<{ used: number; limit: number; remaining: number; allowed: boolean }>({ used: 0, limit: 2, remaining: 2, allowed: true });
+  const [isPro, setIsPro] = useState(false);
+  const { isOpen: paywallOpen, paywallProps, showPaywall, closePaywall } = usePaywall();
 
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.replace('/login');
     } else if (status === 'authenticated') {
       fetchData();
+      fetchSubscription();
     }
   }, [status, router]);
+  
+  const fetchSubscription = async () => {
+    try {
+      const res = await fetch('/api/subscription');
+      if (res.ok) {
+        const data = await res.json();
+        setMealPlanUsage(data.usage?.mealPlans || { used: 0, limit: 2, remaining: 2, allowed: true });
+        setIsPro(data.isPro || false);
+      }
+    } catch (err) {
+      console.error('Failed to fetch subscription:', err);
+    }
+  };
 
   const fetchData = async () => {
     try {
@@ -143,6 +165,16 @@ export default function MealPlanPage() {
   };
 
   const generateMealPlan = async () => {
+    // Check if user has reached their limit (non-Pro users)
+    if (!isPro && !mealPlanUsage.allowed) {
+      showPaywall('unlimitedMealPlanGeneration', 'meal_plan', {
+        limitType: 'mealPlan',
+        remaining: mealPlanUsage.remaining,
+        limit: mealPlanUsage.limit,
+      });
+      return;
+    }
+    
     setGenerating(true);
     try {
       const res = await fetch('/api/meal-plan/generate', {
@@ -163,6 +195,9 @@ export default function MealPlanPage() {
         });
         setSelectedDay(0);
         setShareUrl(''); // Reset share URL when new plan generated
+        
+        // Refresh subscription to update usage
+        await fetchSubscription();
       }
     } catch (err) {
       console.error('Failed to generate meal plan:', err);
@@ -295,11 +330,21 @@ export default function MealPlanPage() {
             <h1 className="text-2xl font-bold flex items-center gap-2">
               <Calendar className="h-6 w-6 text-primary" />
               {t('mealPlan')}
+              {isPro && (
+                <span className="ml-2 px-2 py-0.5 bg-gradient-to-r from-yellow-400 to-amber-500 text-white text-xs rounded-full flex items-center gap-1">
+                  <Crown className="w-3 h-3" /> Pro
+                </span>
+              )}
             </h1>
             <p className="text-muted-foreground text-sm mt-1">
               {language === 'es'
                 ? `Meta diaria: ${targets.kcal} kcal`
                 : `Daily target: ${targets.kcal} kcal`}
+              {!isPro && (
+                <span className="ml-2 text-xs px-2 py-0.5 bg-gray-100 dark:bg-gray-800 rounded-full">
+                  {mealPlanUsage.remaining}/{mealPlanUsage.limit} {language === 'es' ? 'restantes este mes' : 'remaining this month'}
+                </span>
+              )}
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -741,6 +786,17 @@ export default function MealPlanPage() {
           </div>
         </div>
       </main>
+      
+      {/* Paywall Modal */}
+      <Paywall
+        isOpen={paywallOpen}
+        onClose={closePaywall}
+        feature={paywallProps.feature}
+        source={paywallProps.source}
+        limitType={paywallProps.limitType}
+        remaining={paywallProps.remaining}
+        limit={paywallProps.limit}
+      />
     </div>
   );
 }

@@ -9,6 +9,7 @@ import { Header } from '@/components/header';
 import { DisclaimerBanner } from '@/components/disclaimer-banner';
 import { StreakDisplay } from '@/components/streak-display';
 import { StreakShareModal } from '@/components/streak-share-modal';
+import { UpgradeBanner } from '@/components/upgrade-banner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -25,6 +26,8 @@ import {
   RefreshCw,
   Loader2,
   AlertTriangle,
+  Crown,
+  Sparkles,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import {
@@ -74,6 +77,9 @@ export default function DashboardPage() {
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [userName, setUserName] = useState('');
   const [showStreakShare, setShowStreakShare] = useState(false);
+  const [isPro, setIsPro] = useState(false);
+  const [isTrialing, setIsTrialing] = useState(false);
+  const [trialDaysRemaining, setTrialDaysRemaining] = useState<number | null>(null);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -85,8 +91,12 @@ export default function DashboardPage() {
 
   const fetchProfile = async () => {
     try {
-      const res = await fetch('/api/profile');
-      const data = await res.json();
+      const [profileRes, subscriptionRes] = await Promise.all([
+        fetch('/api/profile'),
+        fetch('/api/subscription'),
+      ]);
+      
+      const data = await profileRes.json();
 
       if (data.success) {
         setUserName(data.data?.user?.name ?? '');
@@ -97,6 +107,13 @@ export default function DashboardPage() {
           router.replace('/onboarding');
           return;
         }
+      }
+      
+      if (subscriptionRes.ok) {
+        const subData = await subscriptionRes.json();
+        setIsPro(subData.isPro || false);
+        setIsTrialing(subData.isTrialing || false);
+        setTrialDaysRemaining(subData.trialDaysRemaining);
       }
     } catch (err) {
       console.error('Failed to fetch profile:', err);
@@ -175,6 +192,52 @@ export default function DashboardPage() {
             <StreakDisplay compact />
           </div>
         </motion.div>
+
+        {/* Trial Status Banner */}
+        {isTrialing && trialDaysRemaining !== null && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.03 }}
+            className="mb-6"
+          >
+            <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+              <div className="flex items-center justify-between flex-wrap gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
+                    <Sparkles className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-sm flex items-center gap-2">
+                      <Crown className="w-4 h-4 text-yellow-500" />
+                      {language === 'en' ? 'Pro Trial Active' : 'Prueba Pro Activa'}
+                    </p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                      {t('trialEndsIn').replace('{days}', String(trialDaysRemaining))}
+                    </p>
+                  </div>
+                </div>
+                <Link href="/pricing">
+                  <Button size="sm" className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700">
+                    {t('upgradeToPro')}
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Upgrade Banner for Free Users */}
+        {!isPro && !isTrialing && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.03 }}
+            className="mb-6"
+          >
+            <UpgradeBanner source="dashboard" />
+          </motion.div>
+        )}
 
         {/* Streak Card */}
         <motion.div

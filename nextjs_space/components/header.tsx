@@ -19,6 +19,7 @@ import {
   Flame,
   Trophy,
   Users,
+  Crown,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -106,6 +107,12 @@ export function Header() {
               </>
             ) : (
               <div className="flex items-center space-x-2">
+                <Link href="/pricing">
+                  <Button variant="ghost" className="hidden sm:flex items-center gap-1">
+                    <Crown className="h-4 w-4 text-yellow-500" />
+                    {t('pricing')}
+                  </Button>
+                </Link>
                 <Link href="/login">
                   <Button variant="ghost">{t('login')}</Button>
                 </Link>
