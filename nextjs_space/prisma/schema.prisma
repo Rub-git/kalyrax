@@ -1,0 +1,228 @@
+generator client {
+    provider = "prisma-client-js"
+    binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
+    output = "/home/ubuntu/nutricoach_app/nextjs_space/node_modules/.prisma/client"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String   @id @default(uuid())
+  email             String   @unique
+  passwordHash      String   @map("password_hash")
+  name              String?
+  languagePreference String  @default("en") @map("language_preference")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  profile           Profile?
+  mealPlans         MealPlan[]
+  trackingEntries   TrackingEntry[]
+  chatSessions      ChatSession[]
+
+  @@map("users")
+}
+
+model Profile {
+  id            String   @id @default(uuid())
+  userId        String   @unique @map("user_id")
+  age           Int
+  sex           String   // 'male' or 'female'
+  weightKg      Float    @map("weight_kg")
+  heightCm      Float    @map("height_cm")
+  activityLevel String   @map("activity_level") // sedentary, light, moderate, active, very_active
+  goal          String   // maintain, lose_weight, gain_weight, improve_health
+  medicalFlags  Json     @default("[]") @map("medical_flags") // JSONB array of flags
+  dietaryPrefs  Json     @default("[]") @map("dietary_prefs") // vegetarian, vegan, etc.
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  calculations  Calculation[]
+
+  @@map("profiles")
+}
+
+model Calculation {
+  id              String   @id @default(uuid())
+  profileId       String   @map("profile_id")
+  formulaVersion  String   @map("formula_version") // e.g., "harris-benedict-v1"
+  geb             Float    // Gasto Energético Basal
+  eta             Float    // Efecto Térmico de los Alimentos
+  get             Float    // Gasto Energético Total
+  bmr             Float    // Same as GEB (English alias)
+  tdee            Float    // Same as GET (English alias)
+  carbG           Float    @map("carb_g")
+  proteinG        Float    @map("protein_g")
+  fatG            Float    @map("fat_g")
+  fiberTargetG    Float    @map("fiber_target_g")
+  carbPercent     Float    @default(60) @map("carb_percent")
+  proteinPercent  Float    @default(12) @map("protein_percent")
+  fatPercent      Float    @default(28) @map("fat_percent")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  profile         Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  mealPlans       MealPlan[]
+
+  @@index([profileId])
+  @@map("calculations")
+}
+
+model NutritionRule {
+  id         String   @id @default(uuid())
+  ruleType   String   @map("rule_type") // geb_formula, eta_formula, activity_factor, macro_distribution
+  parameters Json     // JSONB with rule parameters
+  version    String
+  isActive   Boolean  @default(true) @map("is_active")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("nutrition_rules")
+}
+
+model FoodItem {
+  id           String   @id @default(uuid())
+  name         String   // English name
+  nameEs       String   @map("name_es") // Spanish name
+  regionTags   Json     @default("[]") @map("region_tags") // ["usa", "mexico", "latam"]
+  category     String   // proteins, carbs, fats, vegetables, fruits, dairy, legumes, grains
+  servingSize  Float    @map("serving_size")
+  servingUnit  String   @map("serving_unit") // g, ml, piece, cup, tbsp
+  kcal         Float
+  carbG        Float    @map("carb_g")
+  proteinG     Float    @map("protein_g")
+  fatG         Float    @map("fat_g")
+  fiberG       Float    @map("fiber_g")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  equivalentsFrom EquivalentsCatalog[] @relation("FromFood")
+  equivalentsTo   EquivalentsCatalog[] @relation("ToFood")
+  mealItems       MealItem[]
+  trackingEntries TrackingEntry[]
+
+  @@index([category])
+  @@index([name])
+  @@map("food_items")
+}
+
+model EquivalentsCatalog {
+  id               String   @id @default(uuid())
+  foodId           String   @map("food_id")
+  equivalentFoodId String   @map("equivalent_food_id")
+  ratio            Float    // How much of equivalent equals 1 serving of original
+
+  food             FoodItem @relation("FromFood", fields: [foodId], references: [id], onDelete: Cascade)
+  equivalentFood   FoodItem @relation("ToFood", fields: [equivalentFoodId], references: [id], onDelete: Cascade)
+
+  @@unique([foodId, equivalentFoodId])
+  @@map("equivalents_catalog")
+}
+
+model MealPlan {
+  id            String   @id @default(uuid())
+  userId        String   @map("user_id")
+  calculationId String   @map("calculation_id")
+  startDate     DateTime @map("start_date")
+  days          Json     // JSONB with 7 days of meals
+  shoppingList  Json     @default("[]") @map("shopping_list")
+  preferences   Json     @default("{}") // dietary preferences used
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  calculation   Calculation @relation(fields: [calculationId], references: [id], onDelete: Cascade)
+  meals         Meal[]
+
+  @@index([userId])
+  @@map("meal_plans")
+}
+
+model Meal {
+  id           String   @id @default(uuid())
+  mealPlanId   String   @map("meal_plan_id")
+  dayNumber    Int      @map("day_number") // 1-7
+  mealType     String   @map("meal_type") // breakfast, lunch, dinner, snack_am, snack_pm
+  name         String
+  nameEs       String   @map("name_es")
+  totalKcal    Float    @map("total_kcal")
+  totalCarbG   Float    @map("total_carb_g")
+  totalProteinG Float   @map("total_protein_g")
+  totalFatG    Float    @map("total_fat_g")
+
+  mealPlan     MealPlan @relation(fields: [mealPlanId], references: [id], onDelete: Cascade)
+  items        MealItem[]
+
+  @@index([mealPlanId])
+  @@map("meals")
+}
+
+model MealItem {
+  id       String @id @default(uuid())
+  mealId   String @map("meal_id")
+  foodId   String @map("food_id")
+  quantity Float
+  unit     String
+
+  meal     Meal     @relation(fields: [mealId], references: [id], onDelete: Cascade)
+  food     FoodItem @relation(fields: [foodId], references: [id], onDelete: Cascade)
+
+  @@map("meal_items")
+}
+
+model TrackingEntry {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  date      DateTime @db.Date
+  mealType  String   @map("meal_type")
+  foodId    String   @map("food_id")
+  quantity  Float
+  unit      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  food      FoodItem @relation(fields: [foodId], references: [id], onDelete: Cascade)
+
+  @@index([userId, date])
+  @@map("tracking_entries")
+}
+
+model ChatSession {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages  ChatMessage[]
+
+  @@index([userId])
+  @@map("chat_sessions")
+}
+
+model ChatMessage {
+  id        String   @id @default(uuid())
+  sessionId String   @map("session_id")
+  role      String   // user, assistant, system
+  content   String   @db.Text
+  citations Json?    // Optional citations from RAG
+  createdAt DateTime @default(now()) @map("created_at")
+
+  session   ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+  @@map("chat_messages")
+}
+
+model PdfChunk {
+  id           String   @id @default(uuid())
+  chunkId      String   @unique @map("chunk_id")
+  sectionTitle String   @map("section_title")
+  pageNumber   Int      @map("page_number")
+  text         String   @db.Text
+  embedding    String?  @db.Text // Store as JSON string if vector not available
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@index([sectionTitle])
+  @@map("pdf_chunks")
+}
