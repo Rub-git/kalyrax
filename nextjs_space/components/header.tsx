@@ -41,15 +41,15 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-20 md:h-24 items-center justify-between">
           {/* Logo */}
           <Link href={session ? '/dashboard' : '/'} className="flex items-center">
             <Image
               src="/kalyrax-logo.png"
               alt="Kalyrax"
-              width={180}
-              height={50}
-              className="h-12 w-auto"
+              width={240}
+              height={70}
+              className="h-14 w-auto sm:h-16 md:h-20"
               priority
             />
           </Link>
