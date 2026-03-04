@@ -44,7 +44,7 @@ export function UpgradeBanner({
           <div className="flex items-center gap-3">
             <Crown className="w-5 h-5 text-yellow-300" />
             <span className="text-sm font-medium">
-              {t(language, 'tryProFree')}
+              {t('tryProFree')}
             </span>
           </div>
           <div className="flex items-center gap-2">
@@ -55,7 +55,7 @@ export function UpgradeBanner({
               onClick={handleClick}
             >
               <Sparkles className="w-4 h-4 mr-1" />
-              {t(language, 'startFreeTrial')}
+              {t('startFreeTrial')}
             </Button>
             {showDismiss && (
               <button
@@ -83,7 +83,7 @@ export function UpgradeBanner({
               {language === 'en' ? 'Unlock Pro Features' : 'Desbloquea Funciones Pro'}
             </p>
             <p className="text-xs text-gray-600 dark:text-gray-400">
-              {t(language, 'tryProFree')}
+              {t('tryProFree')}
             </p>
           </div>
         </div>
@@ -93,7 +93,7 @@ export function UpgradeBanner({
           onClick={handleClick}
         >
           <Sparkles className="w-4 h-4 mr-1" />
-          {t(language, 'startFreeTrial')}
+          {t('startFreeTrial')}
         </Button>
       </div>
     </div>

@@ -155,7 +155,7 @@ export default function PricingPage() {
         >
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-              {t(language, 'pricing')}
+              {t('pricing')}
             </span>
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
@@ -176,7 +176,7 @@ export default function PricingPage() {
                   : 'text-gray-600 dark:text-gray-300'
               }`}
             >
-              {t(language, 'monthly')}
+              {t('monthly')}
             </button>
             <button
               onClick={() => setBillingCycle('yearly')}
@@ -186,7 +186,7 @@ export default function PricingPage() {
                   : 'text-gray-600 dark:text-gray-300'
               }`}
             >
-              {t(language, 'yearly')}
+              {t('yearly')}
               <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">
                 -{yearlySavings}%
               </span>
@@ -205,10 +205,10 @@ export default function PricingPage() {
             <Card className="h-full border-2 border-gray-200 dark:border-gray-700">
               <CardHeader className="pb-4">
                 <CardTitle className="text-2xl flex items-center gap-2">
-                  {t(language, 'freePlan')}
+                  {t('freePlan')}
                   {subscription?.plan === 'free' && !subscription.isTrialing && (
                     <span className="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full">
-                      {t(language, 'currentPlan')}
+                      {t('currentPlan')}
                     </span>
                   )}
                 </CardTitle>
@@ -219,7 +219,7 @@ export default function PricingPage() {
                 </CardDescription>
                 <div className="mt-4">
                   <span className="text-4xl font-bold">$0</span>
-                  <span className="text-gray-500">{t(language, 'perMonth')}</span>
+                  <span className="text-gray-500">{t('perMonth')}</span>
                 </div>
               </CardHeader>
               <CardContent>
@@ -229,7 +229,7 @@ export default function PricingPage() {
                       <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
                         <Check className="w-3 h-3 text-green-600" />
                       </div>
-                      <span className="text-sm">{t(language, `feature_${feature.key}`)}</span>
+                      <span className="text-sm">{t(`feature_${feature.key}`)}</span>
                     </div>
                   ))}
                 </div>
@@ -244,7 +244,7 @@ export default function PricingPage() {
                     className="w-full"
                     onClick={() => router.push('/signup')}
                   >
-                    {t(language, 'getStartedFree')}
+                    {t('getStartedFree')}
                   </Button>
                 )}
               </CardContent>
@@ -259,15 +259,15 @@ export default function PricingPage() {
           >
             <Card className="h-full border-2 border-green-500 relative overflow-hidden">
               <div className="absolute top-0 right-0 bg-green-500 text-white text-xs px-3 py-1 rounded-bl-lg font-medium">
-                {t(language, 'mostPopular')}
+                {t('mostPopular')}
               </div>
               <CardHeader className="pb-4">
                 <CardTitle className="text-2xl flex items-center gap-2">
                   <Crown className="w-6 h-6 text-yellow-500" />
-                  {t(language, 'proPlan')}
+                  {t('proPlan')}
                   {subscription?.isPro && (
                     <span className="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 px-2 py-1 rounded-full">
-                      {subscription.isTrialing ? t(language, 'trialActive') : t(language, 'proActive')}
+                      {subscription.isTrialing ? t('trialActive') : t('proActive')}
                     </span>
                   )}
                 </CardTitle>
@@ -282,17 +282,17 @@ export default function PricingPage() {
                       ? (PRICING.pro.yearly / 12).toFixed(2)
                       : PRICING.pro.monthly}
                   </span>
-                  <span className="text-gray-500">{t(language, 'perMonth')}</span>
+                  <span className="text-gray-500">{t('perMonth')}</span>
                   {billingCycle === 'yearly' && (
                     <p className="text-sm text-gray-500 mt-1">
-                      {t(language, 'billedYearly')} (${PRICING.pro.yearly})
+                      {t('billedYearly')} (${PRICING.pro.yearly})
                     </p>
                   )}
                 </div>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                  {t(language, 'everythingInFree')}
+                  {t('everythingInFree')}
                 </p>
                 <div className="space-y-3 mb-6">
                   {proFeatures.map((feature) => (
@@ -300,7 +300,7 @@ export default function PricingPage() {
                       <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
                         <Check className="w-3 h-3 text-white" />
                       </div>
-                      <span className="text-sm font-medium">{t(language, `feature_${feature.key}`)}</span>
+                      <span className="text-sm font-medium">{t(`feature_${feature.key}`)}</span>
                     </div>
                   ))}
                 </div>
@@ -316,7 +316,7 @@ export default function PricingPage() {
                     ) : (
                       <Sparkles className="w-4 h-4 mr-2" />
                     )}
-                    {t(language, 'startFreeTrial')}
+                    {t('startFreeTrial')}
                   </Button>
                 )}
 
@@ -331,14 +331,14 @@ export default function PricingPage() {
                     ) : (
                       <ArrowRight className="w-4 h-4 mr-2" />
                     )}
-                    {t(language, 'upgradeToPro')}
+                    {t('upgradeToPro')}
                   </Button>
                 )}
 
                 {subscription?.isTrialing && subscription.trialDaysRemaining !== null && (
                   <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg text-center">
                     <p className="text-sm text-amber-700 dark:text-amber-300">
-                      {t(language, 'trialEndsIn').replace('{days}', String(subscription.trialDaysRemaining))}
+                      {t('trialEndsIn').replace('{days}', String(subscription.trialDaysRemaining))}
                     </p>
                     <Button
                       variant="outline"
@@ -357,12 +357,12 @@ export default function PricingPage() {
                     className="w-full"
                     onClick={() => router.push('/profile')}
                   >
-                    {t(language, 'manageSubscription')}
+                    {t('manageSubscription')}
                   </Button>
                 )}
 
                 <p className="text-xs text-center text-gray-500 mt-4">
-                  {t(language, 'cancelAnytime')}
+                  {t('cancelAnytime')}
                 </p>
               </CardContent>
             </Card>

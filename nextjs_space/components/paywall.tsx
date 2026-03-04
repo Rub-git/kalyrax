@@ -112,11 +112,11 @@ export function Paywall({
 
     switch (limitType) {
       case 'mealPlan':
-        return t(language, 'mealPlanLimitReached');
+        return t('mealPlanLimitReached');
       case 'aiChat':
-        return t(language, 'aiChatLimitReached');
+        return t('aiChatLimitReached');
       case 'challenge':
-        return t(language, 'challengeLimitReached');
+        return t('challengeLimitReached');
       default:
         return null;
     }
@@ -159,10 +159,10 @@ export function Paywall({
                 )}
               </div>
               <CardTitle className="text-2xl">
-                {limitType ? t(language, 'limitReached') : t(language, 'upgradeRequired')}
+                {limitType ? t('limitReached') : t('upgradeRequired')}
               </CardTitle>
               <CardDescription className="text-base mt-2">
-                {limitType ? getLimitMessage() : t(language, 'upgradeToUnlock')}
+                {limitType ? getLimitMessage() : t('upgradeToUnlock')}
               </CardDescription>
             </CardHeader>
 
@@ -170,9 +170,9 @@ export function Paywall({
               {/* Feature highlight */}
               <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
                 <p className="text-sm text-center text-gray-600 dark:text-gray-300">
-                  <span className="font-medium text-green-600">{t(language, `feature_${feature}`)}</span>
+                  <span className="font-medium text-green-600">{t(`feature_${feature}`)}</span>
                   {' '}
-                  {t(language, 'includedInPro').toLowerCase()}
+                  {t('includedInPro').toLowerCase()}
                 </p>
               </div>
 
@@ -182,8 +182,8 @@ export function Paywall({
                   <div className="bg-amber-50 dark:bg-amber-900/20 px-4 py-2 rounded-full">
                     <span className="text-sm text-amber-700 dark:text-amber-300">
                       {remaining}/{limit} {limitType === 'aiChat'
-                        ? t(language, 'remainingToday').replace('{count}', String(remaining))
-                        : t(language, 'remainingThisMonth').replace('{count}', String(remaining))}
+                        ? t('remainingToday').replace('{count}', String(remaining))
+                        : t('remainingThisMonth').replace('{count}', String(remaining))}
                     </span>
                   </div>
                 </div>
@@ -192,16 +192,16 @@ export function Paywall({
               {/* Pro benefits */}
               <div className="space-y-2">
                 <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  {t(language, 'unlockUnlimited')}
+                  {t('unlockUnlimited')}
                 </p>
                 <div className="grid grid-cols-2 gap-2 text-xs text-gray-600 dark:text-gray-400">
                   <div className="flex items-center gap-1">
                     <Zap className="w-3 h-3 text-green-500" />
-                    <span>{t(language, 'feature_unlimitedMealPlanGeneration')}</span>
+                    <span>{t('feature_unlimitedMealPlanGeneration')}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <Sparkles className="w-3 h-3 text-green-500" />
-                    <span>{t(language, 'feature_advancedAICoach')}</span>
+                    <span>{t('feature_advancedAICoach')}</span>
                   </div>
                 </div>
               </div>
@@ -219,7 +219,7 @@ export function Paywall({
                     ) : (
                       <Sparkles className="w-4 h-4 mr-2" />
                     )}
-                    {t(language, 'startFreeTrial')}
+                    {t('startFreeTrial')}
                   </Button>
                 ) : (
                   <Button
@@ -227,7 +227,7 @@ export function Paywall({
                     onClick={handleViewPricing}
                   >
                     <ArrowRight className="w-4 h-4 mr-2" />
-                    {t(language, 'upgradeToPro')}
+                    {t('upgradeToPro')}
                   </Button>
                 )}
 
@@ -240,7 +240,7 @@ export function Paywall({
               {!hasUsedTrial && (
                 <div className="text-center space-y-1">
                   <p className="text-xs text-gray-500">
-                    {t(language, 'noCommitment')} • {t(language, 'cancelAnytime')}
+                    {t('noCommitment')} • {t('cancelAnytime')}
                   </p>
                   <p className="text-xs text-gray-400">
                     {language === 'en'

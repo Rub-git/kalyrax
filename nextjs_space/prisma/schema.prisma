@@ -658,3 +658,77 @@ model SubscriptionEvent {
   @@index([createdAt])
   @@map("subscription_events")
 }
+
+// ============== REFERRAL SYSTEM ==============
+
+model Referral {
+  id             String    @id @default(uuid())
+  referralCode   String    @unique @map("referral_code") // Unique code for sharing
+  referrerUserId String    @map("referrer_user_id")
+  referredUserId String?   @unique @map("referred_user_id") // Null until conversion
+  status         String    @default("pending") // pending, converted, expired
+  convertedAt    DateTime? @map("converted_at")
+  expiresAt      DateTime? @map("expires_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  @@index([referralCode])
+  @@index([referrerUserId])
+  @@index([status])
+  @@map("referrals")
+}
+
+model UserReferralStats {
+  id                 String   @id @default(uuid())
+  userId             String   @unique @map("user_id")
+  referralCode       String   @unique @map("referral_code") // User's unique referral code
+  totalReferrals     Int      @default(0) @map("total_referrals")
+  convertedReferrals Int      @default(0) @map("converted_referrals")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  @@index([userId])
+  @@map("user_referral_stats")
+}
+
+// ============== ACQUISITION ANALYTICS ==============
+
+model AcquisitionEvent {
+  id              String   @id @default(uuid())
+  userId          String?  @map("user_id") // Null for anonymous visitors
+  sessionId       String?  @map("session_id") // Browser session tracking
+  source          String   // seo, social, referral, direct, product_hunt
+  landingPage     String?  @map("landing_page") // Which page they landed on
+  referralCode    String?  @map("referral_code") // If from referral
+  utmSource       String?  @map("utm_source")
+  utmMedium       String?  @map("utm_medium")
+  utmCampaign     String?  @map("utm_campaign")
+  converted       Boolean  @default(false) // Did they sign up?
+  convertedAt     DateTime? @map("converted_at")
+  metadata        Json?    // Additional tracking data
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@index([source])
+  @@index([userId])
+  @@index([converted])
+  @@index([createdAt])
+  @@map("acquisition_events")
+}
+
+// ============== SEO CALCULATOR RESULTS ==============
+
+model CalculatorResult {
+  id             String   @id @default(uuid())
+  sessionId      String?  @map("session_id") // For anonymous users
+  userId         String?  @map("user_id") // For logged in users
+  calculatorType String   @map("calculator_type") // macro, calorie, protein, meal_plan
+  inputs         Json     // Calculator inputs
+  results        Json     // Calculator results
+  convertedToSignup Boolean @default(false) @map("converted_to_signup")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@index([calculatorType])
+  @@index([sessionId])
+  @@index([userId])
+  @@index([createdAt])
+  @@map("calculator_results")
+}

@@ -9,7 +9,8 @@ export const dynamic = 'force-dynamic';
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
+    const userId = (session?.user as { id?: string })?.id;
+    if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -17,7 +18,7 @@ export async function POST(request: NextRequest) {
     const { eventType, source, clicked } = body;
 
     if (eventType === 'upgrade_prompt') {
-      await trackUpgradePrompt(session.user.id, source || 'unknown', clicked || false);
+      await trackUpgradePrompt(userId, source || 'unknown', clicked || false);
     }
 
     return NextResponse.json({ success: true });

@@ -33,7 +33,20 @@ const ACTIVITY_MAP: Record<string, ActivityLevel> = {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email, password, name, language, referralSource, referralSlug, onboardingSessionId } = body;
+    const { 
+      email, 
+      password, 
+      name, 
+      language, 
+      referralSource, 
+      referralSlug, 
+      referralCode,
+      onboardingSessionId,
+      sessionId, // For acquisition tracking
+      utmSource,
+      utmMedium,
+      utmCampaign,
+    } = body;
 
     if (!email || !password) {
       return NextResponse.json(
@@ -57,6 +70,16 @@ export async function POST(request: NextRequest) {
     // Hash password
     const passwordHash = await bcrypt.hash(password, 10);
 
+    // Determine acquisition source
+    let acquisitionSource = 'direct';
+    if (referralCode) {
+      acquisitionSource = 'referral';
+    } else if (utmSource === 'product_hunt') {
+      acquisitionSource = 'product_hunt';
+    } else if (referralSource) {
+      acquisitionSource = referralSource;
+    }
+
     // Create user with referral tracking
     const user = await prisma.user.create({
       data: {
@@ -64,10 +87,70 @@ export async function POST(request: NextRequest) {
         passwordHash,
         name: name ?? null,
         languagePreference: language ?? 'en',
-        referralSource: referralSource ?? null,
-        referralSlug: referralSlug ?? null,
+        referralSource: acquisitionSource,
+        referralSlug: referralSlug ?? referralCode ?? null,
       },
     });
+
+    // Handle referral code conversion
+    if (referralCode) {
+      try {
+        const referral = await prisma.referral.findUnique({
+          where: { referralCode },
+        });
+
+        if (referral && referral.status === 'pending') {
+          await prisma.referral.update({
+            where: { id: referral.id },
+            data: {
+              referredUserId: user.id,
+              status: 'converted',
+              convertedAt: new Date(),
+            },
+          });
+
+          // Update referrer's stats
+          await prisma.userReferralStats.update({
+            where: { userId: referral.referrerUserId },
+            data: {
+              convertedReferrals: { increment: 1 },
+            },
+          });
+        }
+      } catch (refError) {
+        console.error('Error converting referral:', refError);
+      }
+    }
+
+    // Track acquisition event
+    try {
+      await prisma.acquisitionEvent.updateMany({
+        where: { sessionId: sessionId || undefined },
+        data: {
+          userId: user.id,
+          converted: true,
+          convertedAt: new Date(),
+        },
+      });
+
+      // Also create a growth event
+      await prisma.growthEvent.create({
+        data: {
+          userId: user.id,
+          sessionId: sessionId || null,
+          eventType: 'USER_REGISTERED',
+          sourceSlug: referralCode || referralSlug || null,
+          metadata: {
+            acquisitionSource,
+            utmSource,
+            utmMedium,
+            utmCampaign,
+          },
+        },
+      });
+    } catch (trackError) {
+      console.error('Error tracking acquisition:', trackError);
+    }
 
     // If onboardingSessionId provided, convert session to profile
     if (onboardingSessionId) {
