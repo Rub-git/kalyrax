@@ -4,6 +4,7 @@ import { authOptions } from '@/lib/auth-options';
 import { prisma } from '@/lib/db';
 import { awardPoints, updateChallengeStats } from '@/lib/challenge-points';
 import { recordStreakActivity } from '@/lib/streak-system';
+import { createActivityFeedEvent, notifyFriendsOfProgress } from '@/lib/social-system';
 
 export const dynamic = 'force-dynamic';
 
@@ -186,6 +187,34 @@ export async function POST(
     
     // Record streak activity (global streak system)
     const streakResult = await recordStreakActivity(userId, 'DAY_COMPLETED', userTimezone);
+    
+    // If a streak milestone was reached, create activity event
+    if (streakResult.milestoneReached) {
+      await createActivityFeedEvent(userId, 'STREAK_MILESTONE', null, {
+        milestone: streakResult.milestoneReached,
+        currentStreak: streakResult.streak.currentStreak,
+      });
+      await notifyFriendsOfProgress(userId, 'STREAK_MILESTONE', {
+        milestone: streakResult.milestoneReached,
+      });
+    }
+    
+    // Create activity feed event and notify friends
+    await createActivityFeedEvent(userId, 'DAY_COMPLETED', challenge.id, {
+      challengeName: challenge.template.name,
+      dayNumber,
+      totalDays: challenge.template.durationDays,
+    });
+    await notifyFriendsOfProgress(userId, 'DAY_COMPLETED', { dayNumber });
+    
+    if (challengeCompleted) {
+      await createActivityFeedEvent(userId, 'CHALLENGE_COMPLETED', challenge.id, {
+        challengeName: challenge.template.name,
+      });
+      await notifyFriendsOfProgress(userId, 'CHALLENGE_COMPLETED', {
+        challengeName: challenge.template.name,
+      });
+    }
     
     return NextResponse.json({
       success: true,

@@ -367,6 +367,84 @@ export const translations = {
     streakCardTitle: 'My Streak',
     onFireStreak: 'On Fire!',
     streakJoinCta: 'Start your streak on NutriCoach',
+    
+    // Social System
+    social: 'Social',
+    friends: 'Friends',
+    groups: 'Groups',
+    activity: 'Activity',
+    notifications: 'Notifications',
+    
+    // Friends
+    friendsTitle: 'Friends',
+    searchFriends: 'Search users...',
+    pendingRequests: 'Pending Requests',
+    yourFriends: 'Your Friends',
+    noFriends: 'No friends yet. Search for users to connect!',
+    noPendingRequests: 'No pending friend requests',
+    sendRequest: 'Add Friend',
+    requestSent: 'Request Sent',
+    acceptRequest: 'Accept',
+    rejectRequest: 'Decline',
+    removeFriend: 'Remove',
+    blockUser: 'Block',
+    alreadyFriends: 'Friends',
+    
+    // Groups
+    groupsTitle: 'Groups',
+    createGroup: 'Create Group',
+    myGroups: 'My Groups',
+    noGroups: 'You are not in any groups yet.',
+    groupName: 'Group Name',
+    groupDescription: 'Description',
+    publicGroup: 'Public Group',
+    privateGroup: 'Private Group',
+    createGroupBtn: 'Create',
+    membersCount: 'members',
+    challengesCount: 'challenges',
+    leaveGroup: 'Leave Group',
+    deleteGroup: 'Delete Group',
+    inviteFriends: 'Invite Friends',
+    joinGroup: 'Join Group',
+    
+    // Group Challenges
+    groupChallenges: 'Group Challenges',
+    startGroupChallenge: 'Start Challenge',
+    noGroupChallenges: 'No active challenges in this group.',
+    joinGroupChallengeBtn: 'Join',
+    participantsCount: 'participants',
+    groupLeaderboard: 'Group Leaderboard',
+    
+    // Activity Feed
+    activityFeed: 'Activity Feed',
+    noActivity: 'No recent activity from friends.',
+    challengeStarted: 'started a challenge',
+    dayCompleted: 'completed day',
+    challengeCompleted: 'completed a challenge!',
+    streakMilestoneReached: 'reached a',
+    dayStreak: 'day streak!',
+    
+    // Reactions
+    react: 'React',
+    fire: '🔥',
+    muscle: '💪',
+    clap: '👏',
+    
+    // Notifications
+    notificationsTitle: 'Notifications',
+    noNotifications: 'No notifications',
+    markAllRead: 'Mark all as read',
+    friendRequest: 'Friend Request',
+    friendActivity: 'Friend Activity',
+    reactionReceived: 'Reaction Received',
+    leaderboardPassed: 'Leaderboard Update',
+    
+    // Privacy
+    privacySettings: 'Privacy Settings',
+    socialEnabled: 'Enable Social Features',
+    showActivityToFriends: 'Show my activity to friends',
+    allowFriendRequests: 'Allow friend requests',
+    showOnLeaderboard: 'Show me on leaderboards',
   },
   es: {
     // App
@@ -734,6 +812,84 @@ export const translations = {
     streakCardTitle: 'Mi Racha',
     onFireStreak: '¡En Llamas!',
     streakJoinCta: 'Comienza tu racha en NutriCoach',
+    
+    // Social System
+    social: 'Social',
+    friends: 'Amigos',
+    groups: 'Grupos',
+    activity: 'Actividad',
+    notifications: 'Notificaciones',
+    
+    // Friends
+    friendsTitle: 'Amigos',
+    searchFriends: 'Buscar usuarios...',
+    pendingRequests: 'Solicitudes Pendientes',
+    yourFriends: 'Tus Amigos',
+    noFriends: 'Aún no tienes amigos. ¡Busca usuarios para conectar!',
+    noPendingRequests: 'Sin solicitudes pendientes',
+    sendRequest: 'Agregar Amigo',
+    requestSent: 'Solicitud Enviada',
+    acceptRequest: 'Aceptar',
+    rejectRequest: 'Rechazar',
+    removeFriend: 'Eliminar',
+    blockUser: 'Bloquear',
+    alreadyFriends: 'Amigos',
+    
+    // Groups
+    groupsTitle: 'Grupos',
+    createGroup: 'Crear Grupo',
+    myGroups: 'Mis Grupos',
+    noGroups: 'Aún no estás en ningún grupo.',
+    groupName: 'Nombre del Grupo',
+    groupDescription: 'Descripción',
+    publicGroup: 'Grupo Público',
+    privateGroup: 'Grupo Privado',
+    createGroupBtn: 'Crear',
+    membersCount: 'miembros',
+    challengesCount: 'retos',
+    leaveGroup: 'Salir del Grupo',
+    deleteGroup: 'Eliminar Grupo',
+    inviteFriends: 'Invitar Amigos',
+    joinGroup: 'Unirse al Grupo',
+    
+    // Group Challenges
+    groupChallenges: 'Retos del Grupo',
+    startGroupChallenge: 'Iniciar Reto',
+    noGroupChallenges: 'No hay retos activos en este grupo.',
+    joinGroupChallengeBtn: 'Unirse',
+    participantsCount: 'participantes',
+    groupLeaderboard: 'Tabla de Posiciones',
+    
+    // Activity Feed
+    activityFeed: 'Actividad',
+    noActivity: 'Sin actividad reciente de amigos.',
+    challengeStarted: 'comenzó un reto',
+    dayCompleted: 'completó el día',
+    challengeCompleted: '¡completó un reto!',
+    streakMilestoneReached: 'alcanzó una racha de',
+    dayStreak: '¡días!',
+    
+    // Reactions
+    react: 'Reaccionar',
+    fire: '🔥',
+    muscle: '💪',
+    clap: '👏',
+    
+    // Notifications
+    notificationsTitle: 'Notificaciones',
+    noNotifications: 'Sin notificaciones',
+    markAllRead: 'Marcar todas como leídas',
+    friendRequest: 'Solicitud de Amistad',
+    friendActivity: 'Actividad de Amigo',
+    reactionReceived: 'Reacción Recibida',
+    leaderboardPassed: 'Actualización de Tabla',
+    
+    // Privacy
+    privacySettings: 'Configuración de Privacidad',
+    socialEnabled: 'Habilitar Funciones Sociales',
+    showActivityToFriends: 'Mostrar mi actividad a amigos',
+    allowFriendRequests: 'Permitir solicitudes de amistad',
+    showOnLeaderboard: 'Mostrarme en tablas de posiciones',
   },
 };
 

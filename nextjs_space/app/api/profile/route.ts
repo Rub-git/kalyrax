@@ -71,6 +71,11 @@ export async function PUT(request: NextRequest) {
       dietaryPrefs,
       name,
       languagePreference,
+      // Privacy settings
+      socialEnabled,
+      showActivityToFriends,
+      allowFriendRequests,
+      showOnLeaderboard,
     } = body;
 
     // Update user if name or language changed
@@ -97,6 +102,10 @@ export async function PUT(request: NextRequest) {
         goal: goal ?? 'maintain',
         medicalFlags: medicalFlags ?? [],
         dietaryPrefs: dietaryPrefs ?? [],
+        socialEnabled: socialEnabled ?? true,
+        showActivityToFriends: showActivityToFriends ?? true,
+        allowFriendRequests: allowFriendRequests ?? true,
+        showOnLeaderboard: showOnLeaderboard ?? true,
       },
       update: {
         ...(age !== undefined && { age }),
@@ -107,6 +116,10 @@ export async function PUT(request: NextRequest) {
         ...(goal !== undefined && { goal }),
         ...(medicalFlags !== undefined && { medicalFlags }),
         ...(dietaryPrefs !== undefined && { dietaryPrefs }),
+        ...(socialEnabled !== undefined && { socialEnabled }),
+        ...(showActivityToFriends !== undefined && { showActivityToFriends }),
+        ...(allowFriendRequests !== undefined && { allowFriendRequests }),
+        ...(showOnLeaderboard !== undefined && { showOnLeaderboard }),
       },
     });
 

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { useLanguage } from './providers';
 import { Button } from './ui/button';
+import { NotificationsBell } from './notifications-bell';
 import {
   Leaf,
   LayoutDashboard,
@@ -17,6 +18,7 @@ import {
   Globe,
   Flame,
   Trophy,
+  Users,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -31,6 +33,7 @@ export function Header() {
     { href: '/meal-plan', label: t('mealPlan'), icon: Calendar },
     { href: '/tracking', label: t('tracking'), icon: LineChart },
     { href: '/chat', label: t('chat'), icon: MessageCircle },
+    { href: '/social', label: t('social'), icon: Users },
     { href: '/leaderboard', label: t('leaderboard'), icon: Trophy },
   ];
 
@@ -75,6 +78,9 @@ export function Header() {
 
             {session ? (
               <>
+                <div className="hidden md:block">
+                  <NotificationsBell />
+                </div>
                 <Link href="/profile" className="hidden md:block">
                   <Button variant="ghost" size="icon">
                     <User className="h-5 w-5" />

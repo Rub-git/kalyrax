@@ -29,6 +29,17 @@ model User {
   leaderboardEvents LeaderboardEvent[]
   userStreak        UserStreak?
   streakEvents      StreakEvent[]
+  
+  // Social relationships
+  sentFriendRequests     Friendship[]   @relation("FriendshipUser")
+  receivedFriendRequests Friendship[]   @relation("FriendshipFriend")
+  ownedGroups            Group[]        @relation("GroupOwner")
+  groupMemberships       GroupMember[]
+  groupChallengesCreated GroupChallenge[] @relation("GroupChallengeCreator")
+  groupChallengeParticipations GroupChallengeParticipant[]
+  activityFeed           ActivityFeed[]
+  activityReactions      ActivityReaction[]
+  notifications          Notification[]
 
   @@map("users")
 }
@@ -50,6 +61,11 @@ model Profile {
   publicOptIn   Boolean  @default(false) @map("public_opt_in")
   country       String?
   timezone      String?
+  // Social privacy settings
+  socialEnabled       Boolean @default(true) @map("social_enabled") // Master switch for social features
+  showActivityToFriends Boolean @default(true) @map("show_activity_to_friends")
+  allowFriendRequests Boolean @default(true) @map("allow_friend_requests")
+  showOnLeaderboard   Boolean @default(true) @map("show_on_leaderboard")
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
 
@@ -269,8 +285,9 @@ model ChallengeTemplate {
   isActive      Boolean  @default(true) @map("is_active")
   createdAt     DateTime @default(now()) @map("created_at")
 
-  instances     ChallengeInstance[]
-  stats         ChallengeStats[]
+  instances       ChallengeInstance[]
+  stats           ChallengeStats[]
+  groupChallenges GroupChallenge[]
 
   @@map("challenge_templates")
 }
@@ -404,4 +421,150 @@ model StreakEvent {
   @@index([eventType])
   @@index([createdAt])
   @@map("streak_events")
+}
+
+// ============== SOCIAL ACCOUNTABILITY SYSTEM ==============
+
+model Friendship {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  friendId  String   @map("friend_id")
+  status    String   @default("pending") // pending, accepted, blocked
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user      User     @relation("FriendshipUser", fields: [userId], references: [id], onDelete: Cascade)
+  friend    User     @relation("FriendshipFriend", fields: [friendId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, friendId])
+  @@index([userId])
+  @@index([friendId])
+  @@index([status])
+  @@map("friendships")
+}
+
+model Group {
+  id          String   @id @default(uuid())
+  name        String
+  description String?  @db.Text
+  ownerId     String   @map("owner_id")
+  avatarSeed  String?  @map("avatar_seed")
+  isPublic    Boolean  @default(false) @map("is_public")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  owner       User            @relation("GroupOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  members     GroupMember[]
+  challenges  GroupChallenge[]
+
+  @@index([ownerId])
+  @@map("groups")
+}
+
+model GroupMember {
+  id       String   @id @default(uuid())
+  groupId  String   @map("group_id")
+  userId   String   @map("user_id")
+  role     String   @default("member") // admin, member
+  joinedAt DateTime @default(now()) @map("joined_at")
+
+  group    Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, userId])
+  @@index([groupId])
+  @@index([userId])
+  @@map("group_members")
+}
+
+model GroupChallenge {
+  id          String   @id @default(uuid())
+  groupId     String   @map("group_id")
+  templateId  String   @map("template_id")
+  startDate   DateTime @map("start_date")
+  endDate     DateTime @map("end_date")
+  createdBy   String   @map("created_by")
+  status      String   @default("active") // active, completed
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  group       Group             @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  template    ChallengeTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  creator     User              @relation("GroupChallengeCreator", fields: [createdBy], references: [id], onDelete: Cascade)
+  participants GroupChallengeParticipant[]
+
+  @@index([groupId])
+  @@index([templateId])
+  @@index([status])
+  @@map("group_challenges")
+}
+
+model GroupChallengeParticipant {
+  id                String   @id @default(uuid())
+  groupChallengeId  String   @map("group_challenge_id")
+  userId            String   @map("user_id")
+  progressDays      Int      @default(0) @map("progress_days")
+  streak            Int      @default(0)
+  points            Int      @default(0)
+  joinedAt          DateTime @default(now()) @map("joined_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  groupChallenge    GroupChallenge @relation(fields: [groupChallengeId], references: [id], onDelete: Cascade)
+  user              User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([groupChallengeId, userId])
+  @@index([groupChallengeId])
+  @@index([userId])
+  @@index([points])
+  @@map("group_challenge_participants")
+}
+
+model ActivityFeed {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  eventType   String   @map("event_type") // CHALLENGE_STARTED, DAY_COMPLETED, STREAK_MILESTONE, CHALLENGE_COMPLETED
+  referenceId String?  @map("reference_id") // ID of related entity
+  metadata    Json?    // Additional event data
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reactions   ActivityReaction[]
+
+  @@index([userId])
+  @@index([eventType])
+  @@index([createdAt])
+  @@map("activity_feed")
+}
+
+model ActivityReaction {
+  id           String   @id @default(uuid())
+  activityId   String   @map("activity_id")
+  userId       String   @map("user_id")
+  reactionType String   @map("reaction_type") // fire, muscle, clap
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  activity     ActivityFeed @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([activityId, userId])
+  @@index([activityId])
+  @@index([userId])
+  @@map("activity_reactions")
+}
+
+model Notification {
+  id           String    @id @default(uuid())
+  userId       String    @map("user_id")
+  type         String    // FRIEND_REQUEST, FRIEND_COMPLETED_DAY, REACTION_RECEIVED, LEADERBOARD_PASSED
+  title        String
+  message      String
+  referenceId  String?   @map("reference_id")
+  isRead       Boolean   @default(false) @map("is_read")
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isRead])
+  @@index([createdAt])
+  @@map("notifications")
 }

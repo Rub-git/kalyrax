@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth-options';
 import { prisma } from '@/lib/db';
+import { createActivityFeedEvent, notifyFriendsOfProgress } from '@/lib/social-system';
 
 export const dynamic = 'force-dynamic';
 
@@ -82,6 +83,15 @@ export async function POST(req: NextRequest) {
     
     await prisma.challengeProgress.createMany({
       data: progressEntries,
+    });
+    
+    // Create activity feed event and notify friends
+    await createActivityFeedEvent(userId, 'CHALLENGE_STARTED', challenge.id, {
+      challengeName: template.name,
+      durationDays: template.durationDays,
+    });
+    await notifyFriendsOfProgress(userId, 'CHALLENGE_STARTED', {
+      challengeName: template.name,
     });
     
     return NextResponse.json({ 

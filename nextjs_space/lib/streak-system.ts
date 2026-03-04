@@ -1,6 +1,9 @@
 import prisma from './db';
 import { Prisma } from '@prisma/client';
 
+// Note: We'll create activity feed events for milestones via a separate function
+// to avoid circular imports with social-system.ts
+
 // Streak event types
 export type StreakEventType = 
   | 'DAY_COMPLETED' 

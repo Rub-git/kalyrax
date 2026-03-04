@@ -70,6 +70,12 @@ export default function ProfilePage() {
   const [goal, setGoal] = useState('maintain');
   const [medicalFlags, setMedicalFlags] = useState<string[]>([]);
   const [dietaryPrefs, setDietaryPrefs] = useState<string[]>([]);
+  
+  // Privacy settings
+  const [socialEnabled, setSocialEnabled] = useState(true);
+  const [showActivityToFriends, setShowActivityToFriends] = useState(true);
+  const [allowFriendRequests, setAllowFriendRequests] = useState(true);
+  const [showOnLeaderboard, setShowOnLeaderboard] = useState(true);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -99,6 +105,12 @@ export default function ProfilePage() {
           setGoal(profile.goal ?? 'maintain');
           setMedicalFlags(profile.medicalFlags ?? []);
           setDietaryPrefs(profile.dietaryPrefs ?? []);
+          
+          // Privacy settings
+          setSocialEnabled(profile.socialEnabled ?? true);
+          setShowActivityToFriends(profile.showActivityToFriends ?? true);
+          setAllowFriendRequests(profile.allowFriendRequests ?? true);
+          setShowOnLeaderboard(profile.showOnLeaderboard ?? true);
         }
       }
     } catch (err) {
@@ -139,6 +151,10 @@ export default function ProfilePage() {
           medicalFlags,
           dietaryPrefs,
           languagePreference: language,
+          socialEnabled,
+          showActivityToFriends,
+          allowFriendRequests,
+          showOnLeaderboard,
         }),
       });
 
@@ -395,6 +411,119 @@ export default function ProfilePage() {
                   ))}
                 </div>
               </div>
+            </CardContent>
+          </Card>
+
+          {/* Privacy Settings */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">{t('privacySettings')}</CardTitle>
+              <CardDescription>
+                {language === 'es' 
+                  ? 'Controla cómo interactúas con otros usuarios'
+                  : 'Control how you interact with other users'}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label className="text-base">{t('socialEnabled')}</Label>
+                  <p className="text-sm text-muted-foreground">
+                    {language === 'es' 
+                      ? 'Habilita o deshabilita todas las funciones sociales'
+                      : 'Enable or disable all social features'}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setSocialEnabled(!socialEnabled)}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                    socialEnabled ? 'bg-primary' : 'bg-muted'
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                      socialEnabled ? 'translate-x-6' : 'translate-x-1'
+                    }`}
+                  />
+                </button>
+              </div>
+
+              {socialEnabled && (
+                <>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label className="text-base">{t('showActivityToFriends')}</Label>
+                      <p className="text-sm text-muted-foreground">
+                        {language === 'es' 
+                          ? 'Tus amigos pueden ver tu actividad'
+                          : 'Your friends can see your activity'}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setShowActivityToFriends(!showActivityToFriends)}
+                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                        showActivityToFriends ? 'bg-primary' : 'bg-muted'
+                      }`}
+                    >
+                      <span
+                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                          showActivityToFriends ? 'translate-x-6' : 'translate-x-1'
+                        }`}
+                      />
+                    </button>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label className="text-base">{t('allowFriendRequests')}</Label>
+                      <p className="text-sm text-muted-foreground">
+                        {language === 'es' 
+                          ? 'Otros usuarios pueden enviarte solicitudes'
+                          : 'Other users can send you friend requests'}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setAllowFriendRequests(!allowFriendRequests)}
+                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                        allowFriendRequests ? 'bg-primary' : 'bg-muted'
+                      }`}
+                    >
+                      <span
+                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                          allowFriendRequests ? 'translate-x-6' : 'translate-x-1'
+                        }`}
+                      />
+                    </button>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label className="text-base">{t('showOnLeaderboard')}</Label>
+                      <p className="text-sm text-muted-foreground">
+                        {language === 'es' 
+                          ? 'Aparecer en las tablas de posiciones'
+                          : 'Appear on public leaderboards'}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setShowOnLeaderboard(!showOnLeaderboard)}
+                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                        showOnLeaderboard ? 'bg-primary' : 'bg-muted'
+                      }`}
+                    >
+                      <span
+                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                          showOnLeaderboard ? 'translate-x-6' : 'translate-x-1'
+                        }`}
+                      />
+                    </button>
+                  </div>
+                </>
+              )}
             </CardContent>
           </Card>
 
