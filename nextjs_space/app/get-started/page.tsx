@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useSession, signIn } from 'next-auth/react';
 import { useLanguage } from '@/components/providers';
 import { Button } from '@/components/ui/button';
@@ -20,10 +20,30 @@ import {
   Flame,
   Utensils,
   Check,
-  Sparkles
+  Sparkles,
+  Trophy,
+  Zap
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+
+// Track growth event
+async function trackGrowthEvent(
+  eventType: string,
+  sessionId?: string,
+  sourceSlug?: string,
+  metadata?: Record<string, unknown>
+) {
+  try {
+    await fetch('/api/growth/events', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ eventType, sessionId, sourceSlug, metadata }),
+    });
+  } catch {
+    // Silent fail
+  }
+}
 
 const GOALS = [
   { 
@@ -84,8 +104,13 @@ interface NutritionResult {
 
 export default function GetStartedPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { data: session } = useSession() || {};
   const { language } = useLanguage();
+  
+  // Capture referral source from URL (e.g., from shared challenge)
+  const refSlug = searchParams.get('ref') || '';
+  const utmSource = searchParams.get('utm_source') || '';
 
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -193,6 +218,14 @@ export default function GetStartedPage() {
 
       const calcData = await calcRes.json();
       setResults(calcData);
+      
+      // Track PLAN_GENERATED event
+      trackGrowthEvent('PLAN_GENERATED', sessionId || undefined, refSlug || undefined, {
+        goal,
+        dailyCalories: calcData.dailyCalories,
+        utmSource,
+      });
+      
       setStep(5);
     } catch (err) {
       setError(t('Something went wrong. Please try again.', 'Algo salió mal. Por favor intenta de nuevo.'));
@@ -235,7 +268,16 @@ export default function GetStartedPage() {
       });
 
       if (result?.ok) {
-        router.push('/dashboard');
+        // Track USER_REGISTERED event
+        trackGrowthEvent('USER_REGISTERED', sessionId || undefined, refSlug || undefined, {
+          goal,
+          fromOnboarding: true,
+          utmSource,
+          referredFromChallenge: !!refSlug,
+        });
+        
+        // Redirect to challenge start page (growth loop activation)
+        router.push('/challenge/start?from=onboarding');
       } else {
         throw new Error('Login failed');
       }
@@ -653,19 +695,42 @@ export default function GetStartedPage() {
                 </CardContent>
               </Card>
 
+              {/* Challenge CTA - Primary Activation */}
+              <Card className="border-2 border-orange-300 dark:border-orange-600 bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20">
+                <CardContent className="py-5">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="p-2 rounded-full bg-orange-500">
+                      <Trophy className="h-5 w-5 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-gray-900 dark:text-white">
+                        {t('7-Day High Protein Challenge', 'Reto de 7 Días Alto en Proteína')}
+                      </h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        {t('Start building better habits today', 'Comienza a construir mejores hábitos hoy')}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-orange-700 dark:text-orange-400">
+                    <Zap className="h-4 w-4" />
+                    {t('Join 1,000+ people taking the challenge', 'Únete a más de 1,000 personas en el reto')}
+                  </div>
+                </CardContent>
+              </Card>
+
               <Button
                 onClick={() => setStep(6)}
                 size="lg"
-                className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600"
+                className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600"
               >
-                {t('Save My Plan', 'Guardar Mi Plan')}
-                <ChevronRight className="ml-2 h-5 w-5" />
+                <Trophy className="mr-2 h-5 w-5" />
+                {t('Start Challenge & Save Plan', 'Iniciar Reto y Guardar Plan')}
               </Button>
 
               <p className="text-center text-sm text-gray-500">
                 {t(
-                  'Create a free account to access your full meal plan and start your challenge',
-                  'Crea una cuenta gratuita para acceder a tu plan completo e iniciar tu desafío'
+                  'Create a free account to track your progress and join the leaderboard',
+                  'Crea una cuenta gratuita para seguir tu progreso y unirte al ranking'
                 )}
               </p>
             </motion.div>

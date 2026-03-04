@@ -635,7 +635,7 @@ export async function createActivityFeedEvent(
       userId,
       eventType,
       referenceId,
-      metadata: metadata || {},
+      metadata: metadata ? JSON.parse(JSON.stringify(metadata)) : undefined,
     },
   });
 }

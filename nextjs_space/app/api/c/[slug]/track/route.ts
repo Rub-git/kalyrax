@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
+import { trackGrowthEvent } from '@/lib/growth-analytics';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,6 +14,9 @@ export async function POST(
     
     const share = await prisma.challengeShare.findUnique({
       where: { slug },
+      include: {
+        challengeInstance: true,
+      },
     });
     
     if (!share) {
@@ -27,6 +31,16 @@ export async function POST(
       where: { id: share.id },
       data: {
         viewCount: { increment: 1 },
+      },
+    });
+    
+    // Track SHARE_CLICKED growth event
+    await trackGrowthEvent({
+      eventType: 'SHARE_CLICKED',
+      sourceSlug: slug,
+      metadata: {
+        challengeInstanceId: share.challengeInstanceId,
+        viewCount: updated.viewCount,
       },
     });
     

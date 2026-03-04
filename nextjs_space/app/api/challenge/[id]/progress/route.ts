@@ -5,6 +5,7 @@ import { prisma } from '@/lib/db';
 import { awardPoints, updateChallengeStats } from '@/lib/challenge-points';
 import { recordStreakActivity } from '@/lib/streak-system';
 import { createActivityFeedEvent, notifyFriendsOfProgress } from '@/lib/social-system';
+import { trackGrowthEvent } from '@/lib/growth-analytics';
 
 export const dynamic = 'force-dynamic';
 
@@ -190,7 +191,7 @@ export async function POST(
     
     // If a streak milestone was reached, create activity event
     if (streakResult.milestoneReached) {
-      await createActivityFeedEvent(userId, 'STREAK_MILESTONE', null, {
+      await createActivityFeedEvent(userId, 'STREAK_MILESTONE', undefined, {
         milestone: streakResult.milestoneReached,
         currentStreak: streakResult.streak.currentStreak,
       });
@@ -216,6 +217,45 @@ export async function POST(
       });
     }
     
+    // Track growth events
+    await trackGrowthEvent({
+      userId,
+      eventType: 'DAY_COMPLETED',
+      metadata: {
+        challengeInstanceId: challenge.id,
+        templateId: challenge.templateId,
+        dayNumber,
+        pointsEarned: totalPointsEarned,
+      },
+    });
+    
+    if (challengeCompleted) {
+      await trackGrowthEvent({
+        userId,
+        eventType: 'CHALLENGE_COMPLETED',
+        metadata: {
+          challengeInstanceId: challenge.id,
+          templateId: challenge.templateId,
+          templateName: challenge.template.name,
+        },
+      });
+    }
+    
+    // Determine if a share prompt should be shown (viral triggers)
+    // Trigger share prompts at: Day 3, Day 7 (completion), or streak milestones
+    let sharePrompt: { type: string; milestone: number } | null = null;
+    
+    if (challengeCompleted) {
+      sharePrompt = { type: 'challenge_complete', milestone: challenge.template.durationDays };
+    } else if (dayNumber === 3) {
+      sharePrompt = { type: 'challenge_day', milestone: 3 };
+    }
+    
+    // Also trigger on streak milestones
+    if (streakResult.milestoneReached) {
+      sharePrompt = { type: 'streak', milestone: streakResult.milestoneReached };
+    }
+    
     return NextResponse.json({
       success: true,
       progress: updatedProgress,
@@ -224,6 +264,7 @@ export async function POST(
       daysCompleted: completedDays,
       totalDays: challenge.template.durationDays,
       streakInfo: streakResult,
+      sharePrompt, // Client can use this to show share modal
     });
   } catch (error) {
     console.error('Error updating challenge progress:', error);

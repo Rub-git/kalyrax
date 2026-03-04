@@ -273,12 +273,19 @@ export default function PublicChallengePage() {
 
         {/* CTAs */}
         <div className="space-y-4">
-          <Link href={`/signup?ref=challenge&utm_source=challenge_share&utm_content=${slug}`} className="block">
-            <Button className="w-full h-14 text-lg bg-emerald-600 hover:bg-emerald-700">
-              {lang === 'en' ? 'Start Your Own Challenge' : 'Comienza Tu Propio Reto'}
+          <Link href={`/get-started?ref=${slug}&utm_source=challenge_share`} className="block">
+            <Button className="w-full h-14 text-lg bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600">
+              <Trophy className="h-5 w-5 mr-2" />
+              {lang === 'en' ? 'Start Your 7-Day Challenge' : 'Inicia Tu Reto de 7 Días'}
               <ChevronRight className="h-5 w-5 ml-2" />
             </Button>
           </Link>
+          
+          <p className="text-center text-sm text-gray-400">
+            {lang === 'en' 
+              ? 'Get your personalized nutrition plan in 60 seconds'
+              : 'Obtén tu plan de nutrición personalizado en 60 segundos'}
+          </p>
 
           <div className="flex gap-4">
             <Link href="/leaderboard" className="flex-1">

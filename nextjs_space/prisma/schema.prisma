@@ -569,6 +569,24 @@ model Notification {
   @@map("notifications")
 }
 
+// ============== GROWTH LOOP ANALYTICS ==============
+
+model GrowthEvent {
+  id          String   @id @default(uuid())
+  userId      String?  @map("user_id") // Nullable for anonymous events
+  sessionId   String?  @map("session_id") // For tracking anonymous sessions
+  eventType   String   @map("event_type") // PLAN_GENERATED, CHALLENGE_STARTED, DAY_COMPLETED, CHALLENGE_COMPLETED, SHARE_CREATED, SHARE_CLICKED, USER_REGISTERED
+  sourceSlug  String?  @map("source_slug") // Referral source (challenge/plan share slug)
+  metadata    Json?    // Additional event data
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([userId])
+  @@index([eventType])
+  @@index([sourceSlug])
+  @@index([createdAt])
+  @@map("growth_events")
+}
+
 // Temporary storage for guest onboarding flow (before account creation)
 model OnboardingSession {
   id             String    @id @default(uuid())

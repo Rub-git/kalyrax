@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth-options';
 import { prisma } from '@/lib/db';
-import { createActivityFeedEvent, notifyFriendsOfProgress } from '@/lib/social-system';
+import { trackGrowthEvent } from '@/lib/growth-analytics';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,90 +14,105 @@ export async function POST(req: NextRequest) {
     if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    
-    const { templateId, planId } = await req.json();
-    
+
+    const { templateId } = await req.json();
+
     if (!templateId) {
       return NextResponse.json(
         { error: 'Template ID is required' },
         { status: 400 }
       );
     }
-    
-    // Check if template exists
-    const template = await prisma.challengeTemplate.findUnique({
-      where: { id: templateId },
-    });
-    
-    if (!template || !template.isActive) {
-      return NextResponse.json(
-        { error: 'Challenge template not found' },
-        { status: 404 }
-      );
-    }
-    
+
     // Check if user already has an active challenge for this template
-    const existingActive = await prisma.challengeInstance.findFirst({
+    const existingChallenge = await prisma.challengeInstance.findFirst({
       where: {
         userId,
         templateId,
         status: 'active',
       },
     });
-    
-    if (existingActive) {
+
+    if (existingChallenge) {
       return NextResponse.json(
-        { error: 'You already have an active challenge of this type', challengeId: existingActive.id },
+        { error: 'You already have an active challenge for this template' },
         { status: 400 }
       );
     }
-    
+
+    // Get the template
+    const template = await prisma.challengeTemplate.findUnique({
+      where: { id: templateId },
+    });
+
+    if (!template) {
+      return NextResponse.json(
+        { error: 'Challenge template not found' },
+        { status: 404 }
+      );
+    }
+
     // Create the challenge instance
     const startDate = new Date();
     const endDate = new Date(startDate);
     endDate.setDate(endDate.getDate() + template.durationDays);
-    
+
     const challenge = await prisma.challengeInstance.create({
       data: {
         userId,
         templateId,
-        planId: planId || null,
         startDate,
         endDate,
         status: 'active',
+        progress: {
+          create: Array.from({ length: template.durationDays }, (_, i) => ({
+            dayNumber: i + 1,
+            completed: false,
+          })),
+        },
       },
       include: {
         template: true,
+        progress: {
+          orderBy: { dayNumber: 'asc' },
+        },
       },
     });
-    
-    // Create progress entries for each day
-    const progressEntries = [];
-    for (let day = 1; day <= template.durationDays; day++) {
-      progressEntries.push({
+
+    // Initialize or update stats
+    await prisma.challengeStats.upsert({
+      where: {
+        userId_templateId: { userId, templateId },
+      },
+      create: {
+        userId,
+        templateId,
+        totalDaysCompleted: 0,
+        currentStreakDays: 0,
+        bestStreakDays: 0,
+        challengeCompletedCount: 0,
+        pointsTotal: 0,
+        pointsWeekly: 0,
+      },
+      update: {
+        currentStreakDays: 0,
+      },
+    });
+
+    // Track CHALLENGE_STARTED growth event
+    await trackGrowthEvent({
+      userId,
+      eventType: 'CHALLENGE_STARTED',
+      metadata: {
+        templateId,
+        templateName: template.name,
         challengeInstanceId: challenge.id,
-        dayNumber: day,
-        completed: false,
-      });
-    }
-    
-    await prisma.challengeProgress.createMany({
-      data: progressEntries,
+      },
     });
-    
-    // Create activity feed event and notify friends
-    await createActivityFeedEvent(userId, 'CHALLENGE_STARTED', challenge.id, {
-      challengeName: template.name,
-      durationDays: template.durationDays,
-    });
-    await notifyFriendsOfProgress(userId, 'CHALLENGE_STARTED', {
-      challengeName: template.name,
-    });
-    
-    return NextResponse.json({ 
-      success: true, 
+
+    return NextResponse.json({
+      success: true,
       challenge,
-      message: 'Challenge started! Complete each day to earn points.'
     });
   } catch (error) {
     console.error('Error starting challenge:', error);

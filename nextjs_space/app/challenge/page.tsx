@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useLanguage } from '@/components/providers';
 import { Header } from '@/components/header';
 import { StreakDisplay } from '@/components/streak-display';
+import { SharePromptModal } from '@/components/share-prompt-modal';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -79,6 +80,13 @@ export default function ChallengePage() {
   const [proteinInput, setProteinInput] = useState('');
   const [completionMessage, setCompletionMessage] = useState('');
   const shareCardRef = useRef<HTMLDivElement>(null);
+  
+  // Share prompt modal state
+  const [sharePromptData, setSharePromptData] = useState<{
+    isOpen: boolean;
+    type: 'streak' | 'challenge_day' | 'challenge_complete' | 'leaderboard';
+    milestone: number;
+  } | null>(null);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -164,6 +172,25 @@ export default function ChallengePage() {
         );
         setProteinInput('');
         fetchData();
+        
+        // Check if we should show a share prompt (viral trigger)
+        if (data.sharePrompt) {
+          // First create the share link
+          const shareRes = await fetch(`/api/challenge/${activeChallenge.id}/share`, { method: 'POST' });
+          const shareData = await shareRes.json();
+          if (shareRes.ok) {
+            setShareLink(`${window.location.origin}/c/${shareData.share.slug}`);
+            
+            // Delay showing modal to let user see completion message first
+            setTimeout(() => {
+              setSharePromptData({
+                isOpen: true,
+                type: data.sharePrompt.type as 'streak' | 'challenge_day' | 'challenge_complete',
+                milestone: data.sharePrompt.milestone,
+              });
+            }, 1500);
+          }
+        }
       } else {
         alert(data.error || 'Failed to complete day');
       }
@@ -636,6 +663,41 @@ export default function ChallengePage() {
           </div>
         </div>
       </div>
+
+      {/* Share Prompt Modal for Viral Triggers */}
+      {sharePromptData && (
+        <SharePromptModal
+          isOpen={sharePromptData.isOpen}
+          onClose={() => setSharePromptData(null)}
+          title={
+            sharePromptData.type === 'streak'
+              ? (language === 'en' ? `🔥 ${sharePromptData.milestone} Day Streak!` : `🔥 ¡Racha de ${sharePromptData.milestone} Días!`)
+              : sharePromptData.type === 'challenge_complete'
+              ? (language === 'en' ? '🏆 Challenge Complete!' : '🏆 ¡Reto Completado!')
+              : (language === 'en' ? `🎯 Day ${sharePromptData.milestone} Done!` : `🎯 ¡Día ${sharePromptData.milestone} Completado!`)
+          }
+          message={
+            sharePromptData.type === 'streak'
+              ? (language === 'en' 
+                  ? 'You\'re on fire! Share your streak and inspire others to join the challenge.' 
+                  : '¡Estás en llamas! Comparte tu racha e inspira a otros a unirse al reto.')
+              : sharePromptData.type === 'challenge_complete'
+              ? (language === 'en' 
+                  ? 'Incredible! You completed the challenge. Share your success!' 
+                  : '¡Increíble! Completaste el reto. ¡Comparte tu éxito!')
+              : (language === 'en' 
+                  ? 'You\'re making great progress. Share and challenge your friends!' 
+                  : '¡Estás progresando muy bien! ¡Comparte y reta a tus amigos!')
+          }
+          shareUrl={shareLink}
+          milestoneType={sharePromptData.type}
+          milestoneValue={sharePromptData.milestone}
+          language={language}
+          onShare={() => {
+            // Tracked when share link is created
+          }}
+        />
+      )}
     </div>
   );
 }

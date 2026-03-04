@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth-options';
 import { prisma } from '@/lib/db';
 import { awardPoints, generateSlug } from '@/lib/challenge-points';
+import { trackGrowthEvent } from '@/lib/growth-analytics';
 
 export const dynamic = 'force-dynamic';
 
@@ -80,6 +81,16 @@ export async function POST(
       challengeInstanceId: challenge.id,
       eventType: 'SHARE_CREATED',
       metadata: { slug },
+    });
+    
+    // Track SHARE_CREATED growth event
+    await trackGrowthEvent({
+      userId,
+      eventType: 'SHARE_CREATED',
+      metadata: {
+        slug,
+        challengeInstanceId: challenge.id,
+      },
     });
     
     return NextResponse.json({
