@@ -4,10 +4,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth-options';
 import { prisma } from '@/lib/db';
+import { recordStreakActivity } from '@/lib/streak-system';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -16,9 +17,10 @@ export async function GET(
     }
 
     const userId = (session.user as any).id;
+    const { id } = await params;
 
     const mealPlan = await prisma.mealPlan.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         calculation: true,
       },
@@ -30,6 +32,13 @@ export async function GET(
         { status: 404 }
       );
     }
+
+    // Record streak activity for viewing plan
+    const profile = await prisma.profile.findUnique({
+      where: { userId },
+      select: { timezone: true },
+    });
+    await recordStreakActivity(userId, 'PLAN_VIEW', profile?.timezone || undefined);
 
     return NextResponse.json({
       success: true,

@@ -7,6 +7,8 @@ import Link from 'next/link';
 import { useLanguage } from '@/components/providers';
 import { Header } from '@/components/header';
 import { DisclaimerBanner } from '@/components/disclaimer-banner';
+import { StreakDisplay } from '@/components/streak-display';
+import { StreakShareModal } from '@/components/streak-share-modal';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -71,6 +73,7 @@ export default function DashboardPage() {
   const [calculation, setCalculation] = useState<CalculationData | null>(null);
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [userName, setUserName] = useState('');
+  const [showStreakShare, setShowStreakShare] = useState(false);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -162,11 +165,32 @@ export default function DashboardPage() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <h1 className="text-3xl font-bold text-gray-900">
-            {t('welcome')}, {userName || (language === 'es' ? 'Usuario' : 'User')}!
-          </h1>
-          <p className="text-gray-600 mt-1">{t('yourResults')}</p>
+          <div className="flex items-start justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">
+                {t('welcome')}, {userName || (language === 'es' ? 'Usuario' : 'User')}!
+              </h1>
+              <p className="text-gray-600 mt-1">{t('yourResults')}</p>
+            </div>
+            <StreakDisplay compact />
+          </div>
         </motion.div>
+
+        {/* Streak Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+          className="mb-6"
+        >
+          <StreakDisplay showShare onShare={() => setShowStreakShare(true)} />
+        </motion.div>
+
+        {/* Streak Share Modal */}
+        <StreakShareModal 
+          isOpen={showStreakShare} 
+          onClose={() => setShowStreakShare(false)} 
+        />
 
         {/* Medical Warning */}
         {hasMedicalFlags && (

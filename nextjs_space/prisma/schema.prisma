@@ -27,6 +27,8 @@ model User {
   challengeInstances ChallengeInstance[]
   challengeStats    ChallengeStats[]
   leaderboardEvents LeaderboardEvent[]
+  userStreak        UserStreak?
+  streakEvents      StreakEvent[]
 
   @@map("users")
 }
@@ -365,4 +367,41 @@ model LeaderboardEvent {
   @@index([eventType])
   @@index([createdAt])
   @@map("leaderboard_events")
+}
+
+// ============== STREAK SYSTEM TABLES ==============
+
+model UserStreak {
+  id                    String    @id @default(uuid())
+  userId                String    @unique @map("user_id")
+  currentStreak         Int       @default(0) @map("current_streak")
+  bestStreak            Int       @default(0) @map("best_streak")
+  lastActivityDate      DateTime? @map("last_activity_date") @db.Date
+  streakFreezesAvailable Int      @default(2) @map("streak_freezes_available")
+  freezesResetAt        DateTime? @map("freezes_reset_at") // Reset monthly
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([currentStreak])
+  @@index([bestStreak])
+  @@map("user_streaks")
+}
+
+model StreakEvent {
+  id            String   @id @default(uuid())
+  userId        String   @map("user_id")
+  eventType     String   @map("event_type") // DAY_COMPLETED, AI_INTERACTION, PLAN_VIEW, STREAK_FREEZE_USED, STREAK_BROKEN
+  streakBefore  Int      @map("streak_before")
+  streakAfter   Int      @map("streak_after")
+  metadata      Json?    // Additional event data like milestone reached
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([eventType])
+  @@index([createdAt])
+  @@map("streak_events")
 }

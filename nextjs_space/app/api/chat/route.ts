@@ -6,6 +6,7 @@ import { authOptions } from '@/lib/auth-options';
 import { prisma } from '@/lib/db';
 import { retrieveChunks, detectTopics, retrieveByTopics, buildRAGContext } from '@/lib/rag-system';
 import { calculateNutrition, FORMULA_VERSION } from '@/lib/calc-engine';
+import { recordStreakActivity } from '@/lib/streak-system';
 
 const SAFETY_KEYWORDS = [
   'diabetes', 'insulina', 'renal', 'riñón', 'embarazo', 'pregnant', 'lactancia',
@@ -227,6 +228,13 @@ export async function POST(request: NextRequest) {
           content: message,
         },
       });
+      
+      // Record streak activity for AI interaction
+      const profile = await prisma.profile.findUnique({
+        where: { userId },
+        select: { timezone: true },
+      });
+      await recordStreakActivity(userId, 'AI_INTERACTION', profile?.timezone || undefined);
     }
 
     return new Response(stream, {

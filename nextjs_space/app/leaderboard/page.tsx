@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useLanguage } from '@/components/providers';
 import { Header } from '@/components/header';
+import { StreakDisplay } from '@/components/streak-display';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -187,10 +188,13 @@ export default function LeaderboardPage() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-3xl font-bold flex items-center gap-3">
-              <Trophy className="h-8 w-8 text-yellow-500" />
-              {t('globalLeaderboard')}
-            </h1>
+            <div className="flex items-center gap-4">
+              <h1 className="text-3xl font-bold flex items-center gap-3">
+                <Trophy className="h-8 w-8 text-yellow-500" />
+                {t('globalLeaderboard')}
+              </h1>
+              <StreakDisplay compact />
+            </div>
             <p className="text-muted-foreground mt-1">
               {language === 'en' 
                 ? 'Compete with others in nutrition challenges'

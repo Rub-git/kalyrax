@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth-options';
 import { prisma } from '@/lib/db';
 import { awardPoints, updateChallengeStats } from '@/lib/challenge-points';
+import { recordStreakActivity } from '@/lib/streak-system';
 
 export const dynamic = 'force-dynamic';
 
@@ -183,6 +184,9 @@ export async function POST(
       pointsEarned: totalPointsEarned,
     });
     
+    // Record streak activity (global streak system)
+    const streakResult = await recordStreakActivity(userId, 'DAY_COMPLETED', userTimezone);
+    
     return NextResponse.json({
       success: true,
       progress: updatedProgress,
@@ -190,6 +194,7 @@ export async function POST(
       challengeCompleted,
       daysCompleted: completedDays,
       totalDays: challenge.template.durationDays,
+      streakInfo: streakResult,
     });
   } catch (error) {
     console.error('Error updating challenge progress:', error);

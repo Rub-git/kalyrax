@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useLanguage } from '@/components/providers';
 import { Header } from '@/components/header';
+import { StreakDisplay } from '@/components/streak-display';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -236,20 +237,30 @@ export default function ChallengePage() {
       <Header />
       
       <main className="container max-w-4xl mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-4 py-2 rounded-full text-sm mb-4">
-            <Flame className="h-4 w-4" />
-            {t('challenge')}
+        {/* Header with Streak */}
+        <div className="flex items-start justify-between mb-8">
+          <div className="text-center flex-1">
+            <div className="inline-flex items-center gap-2 bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-4 py-2 rounded-full text-sm mb-4">
+              <Flame className="h-4 w-4" />
+              {t('challenge')}
+            </div>
+            <h1 className="text-3xl font-bold mb-2">
+              {language === 'en' ? '7-Day Nutrition Challenge' : 'Reto de Nutrición de 7 Días'}
+            </h1>
+            <p className="text-muted-foreground">
+              {language === 'en' 
+                ? 'Complete daily goals, earn points, and compete on the leaderboard!'
+                : '¡Completa metas diarias, gana puntos y compite en la tabla de posiciones!'}
+            </p>
           </div>
-          <h1 className="text-3xl font-bold mb-2">
-            {language === 'en' ? '7-Day Nutrition Challenge' : 'Reto de Nutrición de 7 Días'}
-          </h1>
-          <p className="text-muted-foreground">
-            {language === 'en' 
-              ? 'Complete daily goals, earn points, and compete on the leaderboard!'
-              : '¡Completa metas diarias, gana puntos y compite en la tabla de posiciones!'}
-          </p>
+          <div className="hidden md:block">
+            <StreakDisplay compact />
+          </div>
+        </div>
+
+        {/* Streak Card - Mobile */}
+        <div className="md:hidden mb-6">
+          <StreakDisplay />
         </div>
 
         {/* My Stats Quick View */}

@@ -331,6 +331,42 @@ export const translations = {
     maintainingStreaks: 'Maintaining streaks',
     finishingChallenges: 'Finishing challenges',
     sharingProgress: 'Sharing progress',
+    
+    // Streak System
+    streakTitle: 'Daily Streak',
+    currentStreakLabel: 'Current Streak',
+    bestStreakLabel: 'Best Streak',
+    streakDay: 'Day',
+    streakDays: 'Days',
+    streakAtRisk: 'At risk! Log activity today',
+    streakBroken: 'Streak reset',
+    freezesAvailable: 'Freezes Available',
+    freezeUsed: 'Freeze used!',
+    streakMilestone: 'Milestone reached!',
+    keepStreakGoing: 'Keep your streak going!',
+    completeTodayActivity: 'Complete an activity today',
+    streakActivities: 'Qualifying activities',
+    activityChallenge: 'Complete a challenge day',
+    activityChat: 'Chat with NutriCoach',
+    activityPlan: 'View your meal plan',
+    shareStreak: 'Share Streak',
+    streakFireIcon: '🔥',
+    
+    // Streak Milestones
+    milestone3: '3-Day Warrior',
+    milestone7: 'Week Champion',
+    milestone14: 'Fortnight Fighter',
+    milestone30: 'Monthly Master',
+    milestone60: 'Consistency King',
+    milestone100: 'Century Legend',
+    nextMilestone: 'Next milestone',
+    daysToGo: 'days to go',
+    milestoneReached: 'You reached a milestone!',
+    
+    // Streak Card
+    streakCardTitle: 'My Streak',
+    onFireStreak: 'On Fire!',
+    streakJoinCta: 'Start your streak on NutriCoach',
   },
   es: {
     // App
@@ -662,6 +698,42 @@ export const translations = {
     maintainingStreaks: 'Mantener rachas',
     finishingChallenges: 'Terminar retos',
     sharingProgress: 'Compartir progreso',
+    
+    // Streak System
+    streakTitle: 'Racha Diaria',
+    currentStreakLabel: 'Racha Actual',
+    bestStreakLabel: 'Mejor Racha',
+    streakDay: 'Día',
+    streakDays: 'Días',
+    streakAtRisk: '¡En riesgo! Registra actividad hoy',
+    streakBroken: 'Racha reiniciada',
+    freezesAvailable: 'Congelaciones Disponibles',
+    freezeUsed: '¡Congelación usada!',
+    streakMilestone: '¡Meta alcanzada!',
+    keepStreakGoing: '¡Mantén tu racha!',
+    completeTodayActivity: 'Completa una actividad hoy',
+    streakActivities: 'Actividades que califican',
+    activityChallenge: 'Completa un día de reto',
+    activityChat: 'Chatea con NutriCoach',
+    activityPlan: 'Ve tu plan de comidas',
+    shareStreak: 'Compartir Racha',
+    streakFireIcon: '🔥',
+    
+    // Streak Milestones
+    milestone3: 'Guerrero de 3 Días',
+    milestone7: 'Campeón de la Semana',
+    milestone14: 'Luchador de Quincena',
+    milestone30: 'Maestro Mensual',
+    milestone60: 'Rey de la Constancia',
+    milestone100: 'Leyenda Centenaria',
+    nextMilestone: 'Próxima meta',
+    daysToGo: 'días restantes',
+    milestoneReached: '¡Alcanzaste una meta!',
+    
+    // Streak Card
+    streakCardTitle: 'Mi Racha',
+    onFireStreak: '¡En Llamas!',
+    streakJoinCta: 'Comienza tu racha en NutriCoach',
   },
 };
 
