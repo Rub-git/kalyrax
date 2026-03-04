@@ -76,11 +76,43 @@ export default function LeaderboardPage() {
     fetchLeaderboard();
   }, [period, selectedTemplate]);
 
+  // Early check for authenticated user - only true when session is resolved and user is logged in
+  const isAuthenticated = status === 'authenticated' && !!session?.user;
+  const isSessionResolved = status === 'authenticated' || status === 'unauthenticated';
+
   useEffect(() => {
-    if (status === 'authenticated' && session?.user) {
-      fetchMyStats();
-      fetchOptInStatus();
+    // Only fetch authenticated data when user is definitely authenticated
+    // Do NOT run this effect when session is loading or unauthenticated
+    if (status !== 'authenticated' || !session?.user) {
+      return;
     }
+
+    const loadAuthData = async () => {
+      // Fetch my stats
+      try {
+        const statsRes = await fetch('/api/leaderboard/my-stats');
+        if (statsRes.ok) {
+          const data = await statsRes.json();
+          setMyStats(data);
+        }
+      } catch { /* ignore */ }
+      
+      // Fetch opt-in status
+      try {
+        const optInRes = await fetch('/api/leaderboard/opt-in');
+        if (optInRes.ok) {
+          const data = await optInRes.json();
+          setOptInStatus({
+            publicOptIn: data.profile?.publicOptIn || false,
+            displayName: data.profile?.displayName || '',
+            country: data.profile?.country || '',
+            timezone: data.profile?.timezone || '',
+          });
+        }
+      } catch { /* ignore */ }
+    };
+
+    loadAuthData();
   }, [status, session]);
 
   const fetchLeaderboard = async () => {
@@ -99,36 +131,20 @@ export default function LeaderboardPage() {
     }
   };
 
-  const fetchMyStats = async () => {
+  const reloadAuthenticatedData = async () => {
+    if (status !== 'authenticated' || !session?.user) return;
+    
     try {
-      const res = await fetch('/api/leaderboard/my-stats');
-      if (res.ok) {
-        const data = await res.json();
+      const statsRes = await fetch('/api/leaderboard/my-stats');
+      if (statsRes.ok) {
+        const data = await statsRes.json();
         setMyStats(data);
       }
-    } catch (error) {
-      console.error('Error fetching my stats:', error);
-    }
-  };
-
-  const fetchOptInStatus = async () => {
-    try {
-      const res = await fetch('/api/leaderboard/opt-in');
-      if (res.ok) {
-        const data = await res.json();
-        setOptInStatus({
-          publicOptIn: data.profile?.publicOptIn || false,
-          displayName: data.profile?.displayName || '',
-          country: data.profile?.country || '',
-          timezone: data.profile?.timezone || '',
-        });
-      }
-    } catch (error) {
-      console.error('Error fetching opt-in status:', error);
-    }
+    } catch { /* ignore */ }
   };
 
   const saveSettings = async () => {
+    if (!isAuthenticated) return;
     setSaving(true);
     try {
       const res = await fetch('/api/leaderboard/opt-in', {
@@ -139,7 +155,7 @@ export default function LeaderboardPage() {
       if (res.ok) {
         setShowSettings(false);
         fetchLeaderboard();
-        fetchMyStats();
+        reloadAuthenticatedData();
       }
     } catch (error) {
       console.error('Error saving settings:', error);

@@ -154,7 +154,7 @@ export const translations = {
     saturday: 'Saturday',
     sunday: 'Sunday',
     
-    // Challenge Mode
+    // Challenge Mode - Core
     challenge: 'Challenge',
     challenges: 'Challenges',
     startChallenge: 'Start Challenge',
@@ -181,6 +181,90 @@ export const translations = {
     bestStreak: 'Best Streak',
     days: 'days',
     
+    // Challenge Start Screen - Motivational
+    challengeStartTitle: 'Ready to level up?',
+    challengeStartSubtitle: 'Small steps, big results.',
+    challengeStartCta: "Let's do this!",
+    challengeStartDesc: '7 days to build a habit. You got this!',
+    challengeStartBenefit1: 'Build lasting habits',
+    challengeStartBenefit2: 'Track your progress',
+    challengeStartBenefit3: 'Earn points & badges',
+    pickYourChallenge: 'Pick your challenge',
+    dayChallenge: '-Day Challenge',
+    focusOnProtein: 'Focus on protein',
+    buildStrength: 'Build strength',
+    
+    // Daily Progress Screen - Encouragement
+    todayIsDay: "Today is Day",
+    keepItUp: 'Keep it up!',
+    almostThere: 'Almost there!',
+    halfwayHero: 'Halfway hero!',
+    strongStart: 'Strong start!',
+    finalStretch: 'Final stretch!',
+    oneDayLeft: 'One day to go!',
+    todaysGoal: "Today's goal",
+    logYourProgress: 'Log your progress',
+    howDidYouDo: 'How did you do today?',
+    didYouHitTarget: 'Did you hit your protein target?',
+    greatChoice: 'Great choice!',
+    everyDayCounts: 'Every day counts.',
+    progressNotPerfection: 'Progress, not perfection.',
+    youShowedUp: 'You showed up. That matters.',
+    consistencyWins: 'Consistency wins.',
+    
+    // Completion Screen - Celebration
+    dayCompleteTitle: 'Day complete!',
+    amazingWork: 'Amazing work!',
+    youDidIt: 'You did it!',
+    challengeCompleteTitle: '🎉 Challenge Complete!',
+    challengeCompleteSubtitle: "You've built a new habit!",
+    youreOnFire: "You're on fire!",
+    unstoppable: 'Unstoppable!',
+    keepTheStreak: 'Keep the streak alive!',
+    newPersonalBest: 'New personal best!',
+    pointsEarned: 'Points earned',
+    bonusPoints: 'Bonus points!',
+    streakBonus: 'Streak bonus',
+    completionBonus: 'Completion bonus',
+    whatNext: "What's next?",
+    startNewChallenge: 'Start a new challenge',
+    shareYourWin: 'Share your win',
+    celebrateYourself: 'Celebrate yourself!',
+    proudOfYou: "We're proud of you!",
+    habitFormed: 'Habit formed!',
+    
+    // Share Card
+    shareCardTitle: 'Check out my progress!',
+    shareCardCta: 'Join me on NutriCoach',
+    daysStrong: 'days strong',
+    onTrack: 'On track',
+    challengeAccepted: 'Challenge accepted',
+    inviteFriends: 'Invite friends',
+    spreadTheWord: 'Spread the word',
+    challengeAFriend: 'Challenge a friend',
+    shareToInspire: 'Share to inspire others',
+    
+    // Motivational Messages - Randomized
+    motivation1: 'One day at a time.',
+    motivation2: 'Small wins add up.',
+    motivation3: "You're building something great.",
+    motivation4: 'Trust the process.',
+    motivation5: 'Show up for yourself.',
+    motivation6: 'Progress is progress.',
+    motivation7: 'Your future self will thank you.',
+    motivation8: "Habits don't happen overnight.",
+    motivation9: "You're stronger than you think.",
+    motivation10: 'Keep going!',
+    
+    // Streak Messages
+    streakDay1: "Day 1 — Let's go!",
+    streakDay2: '2 days! Building momentum.',
+    streakDay3: '3 days! Making it a habit.',
+    streakDay4: '4 days! On a roll!',
+    streakDay5: '5 days! Crushing it!',
+    streakDay6: '6 days! Almost there!',
+    streakDay7: '7 days! Champion!',
+    
     // Leaderboard
     leaderboard: 'Leaderboard',
     globalLeaderboard: 'Global Leaderboard',
@@ -202,12 +286,31 @@ export const translations = {
     joinNow: 'Join Now',
     generateYourPlan: 'Generate Your Plan',
     
+    // Leaderboard - Motivational
+    leaderboardTitle: 'Top Challengers',
+    leaderboardSubtitle: 'See how you stack up',
+    climbTheRanks: 'Climb the ranks',
+    yourPosition: 'Your position',
+    topTen: 'Top 10',
+    topFifty: 'Top 50',
+    risingFast: 'Rising fast!',
+    weeklyReset: 'Resets every Monday',
+    keepPushing: 'Keep pushing!',
+    almostTop10: 'Almost top 10!',
+    youreInTop10: "You're in the top 10!",
+    leaderThisWeek: 'Leader this week',
+    
     // Badges
     badge: 'Badge',
     badges: 'Badges',
     dayStreak: 'Day Streak',
     challengeComplete: 'Challenge Complete',
     topWeekly: 'Top 10 Weekly',
+    firstChallenge: 'First Challenge',
+    weekWarrior: 'Week Warrior',
+    proteinPro: 'Protein Pro',
+    consistencyKing: 'Consistency King',
+    socialButterfly: 'Social Butterfly',
     
     // Share
     shareChallenge: 'Share Challenge',
@@ -215,6 +318,19 @@ export const translations = {
     linkCopied: 'Link Copied!',
     exportImage: 'Export Image',
     viewCount: 'Views',
+    shareOnTwitter: 'Share on Twitter',
+    shareOnFacebook: 'Share on Facebook',
+    shareOnWhatsApp: 'Share on WhatsApp',
+    downloadCard: 'Download Card',
+    
+    // Points System
+    pointsSystem: 'Points System',
+    howPointsWork: 'How points work',
+    earnPointsBy: 'Earn points by',
+    completingDays: 'Completing days',
+    maintainingStreaks: 'Maintaining streaks',
+    finishingChallenges: 'Finishing challenges',
+    sharingProgress: 'Sharing progress',
   },
   es: {
     // App
@@ -369,7 +485,7 @@ export const translations = {
     saturday: 'Sábado',
     sunday: 'Domingo',
     
-    // Challenge Mode
+    // Challenge Mode - Core
     challenge: 'Reto',
     challenges: 'Retos',
     startChallenge: 'Iniciar Reto',
@@ -396,6 +512,90 @@ export const translations = {
     bestStreak: 'Mejor Racha',
     days: 'días',
     
+    // Challenge Start Screen - Motivational
+    challengeStartTitle: '¿Listo para subir de nivel?',
+    challengeStartSubtitle: 'Pequeños pasos, grandes resultados.',
+    challengeStartCta: '¡Vamos!',
+    challengeStartDesc: '7 días para crear un hábito. ¡Tú puedes!',
+    challengeStartBenefit1: 'Crea hábitos duraderos',
+    challengeStartBenefit2: 'Sigue tu progreso',
+    challengeStartBenefit3: 'Gana puntos e insignias',
+    pickYourChallenge: 'Elige tu reto',
+    dayChallenge: ' días de reto',
+    focusOnProtein: 'Enfócate en proteína',
+    buildStrength: 'Gana fuerza',
+    
+    // Daily Progress Screen - Encouragement
+    todayIsDay: 'Hoy es el Día',
+    keepItUp: '¡Sigue así!',
+    almostThere: '¡Ya casi!',
+    halfwayHero: '¡Héroe de la mitad!',
+    strongStart: '¡Buen comienzo!',
+    finalStretch: '¡Recta final!',
+    oneDayLeft: '¡Un día más!',
+    todaysGoal: 'Meta de hoy',
+    logYourProgress: 'Registra tu progreso',
+    howDidYouDo: '¿Cómo te fue hoy?',
+    didYouHitTarget: '¿Llegaste a tu meta de proteína?',
+    greatChoice: '¡Gran elección!',
+    everyDayCounts: 'Cada día cuenta.',
+    progressNotPerfection: 'Progreso, no perfección.',
+    youShowedUp: 'Te presentaste. Eso importa.',
+    consistencyWins: 'La constancia gana.',
+    
+    // Completion Screen - Celebration
+    dayCompleteTitle: '¡Día completado!',
+    amazingWork: '¡Increíble trabajo!',
+    youDidIt: '¡Lo lograste!',
+    challengeCompleteTitle: '🎉 ¡Reto Completado!',
+    challengeCompleteSubtitle: '¡Has creado un nuevo hábito!',
+    youreOnFire: '¡Estás en llamas!',
+    unstoppable: '¡Imparable!',
+    keepTheStreak: '¡Mantén la racha!',
+    newPersonalBest: '¡Nueva marca personal!',
+    pointsEarned: 'Puntos ganados',
+    bonusPoints: '¡Puntos extra!',
+    streakBonus: 'Bono por racha',
+    completionBonus: 'Bono por completar',
+    whatNext: '¿Qué sigue?',
+    startNewChallenge: 'Inicia un nuevo reto',
+    shareYourWin: 'Comparte tu logro',
+    celebrateYourself: '¡Celébralo!',
+    proudOfYou: '¡Estamos orgullosos de ti!',
+    habitFormed: '¡Hábito formado!',
+    
+    // Share Card
+    shareCardTitle: '¡Mira mi progreso!',
+    shareCardCta: 'Únete en NutriCoach',
+    daysStrong: 'días de constancia',
+    onTrack: 'En camino',
+    challengeAccepted: 'Reto aceptado',
+    inviteFriends: 'Invita amigos',
+    spreadTheWord: 'Corre la voz',
+    challengeAFriend: 'Reta a un amigo',
+    shareToInspire: 'Comparte para inspirar',
+    
+    // Motivational Messages - Randomized
+    motivation1: 'Un día a la vez.',
+    motivation2: 'Las pequeñas victorias suman.',
+    motivation3: 'Estás construyendo algo grande.',
+    motivation4: 'Confía en el proceso.',
+    motivation5: 'Aparece por ti mismo.',
+    motivation6: 'El progreso es progreso.',
+    motivation7: 'Tu yo del futuro te lo agradecerá.',
+    motivation8: 'Los hábitos no se forman de la noche a la mañana.',
+    motivation9: 'Eres más fuerte de lo que crees.',
+    motivation10: '¡Sigue adelante!',
+    
+    // Streak Messages
+    streakDay1: 'Día 1 — ¡Vamos!',
+    streakDay2: '¡2 días! Tomando impulso.',
+    streakDay3: '¡3 días! Haciéndolo hábito.',
+    streakDay4: '¡4 días! ¡En racha!',
+    streakDay5: '¡5 días! ¡Arrasando!',
+    streakDay6: '¡6 días! ¡Ya casi!',
+    streakDay7: '¡7 días! ¡Campeón!',
+    
     // Leaderboard
     leaderboard: 'Tabla de Posiciones',
     globalLeaderboard: 'Tabla de Posiciones Global',
@@ -417,12 +617,31 @@ export const translations = {
     joinNow: 'Únete Ahora',
     generateYourPlan: 'Genera Tu Plan',
     
+    // Leaderboard - Motivational
+    leaderboardTitle: 'Top Retadores',
+    leaderboardSubtitle: 'Mira tu posición',
+    climbTheRanks: 'Sube de posición',
+    yourPosition: 'Tu posición',
+    topTen: 'Top 10',
+    topFifty: 'Top 50',
+    risingFast: '¡Subiendo rápido!',
+    weeklyReset: 'Se reinicia cada lunes',
+    keepPushing: '¡Sigue empujando!',
+    almostTop10: '¡Casi en el top 10!',
+    youreInTop10: '¡Estás en el top 10!',
+    leaderThisWeek: 'Líder esta semana',
+    
     // Badges
     badge: 'Insignia',
     badges: 'Insignias',
     dayStreak: 'Racha de Días',
     challengeComplete: 'Reto Completado',
     topWeekly: 'Top 10 Semanal',
+    firstChallenge: 'Primer Reto',
+    weekWarrior: 'Guerrero de la Semana',
+    proteinPro: 'Pro de la Proteína',
+    consistencyKing: 'Rey de la Constancia',
+    socialButterfly: 'Mariposa Social',
     
     // Share
     shareChallenge: 'Compartir Reto',
@@ -430,6 +649,19 @@ export const translations = {
     linkCopied: '¡Enlace Copiado!',
     exportImage: 'Exportar Imagen',
     viewCount: 'Vistas',
+    shareOnTwitter: 'Compartir en Twitter',
+    shareOnFacebook: 'Compartir en Facebook',
+    shareOnWhatsApp: 'Compartir en WhatsApp',
+    downloadCard: 'Descargar Tarjeta',
+    
+    // Points System
+    pointsSystem: 'Sistema de Puntos',
+    howPointsWork: 'Cómo funcionan los puntos',
+    earnPointsBy: 'Gana puntos al',
+    completingDays: 'Completar días',
+    maintainingStreaks: 'Mantener rachas',
+    finishingChallenges: 'Terminar retos',
+    sharingProgress: 'Compartir progreso',
   },
 };
 
@@ -442,4 +674,45 @@ export function t(lang: Language, key: string): string {
   }
   
   return value ?? key;
+}
+
+// Get a random motivational message
+export function getRandomMotivation(lang: Language): string {
+  const motivations = [
+    translations[lang].motivation1,
+    translations[lang].motivation2,
+    translations[lang].motivation3,
+    translations[lang].motivation4,
+    translations[lang].motivation5,
+    translations[lang].motivation6,
+    translations[lang].motivation7,
+    translations[lang].motivation8,
+    translations[lang].motivation9,
+    translations[lang].motivation10,
+  ];
+  return motivations[Math.floor(Math.random() * motivations.length)];
+}
+
+// Get streak message based on day number
+export function getStreakMessage(lang: Language, day: number): string {
+  const streakMessages: Record<number, string> = {
+    1: translations[lang].streakDay1,
+    2: translations[lang].streakDay2,
+    3: translations[lang].streakDay3,
+    4: translations[lang].streakDay4,
+    5: translations[lang].streakDay5,
+    6: translations[lang].streakDay6,
+    7: translations[lang].streakDay7,
+  };
+  return streakMessages[day] || `${day} ${translations[lang].days}!`;
+}
+
+// Get daily progress encouragement based on day and total
+export function getDailyEncouragement(lang: Language, currentDay: number, totalDays: number): string {
+  if (currentDay === 1) return translations[lang].strongStart;
+  if (currentDay === totalDays - 1) return translations[lang].oneDayLeft;
+  if (currentDay === totalDays) return translations[lang].finalStretch;
+  if (currentDay === Math.floor(totalDays / 2)) return translations[lang].halfwayHero;
+  if (currentDay >= totalDays - 2) return translations[lang].almostThere;
+  return translations[lang].keepItUp;
 }
