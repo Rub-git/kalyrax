@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/components/providers';
@@ -16,6 +16,12 @@ import {
   Utensils,
   Flame,
   CheckCircle2,
+  Share2,
+  Download,
+  Copy,
+  X,
+  ArrowRightLeft,
+  Check,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -48,6 +54,19 @@ interface ShoppingItem {
   quantity: string;
 }
 
+interface FoodSuggestion {
+  id: string;
+  name: string;
+  nameEs: string;
+  kcal: number;
+  carbG: number;
+  proteinG: number;
+  fatG: number;
+  ratio: number;
+  adjustedServingSize: number;
+  servingUnit: string;
+}
+
 const DAYS = [
   { en: 'Monday', es: 'Lunes' },
   { en: 'Tuesday', es: 'Martes' },
@@ -70,14 +89,27 @@ export default function MealPlanPage() {
   const { data: session, status } = useSession() || {};
   const router = useRouter();
   const { t, language } = useLanguage();
+  const planCardRef = useRef<HTMLDivElement>(null);
 
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
-  const [mealPlan, setMealPlan] = useState<{ days: DayPlan[]; shoppingList: ShoppingItem[] } | null>(null);
+  const [mealPlan, setMealPlan] = useState<{ days: DayPlan[]; shoppingList: ShoppingItem[]; id?: string } | null>(null);
   const [targets, setTargets] = useState({ kcal: 2000, carbG: 250, proteinG: 75, fatG: 55 });
   const [selectedDay, setSelectedDay] = useState(0);
   const [showShoppingList, setShowShoppingList] = useState(false);
   const [preferences, setPreferences] = useState<string[]>([]);
+  
+  // Share functionality
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [shareUrl, setShareUrl] = useState('');
+  const [sharing, setSharing] = useState(false);
+  const [copied, setCopied] = useState(false);
+  
+  // Substitution functionality
+  const [showSwapModal, setShowSwapModal] = useState(false);
+  const [swapItem, setSwapItem] = useState<{ dayIndex: number; mealIndex: number; itemIndex: number; foodName: string } | null>(null);
+  const [swapSuggestions, setSwapSuggestions] = useState<FoodSuggestion[]>([]);
+  const [loadingSwap, setLoadingSwap] = useState(false);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -125,15 +157,120 @@ export default function MealPlanPage() {
       const data = await res.json();
       if (data.success) {
         setMealPlan({
+          id: data.data?.id,
           days: data.data?.days ?? [],
           shoppingList: data.data?.shoppingList ?? [],
         });
         setSelectedDay(0);
+        setShareUrl(''); // Reset share URL when new plan generated
       }
     } catch (err) {
       console.error('Failed to generate meal plan:', err);
     } finally {
       setGenerating(false);
+    }
+  };
+
+  // Share plan functionality
+  const handleShare = async () => {
+    if (!mealPlan?.id) return;
+    
+    setSharing(true);
+    try {
+      const res = await fetch(`/api/share/plan/${mealPlan.id}`, {
+        method: 'POST',
+      });
+      const data = await res.json();
+      
+      if (data.success) {
+        setShareUrl(data.data.shareUrl);
+        setShowShareModal(true);
+      }
+    } catch (err) {
+      console.error('Failed to create share link:', err);
+    } finally {
+      setSharing(false);
+    }
+  };
+
+  const copyToClipboard = (url: string, source: string) => {
+    const shareLink = `${url}?utm_source=${source}`;
+    navigator.clipboard.writeText(shareLink);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  // Food swap functionality
+  const handleSwapClick = async (dayIndex: number, mealIndex: number, itemIndex: number, foodName: string) => {
+    setSwapItem({ dayIndex, mealIndex, itemIndex, foodName });
+    setShowSwapModal(true);
+    setLoadingSwap(true);
+    
+    try {
+      // First get food ID by name
+      const foodsRes = await fetch(`/api/foods?search=${encodeURIComponent(foodName)}&limit=1`);
+      const foodsData = await foodsRes.json();
+      
+      if (foodsData.success && foodsData.data?.foods?.length > 0) {
+        const foodId = foodsData.data.foods[0].id;
+        
+        // Get swap suggestions
+        const swapRes = await fetch('/api/foods/swap', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ foodId, preferences, limit: 6 }),
+        });
+        const swapData = await swapRes.json();
+        
+        if (swapData.success) {
+          setSwapSuggestions(swapData.data.suggestions);
+        }
+      }
+    } catch (err) {
+      console.error('Failed to get swap suggestions:', err);
+    } finally {
+      setLoadingSwap(false);
+    }
+  };
+
+  const applySwap = (suggestion: FoodSuggestion) => {
+    if (!swapItem || !mealPlan) return;
+    
+    const newMealPlan = { ...mealPlan };
+    const meal = newMealPlan.days[swapItem.dayIndex]?.meals[swapItem.mealIndex];
+    
+    if (meal?.items[swapItem.itemIndex]) {
+      meal.items[swapItem.itemIndex] = {
+        foodName: language === 'es' ? suggestion.nameEs : suggestion.name,
+        quantity: suggestion.adjustedServingSize,
+        unit: suggestion.servingUnit,
+      };
+    }
+    
+    setMealPlan(newMealPlan);
+    setShowSwapModal(false);
+    setSwapItem(null);
+    setSwapSuggestions([]);
+  };
+
+  // Export as image
+  const exportAsImage = async () => {
+    if (!planCardRef.current) return;
+    
+    try {
+      // Dynamic import to avoid SSR issues
+      const { toPng } = await import('html-to-image');
+      const dataUrl = await toPng(planCardRef.current, {
+        quality: 0.95,
+        backgroundColor: '#ffffff',
+      });
+      
+      const link = document.createElement('a');
+      link.download = `nutricoach-meal-plan-${new Date().toISOString().split('T')[0]}.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      console.error('Failed to export image:', err);
     }
   };
 
@@ -165,12 +302,26 @@ export default function MealPlanPage() {
                 : `Daily target: ${targets.kcal} kcal`}
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             {mealPlan && (
-              <Button variant="outline" onClick={() => setShowShoppingList(true)}>
-                <ShoppingCart className="h-4 w-4 mr-2" />
-                {t('shoppingList')}
-              </Button>
+              <>
+                <Button variant="outline" onClick={() => setShowShoppingList(true)}>
+                  <ShoppingCart className="h-4 w-4 mr-2" />
+                  {t('shoppingList')}
+                </Button>
+                <Button variant="outline" onClick={handleShare} disabled={sharing}>
+                  {sharing ? (
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  ) : (
+                    <Share2 className="h-4 w-4 mr-2" />
+                  )}
+                  {language === 'es' ? 'Compartir' : 'Share'}
+                </Button>
+                <Button variant="outline" onClick={exportAsImage}>
+                  <Download className="h-4 w-4 mr-2" />
+                  {language === 'es' ? 'Exportar' : 'Export'}
+                </Button>
+              </>
             )}
             <Button onClick={generateMealPlan} disabled={generating}>
               {generating ? (
@@ -286,8 +437,8 @@ export default function MealPlanPage() {
                     </div>
                   </div>
 
-                  {currentDay?.meals?.map((meal, index) => (
-                    <Card key={index} className="overflow-hidden">
+                  {currentDay?.meals?.map((meal, mealIndex) => (
+                    <Card key={mealIndex} className="overflow-hidden">
                       <CardHeader className="pb-2 bg-gray-50">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
@@ -309,12 +460,23 @@ export default function MealPlanPage() {
                           {meal.items?.map((item, itemIndex) => (
                             <div
                               key={itemIndex}
-                              className="flex items-center gap-2 text-sm"
+                              className="flex items-center justify-between gap-2 text-sm group hover:bg-gray-50 rounded p-1 -m-1"
                             >
-                              <ChevronRight className="h-3 w-3 text-muted-foreground" />
-                              <span>
-                                {item.quantity} {item.unit} {item.foodName}
-                              </span>
+                              <div className="flex items-center gap-2">
+                                <ChevronRight className="h-3 w-3 text-muted-foreground" />
+                                <span>
+                                  {item.quantity} {item.unit} {item.foodName}
+                                </span>
+                              </div>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-6 px-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                                onClick={() => handleSwapClick(selectedDay, mealIndex, itemIndex, item.foodName)}
+                              >
+                                <ArrowRightLeft className="h-3 w-3 mr-1" />
+                                {language === 'es' ? 'Cambiar' : 'Swap'}
+                              </Button>
                             </div>
                           ))}
                         </div>
@@ -340,9 +502,14 @@ export default function MealPlanPage() {
               animate={{ opacity: 1, scale: 1 }}
               className="bg-white rounded-xl w-full max-w-md max-h-[80vh] overflow-hidden flex flex-col"
             >
-              <div className="p-4 border-b flex items-center gap-2">
-                <ShoppingCart className="h-5 w-5 text-primary" />
-                <h3 className="text-lg font-semibold">{t('shoppingList')}</h3>
+              <div className="p-4 border-b flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <ShoppingCart className="h-5 w-5 text-primary" />
+                  <h3 className="text-lg font-semibold">{t('shoppingList')}</h3>
+                </div>
+                <Button variant="ghost" size="sm" onClick={() => setShowShoppingList(false)}>
+                  <X className="h-4 w-4" />
+                </Button>
               </div>
               <div className="p-4 overflow-y-auto flex-1">
                 <div className="space-y-2">
@@ -370,6 +537,209 @@ export default function MealPlanPage() {
             </motion.div>
           </div>
         )}
+
+        {/* Share Modal */}
+        {showShareModal && shareUrl && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-white rounded-xl w-full max-w-md overflow-hidden"
+            >
+              <div className="p-4 border-b flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Share2 className="h-5 w-5 text-primary" />
+                  <h3 className="text-lg font-semibold">
+                    {language === 'es' ? 'Compartir Plan' : 'Share Plan'}
+                  </h3>
+                </div>
+                <Button variant="ghost" size="sm" onClick={() => setShowShareModal(false)}>
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+              <div className="p-4 space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  {language === 'es'
+                    ? 'Comparte tu plan de comidas con amigos y familiares:'
+                    : 'Share your meal plan with friends and family:'}
+                </p>
+                
+                {/* Copy Link Section */}
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={shareUrl}
+                    readOnly
+                    className="flex-1 px-3 py-2 border rounded-lg text-sm bg-gray-50"
+                  />
+                  <Button onClick={() => copyToClipboard(shareUrl, 'copy')}>
+                    {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                  </Button>
+                </div>
+
+                {/* Share Buttons */}
+                <div className="space-y-2">
+                  <p className="text-sm font-medium">
+                    {language === 'es' ? 'Compartir en:' : 'Share on:'}
+                  </p>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      className="flex-1"
+                      onClick={() => {
+                        const url = `${shareUrl}?utm_source=whatsapp`;
+                        window.open(`https://wa.me/?text=${encodeURIComponent(`${language === 'es' ? 'Mira mi plan de comidas!' : 'Check out my meal plan!'} ${url}`)}`, '_blank');
+                      }}
+                    >
+                      WhatsApp
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="flex-1"
+                      onClick={() => {
+                        const url = `${shareUrl}?utm_source=twitter`;
+                        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(`${language === 'es' ? 'Mira mi plan de comidas!' : 'Check out my meal plan!'} ${url}`)}`, '_blank');
+                      }}
+                    >
+                      Twitter/X
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="flex-1"
+                      onClick={() => {
+                        const url = `${shareUrl}?utm_source=facebook`;
+                        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+                      }}
+                    >
+                      Facebook
+                    </Button>
+                  </div>
+                </div>
+              </div>
+              <div className="p-4 border-t">
+                <Button className="w-full" onClick={() => setShowShareModal(false)}>
+                  {t('close')}
+                </Button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+
+        {/* Swap Food Modal */}
+        {showSwapModal && swapItem && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-white rounded-xl w-full max-w-md max-h-[80vh] overflow-hidden flex flex-col"
+            >
+              <div className="p-4 border-b flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <ArrowRightLeft className="h-5 w-5 text-primary" />
+                  <h3 className="text-lg font-semibold">
+                    {language === 'es' ? 'Cambiar Alimento' : 'Swap Food'}
+                  </h3>
+                </div>
+                <Button variant="ghost" size="sm" onClick={() => {
+                  setShowSwapModal(false);
+                  setSwapItem(null);
+                  setSwapSuggestions([]);
+                }}>
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+              <div className="p-4 overflow-y-auto flex-1">
+                <p className="text-sm text-muted-foreground mb-4">
+                  {language === 'es'
+                    ? `Sustitutos para "${swapItem.foodName}":`
+                    : `Substitutes for "${swapItem.foodName}":`}
+                </p>
+                
+                {loadingSwap ? (
+                  <div className="flex items-center justify-center py-8">
+                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                  </div>
+                ) : swapSuggestions.length > 0 ? (
+                  <div className="space-y-2">
+                    {swapSuggestions.map((suggestion) => (
+                      <button
+                        key={suggestion.id}
+                        onClick={() => applySwap(suggestion)}
+                        className="w-full p-3 text-left border rounded-lg hover:bg-gray-50 transition-colors"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="font-medium">
+                            {language === 'es' ? suggestion.nameEs : suggestion.name}
+                          </span>
+                          <span className="text-sm text-primary">
+                            {suggestion.adjustedServingSize} {suggestion.servingUnit}
+                          </span>
+                        </div>
+                        <div className="flex gap-3 mt-1 text-xs text-muted-foreground">
+                          <span>{suggestion.kcal} kcal</span>
+                          <span>C: {suggestion.carbG}g</span>
+                          <span>P: {suggestion.proteinG}g</span>
+                          <span>F: {suggestion.fatG}g</span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-center text-muted-foreground py-8">
+                    {language === 'es'
+                      ? 'No se encontraron sustitutos'
+                      : 'No substitutes found'}
+                  </p>
+                )}
+              </div>
+              <div className="p-4 border-t">
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => {
+                    setShowSwapModal(false);
+                    setSwapItem(null);
+                    setSwapSuggestions([]);
+                  }}
+                >
+                  {t('close')}
+                </Button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+
+        {/* Hidden export card for image generation */}
+        <div className="fixed -left-[9999px] top-0" aria-hidden="true">
+          <div ref={planCardRef} className="bg-white p-6 w-[600px]">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-green-700">NutriCoach</h2>
+              <p className="text-gray-500">{language === 'es' ? 'Tu Plan Semanal' : 'Your Weekly Plan'}</p>
+            </div>
+            <div className="bg-green-50 rounded-lg p-4 mb-4">
+              <h3 className="font-semibold text-green-800 mb-2">
+                {language === 'es' ? 'Objetivos Diarios' : 'Daily Targets'}
+              </h3>
+              <div className="grid grid-cols-4 gap-2 text-center text-sm">
+                <div><span className="font-bold text-orange-600">{targets.kcal}</span><br/>kcal</div>
+                <div><span className="font-bold text-blue-600">{targets.carbG}g</span><br/>{language === 'es' ? 'Carbs' : 'Carbs'}</div>
+                <div><span className="font-bold text-red-600">{targets.proteinG}g</span><br/>{language === 'es' ? 'Proteína' : 'Protein'}</div>
+                <div><span className="font-bold text-yellow-600">{targets.fatG}g</span><br/>{language === 'es' ? 'Grasa' : 'Fat'}</div>
+              </div>
+            </div>
+            {mealPlan?.days?.slice(0, 3).map((day, idx) => (
+              <div key={idx} className="mb-3 border-b pb-2">
+                <h4 className="font-semibold">{DAYS[idx]?.[language === 'es' ? 'es' : 'en']}</h4>
+                <p className="text-sm text-gray-600">
+                  {day.meals?.map(m => m.name).join(' • ')}
+                </p>
+              </div>
+            ))}
+            <p className="text-xs text-gray-400 text-center mt-4">
+              {language === 'es' ? 'Crea tu plan en NutriCoach' : 'Create your plan at NutriCoach'}
+            </p>
+          </div>
+        </div>
       </main>
     </div>
   );

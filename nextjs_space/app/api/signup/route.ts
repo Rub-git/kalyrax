@@ -7,7 +7,7 @@ import bcrypt from 'bcryptjs';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email, password, name, language } = body;
+    const { email, password, name, language, referralSource, referralSlug } = body;
 
     if (!email || !password) {
       return NextResponse.json(
@@ -31,13 +31,15 @@ export async function POST(request: NextRequest) {
     // Hash password
     const passwordHash = await bcrypt.hash(password, 10);
 
-    // Create user
+    // Create user with referral tracking
     const user = await prisma.user.create({
       data: {
         email,
         passwordHash,
         name: name ?? null,
         languagePreference: language ?? 'en',
+        referralSource: referralSource ?? null,
+        referralSlug: referralSlug ?? null,
       },
     });
 
