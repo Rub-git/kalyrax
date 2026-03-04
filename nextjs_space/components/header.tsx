@@ -15,6 +15,8 @@ import {
   Menu,
   X,
   Globe,
+  Flame,
+  Trophy,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -25,9 +27,11 @@ export function Header() {
 
   const navItems = [
     { href: '/dashboard', label: t('dashboard'), icon: LayoutDashboard },
+    { href: '/challenge', label: t('challenge'), icon: Flame },
     { href: '/meal-plan', label: t('mealPlan'), icon: Calendar },
     { href: '/tracking', label: t('tracking'), icon: LineChart },
     { href: '/chat', label: t('chat'), icon: MessageCircle },
+    { href: '/leaderboard', label: t('leaderboard'), icon: Trophy },
   ];
 
   return (

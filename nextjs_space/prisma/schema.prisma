@@ -24,6 +24,9 @@ model User {
   mealPlans         MealPlan[]
   trackingEntries   TrackingEntry[]
   chatSessions      ChatSession[]
+  challengeInstances ChallengeInstance[]
+  challengeStats    ChallengeStats[]
+  leaderboardEvents LeaderboardEvent[]
 
   @@map("users")
 }
@@ -39,6 +42,12 @@ model Profile {
   goal          String   // maintain, lose_weight, gain_weight, improve_health
   medicalFlags  Json     @default("[]") @map("medical_flags") // JSONB array of flags
   dietaryPrefs  Json     @default("[]") @map("dietary_prefs") // vegetarian, vegan, etc.
+  // Public identity fields for leaderboard
+  displayName   String?  @map("display_name")
+  avatarSeed    String?  @map("avatar_seed") // For deterministic avatar generation
+  publicOptIn   Boolean  @default(false) @map("public_opt_in")
+  country       String?
+  timezone      String?
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
 
@@ -243,4 +252,117 @@ model PdfChunk {
 
   @@index([sectionTitle])
   @@map("pdf_chunks")
+}
+
+// ============== CHALLENGE MODE TABLES ==============
+
+model ChallengeTemplate {
+  id            String   @id @default(uuid())
+  name          String   @unique
+  nameEs        String   @map("name_es")
+  description   String   @db.Text
+  descriptionEs String   @map("description_es") @db.Text
+  durationDays  Int      @map("duration_days")
+  macroRules    Json     @map("macro_rules") // { proteinMinPercent: 30, proteinBonus: true, etc. }
+  isActive      Boolean  @default(true) @map("is_active")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  instances     ChallengeInstance[]
+  stats         ChallengeStats[]
+
+  @@map("challenge_templates")
+}
+
+model ChallengeInstance {
+  id           String   @id @default(uuid())
+  userId       String   @map("user_id")
+  templateId   String   @map("template_id")
+  planId       String?  @map("plan_id") // Associated meal plan
+  startDate    DateTime @map("start_date")
+  endDate      DateTime @map("end_date")
+  status       String   @default("active") // active, completed, abandoned
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  template     ChallengeTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  progress     ChallengeProgress[]
+  shares       ChallengeShare[]
+  leaderboardEvents LeaderboardEvent[]
+
+  @@index([userId])
+  @@index([templateId])
+  @@index([status])
+  @@map("challenge_instances")
+}
+
+model ChallengeProgress {
+  id                  String    @id @default(uuid())
+  challengeInstanceId String    @map("challenge_instance_id")
+  dayNumber           Int       @map("day_number") // 1-7
+  completed           Boolean   @default(false)
+  completedAt         DateTime? @map("completed_at")
+  proteinConsumed     Float?    @map("protein_consumed") // grams
+  notes               String?   @db.Text
+  createdAt           DateTime  @default(now()) @map("created_at")
+
+  challengeInstance   ChallengeInstance @relation(fields: [challengeInstanceId], references: [id], onDelete: Cascade)
+
+  @@unique([challengeInstanceId, dayNumber])
+  @@index([challengeInstanceId])
+  @@map("challenge_progress")
+}
+
+model ChallengeShare {
+  id                  String   @id @default(uuid())
+  challengeInstanceId String   @map("challenge_instance_id")
+  slug                String   @unique
+  viewCount           Int      @default(0) @map("view_count")
+  createdAt           DateTime @default(now()) @map("created_at")
+
+  challengeInstance   ChallengeInstance @relation(fields: [challengeInstanceId], references: [id], onDelete: Cascade)
+
+  @@index([slug])
+  @@map("challenge_shares")
+}
+
+model ChallengeStats {
+  id                      String    @id @default(uuid())
+  userId                  String    @map("user_id")
+  templateId              String    @map("template_id")
+  totalDaysCompleted      Int       @default(0) @map("total_days_completed")
+  currentStreakDays       Int       @default(0) @map("current_streak_days")
+  bestStreakDays          Int       @default(0) @map("best_streak_days")
+  challengeCompletedCount Int       @default(0) @map("challenge_completed_count")
+  lastCompletedAt         DateTime? @map("last_completed_at")
+  pointsTotal             Int       @default(0) @map("points_total")
+  pointsWeekly            Int       @default(0) @map("points_weekly")
+  weeklyResetAt           DateTime? @map("weekly_reset_at")
+  updatedAt               DateTime  @updatedAt @map("updated_at")
+
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  template  ChallengeTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, templateId])
+  @@index([pointsTotal])
+  @@index([pointsWeekly])
+  @@map("challenge_stats")
+}
+
+model LeaderboardEvent {
+  id                  String    @id @default(uuid())
+  userId              String    @map("user_id")
+  challengeInstanceId String?   @map("challenge_instance_id")
+  eventType           String    @map("event_type") // DAY_COMPLETED, CHALLENGE_COMPLETED, SHARE_CREATED, STREAK_BONUS
+  pointsAwarded       Int       @map("points_awarded")
+  metadata            Json?     // Additional event data
+  createdAt           DateTime  @default(now()) @map("created_at")
+
+  user                User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  challengeInstance   ChallengeInstance? @relation(fields: [challengeInstanceId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([eventType])
+  @@index([createdAt])
+  @@map("leaderboard_events")
 }

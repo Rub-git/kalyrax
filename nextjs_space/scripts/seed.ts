@@ -240,11 +240,20 @@ async function main() {
 
   // Clear existing data
   console.log('Clearing existing data...');
+  // Delete challenge-related tables first (respecting foreign keys)
+  await prisma.leaderboardEvent.deleteMany();
+  await prisma.challengeStats.deleteMany();
+  await prisma.challengeProgress.deleteMany();
+  await prisma.challengeShare.deleteMany();
+  await prisma.challengeInstance.deleteMany();
+  await prisma.challengeTemplate.deleteMany();
+  
   await prisma.chatMessage.deleteMany();
   await prisma.chatSession.deleteMany();
   await prisma.trackingEntry.deleteMany();
   await prisma.mealItem.deleteMany();
   await prisma.meal.deleteMany();
+  await prisma.sharedPlan.deleteMany();
   await prisma.mealPlan.deleteMany();
   await prisma.calculation.deleteMany();
   await prisma.equivalentsCatalog.deleteMany();
@@ -338,6 +347,26 @@ async function main() {
   } catch (error) {
     console.error('Error seeding PDF chunks:', error);
   }
+
+  // Seed Challenge Templates
+  console.log('Seeding challenge templates...');
+  await prisma.challengeTemplate.create({
+    data: {
+      name: '7-Day High Protein Challenge',
+      nameEs: 'Reto de 7 Días Alta Proteína',
+      description: 'Push your limits with our 7-day high protein challenge! Each day, focus on meeting your protein targets with our specially designed meal plans. Complete all 7 days to earn bonus points and climb the leaderboard!',
+      descriptionEs: '¡Supera tus límites con nuestro reto de 7 días alta en proteína! Cada día, enfócate en alcanzar tus metas de proteína con nuestros planes de comidas especialmente diseñados. ¡Completa los 7 días para ganar puntos bonus y subir en la tabla de posiciones!',
+      durationDays: 7,
+      macroRules: {
+        proteinMinPercent: 30,
+        proteinBonus: true,
+        dailyProteinTargetMultiplier: 1.2, // 20% above normal protein target
+        focusMacro: 'protein'
+      },
+      isActive: true,
+    },
+  });
+  console.log('Challenge templates seeded!');
 
   console.log('Seed completed successfully!');
 }
