@@ -404,7 +404,7 @@ export const translations = {
     challengesCount: 'challenges',
     leaveGroup: 'Leave Group',
     deleteGroup: 'Delete Group',
-    inviteFriends: 'Invite Friends',
+    inviteFriendsToGroup: 'Invite Friends',
     joinGroup: 'Join Group',
     
     // Group Challenges
@@ -418,11 +418,11 @@ export const translations = {
     // Activity Feed
     activityFeed: 'Activity Feed',
     noActivity: 'No recent activity from friends.',
-    challengeStarted: 'started a challenge',
-    dayCompleted: 'completed day',
-    challengeCompleted: 'completed a challenge!',
-    streakMilestoneReached: 'reached a',
-    dayStreak: 'day streak!',
+    activityChallengeStarted: 'started a challenge',
+    activityDayCompleted: 'completed day',
+    activityChallengeCompleted: 'completed a challenge!',
+    activityStreakMilestoneReached: 'reached a',
+    activityDayStreak: 'day streak!',
     
     // Reactions
     react: 'React',
@@ -439,12 +439,12 @@ export const translations = {
     reactionReceived: 'Reaction Received',
     leaderboardPassed: 'Leaderboard Update',
     
-    // Privacy
-    privacySettings: 'Privacy Settings',
+    // Privacy (using social prefix to avoid conflict)
+    socialPrivacySettings: 'Privacy Settings',
     socialEnabled: 'Enable Social Features',
     showActivityToFriends: 'Show my activity to friends',
     allowFriendRequests: 'Allow friend requests',
-    showOnLeaderboard: 'Show me on leaderboards',
+    socialShowOnLeaderboard: 'Show me on leaderboards',
   },
   es: {
     // App
@@ -849,7 +849,7 @@ export const translations = {
     challengesCount: 'retos',
     leaveGroup: 'Salir del Grupo',
     deleteGroup: 'Eliminar Grupo',
-    inviteFriends: 'Invitar Amigos',
+    inviteFriendsToGroup: 'Invitar Amigos',
     joinGroup: 'Unirse al Grupo',
     
     // Group Challenges
@@ -863,11 +863,11 @@ export const translations = {
     // Activity Feed
     activityFeed: 'Actividad',
     noActivity: 'Sin actividad reciente de amigos.',
-    challengeStarted: 'comenzó un reto',
-    dayCompleted: 'completó el día',
-    challengeCompleted: '¡completó un reto!',
-    streakMilestoneReached: 'alcanzó una racha de',
-    dayStreak: '¡días!',
+    activityChallengeStarted: 'comenzó un reto',
+    activityDayCompleted: 'completó el día',
+    activityChallengeCompleted: '¡completó un reto!',
+    activityStreakMilestoneReached: 'alcanzó una racha de',
+    activityDayStreak: '¡días!',
     
     // Reactions
     react: 'Reaccionar',
@@ -884,12 +884,12 @@ export const translations = {
     reactionReceived: 'Reacción Recibida',
     leaderboardPassed: 'Actualización de Tabla',
     
-    // Privacy
-    privacySettings: 'Configuración de Privacidad',
+    // Privacy (using social prefix to avoid conflict)
+    socialPrivacySettings: 'Configuración de Privacidad',
     socialEnabled: 'Habilitar Funciones Sociales',
     showActivityToFriends: 'Mostrar mi actividad a amigos',
     allowFriendRequests: 'Permitir solicitudes de amistad',
-    showOnLeaderboard: 'Mostrarme en tablas de posiciones',
+    socialShowOnLeaderboard: 'Mostrarme en tablas de posiciones',
   },
 };
 

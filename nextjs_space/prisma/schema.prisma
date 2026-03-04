@@ -568,3 +568,33 @@ model Notification {
   @@index([createdAt])
   @@map("notifications")
 }
+
+// Temporary storage for guest onboarding flow (before account creation)
+model OnboardingSession {
+  id             String    @id @default(uuid())
+  goal           String    // lose_weight, build_muscle, eat_healthier, maintain_weight
+  age            Int?
+  sex            String?   // male, female
+  heightCm       Float?    @map("height_cm")
+  weightKg       Float?    @map("weight_kg")
+  activityLevel  String?   @map("activity_level") // sedentary, light, moderate, active, very_active
+  
+  // Calculated results
+  dailyCalories  Float?    @map("daily_calories")
+  carbG          Float?    @map("carb_g")
+  proteinG       Float?    @map("protein_g")
+  fatG           Float?    @map("fat_g")
+  mealPreview    Json?     @map("meal_preview") // Sample meal plan preview
+  
+  // Session management
+  currentStep    Int       @default(1) @map("current_step")
+  completedAt    DateTime? @map("completed_at")
+  convertedToUserId String? @map("converted_to_user_id") // User ID if converted
+  expiresAt      DateTime  @map("expires_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  @@index([expiresAt])
+  @@index([convertedToUserId])
+  @@map("onboarding_sessions")
+}

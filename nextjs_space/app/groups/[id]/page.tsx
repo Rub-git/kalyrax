@@ -283,7 +283,7 @@ export default function GroupDetailPage({ params }: { params: Promise<{ id: stri
                 {group.isMember && (
                   <Button variant="outline" size="sm" onClick={fetchFriends}>
                     <UserPlus className="h-4 w-4 mr-1" />
-                    {t('inviteFriends')}
+                    {t('inviteFriendsToGroup')}
                   </Button>
                 )}
                 {group.isMember && !isOwner && (
@@ -480,7 +480,7 @@ export default function GroupDetailPage({ params }: { params: Promise<{ id: stri
                 onClick={(e) => e.stopPropagation()}
                 className="bg-background rounded-lg p-6 w-full max-w-md shadow-xl"
               >
-                <h2 className="text-xl font-bold mb-4">{t('inviteFriends')}</h2>
+                <h2 className="text-xl font-bold mb-4">{t('inviteFriendsToGroup')}</h2>
                 <div className="space-y-2 max-h-64 overflow-y-auto">
                   {friends.filter(f => !group.members.some(m => m.userId === f.id)).map((friend) => (
                     <div

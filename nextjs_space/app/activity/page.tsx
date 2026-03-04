@@ -127,13 +127,13 @@ export default function ActivityPage() {
     const meta = activity.metadata as Record<string, unknown> | null;
     switch (activity.eventType) {
       case 'CHALLENGE_STARTED':
-        return t('challengeStarted');
+        return t('activityChallengeStarted');
       case 'DAY_COMPLETED':
         return `${t('dayCompleted')} ${meta?.dayNumber || ''}/${meta?.totalDays || ''}`;
       case 'CHALLENGE_COMPLETED':
-        return t('challengeCompleted');
+        return t('activityChallengeCompleted');
       case 'STREAK_MILESTONE':
-        return `${t('streakMilestoneReached')} ${meta?.milestone || ''} ${t('streakMilestone')}`;
+        return `${t('activityStreakMilestoneReached')} ${meta?.milestone || ''} ${t('activityDayStreak')}`;
       default:
         return activity.eventType;
     }

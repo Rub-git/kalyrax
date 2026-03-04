@@ -119,9 +119,9 @@ export default function HomePage() {
                 : 'Calculate your nutritional needs with scientifically validated formulas, generate personalized meal plans, and receive guidance from our AI assistant.'}
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/signup">
-                <Button size="lg" className="text-lg px-8 py-6">
-                  {t('getStarted')}
+              <Link href="/get-started">
+                <Button size="lg" className="text-lg px-8 py-6 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600">
+                  {language === 'es' ? 'Crear Mi Plan en 60s' : 'Create My Plan in 60s'}
                   <ChevronRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
@@ -192,7 +192,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-primary">
+      <section className="py-20 bg-gradient-to-r from-green-600 to-emerald-600">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -208,16 +208,16 @@ export default function HomePage() {
             </h2>
             <p className="text-lg text-green-100 mb-8 max-w-2xl mx-auto">
               {language === 'es'
-                ? 'Crea tu cuenta gratis y obtén tu plan nutricional personalizado en minutos.'
-                : 'Create your free account and get your personalized nutrition plan in minutes.'}
+                ? 'Ve tu plan nutricional en 60 segundos. Sin necesidad de registro.'
+                : 'See your nutrition plan in 60 seconds. No signup required.'}
             </p>
-            <Link href="/signup">
+            <Link href="/get-started">
               <Button
                 size="lg"
                 variant="secondary"
-                className="text-lg px-8 py-6 bg-white text-primary hover:bg-gray-100"
+                className="text-lg px-8 py-6 bg-white text-green-600 hover:bg-gray-100"
               >
-                {t('createAccount')}
+                {language === 'es' ? 'Crear Mi Plan Gratis' : 'Create My Free Plan'}
                 <ChevronRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
