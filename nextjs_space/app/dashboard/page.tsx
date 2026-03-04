@@ -201,10 +201,10 @@ export default function DashboardPage() {
             transition={{ delay: 0.03 }}
             className="mb-6"
           >
-            <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+            <div className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-emerald-900/20 border border-blue-200 dark:border-blue-900 rounded-lg p-4">
               <div className="flex items-center justify-between flex-wrap gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
+                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center">
                     <Sparkles className="w-5 h-5 text-white" />
                   </div>
                   <div>
@@ -218,7 +218,7 @@ export default function DashboardPage() {
                   </div>
                 </div>
                 <Link href="/pricing">
-                  <Button size="sm" className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700">
+                  <Button size="sm" className="bg-gradient-to-r from-blue-700 to-cyan-600 hover:from-blue-800 hover:to-cyan-700">
                     {t('upgradeToPro')}
                   </Button>
                 </Link>
@@ -416,12 +416,12 @@ export default function DashboardPage() {
                   <span className="font-bold text-pink-600">{calculation?.fatG ?? 0}g</span>
                 </div>
 
-                <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
                   <div className="flex items-center gap-3">
-                    <Apple className="h-5 w-5 text-green-500" />
+                    <Apple className="h-5 w-5 text-blue-500" />
                     <span className="font-medium">{t('fiber')}</span>
                   </div>
-                  <span className="font-bold text-green-600">{calculation?.fiberTargetG ?? 0}g</span>
+                  <span className="font-bold text-blue-700">{calculation?.fiberTargetG ?? 0}g</span>
                 </div>
 
                 <div className="pt-2 flex items-center justify-between text-sm text-muted-foreground">
@@ -494,8 +494,8 @@ export default function DashboardPage() {
             <Link href="/tracking">
               <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
                 <CardContent className="flex items-center gap-4 p-6">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-100">
-                    <LineChart className="h-6 w-6 text-green-600" />
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100">
+                    <LineChart className="h-6 w-6 text-blue-700" />
                   </div>
                   <div>
                     <h3 className="font-semibold">{t('trackMeal')}</h3>

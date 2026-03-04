@@ -146,7 +146,7 @@ export function StreakDisplay({ compact = false, showShare = false, onShare }: S
         )}
 
         {streakInfo.completedToday && (
-          <div className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 px-3 py-2 rounded-lg mb-3 text-sm flex items-center gap-2">
+          <div className="bg-blue-100 dark:bg-blue-950/30 text-blue-900 dark:text-blue-200 px-3 py-2 rounded-lg mb-3 text-sm flex items-center gap-2">
             <span>✓</span>
             {t('dayCompleted')}
           </div>

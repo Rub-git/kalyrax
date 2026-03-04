@@ -144,7 +144,7 @@ export default function ActivityPage() {
       case 'CHALLENGE_STARTED':
         return <Trophy className="h-5 w-5 text-blue-500" />;
       case 'DAY_COMPLETED':
-        return <Activity className="h-5 w-5 text-green-500" />;
+        return <Activity className="h-5 w-5 text-blue-500" />;
       case 'CHALLENGE_COMPLETED':
         return <Trophy className="h-5 w-5 text-amber-500" />;
       case 'STREAK_MILESTONE':

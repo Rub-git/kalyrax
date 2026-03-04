@@ -174,7 +174,7 @@ export function CalorieCalculatorClient() {
           {/* How It Works */}
           <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
             <div className="flex items-center gap-3 mb-6">
-              <BookOpen className="h-6 w-6 text-emerald-600" />
+              <BookOpen className="h-6 w-6 text-cyan-600" />
               <h3 className="text-2xl font-bold">
                 {language === 'en' ? 'How We Calculate Your Calories' : 'Cómo Calculamos tus Calorías'}
               </h3>
@@ -207,17 +207,17 @@ export function CalorieCalculatorClient() {
           transition={{ delay: 0.6 }}
           className="mt-16 text-center"
         >
-          <div className="max-w-2xl mx-auto bg-gradient-to-r from-emerald-600 to-teal-600 p-8 rounded-3xl text-white">
+          <div className="max-w-2xl mx-auto bg-gradient-to-r from-cyan-600 to-teal-600 p-8 rounded-3xl text-white">
             <h2 className="text-2xl md:text-3xl font-bold mb-4">
               {language === 'en' ? 'Ready to Transform Your Nutrition?' : '¿Listo para Transformar tu Nutrición?'}
             </h2>
-            <p className="text-emerald-100 mb-6">
+            <p className="text-cyan-100 mb-6">
               {language === 'en'
                 ? 'Get a personalized meal plan and join our 7-day high protein challenge. Free to start!'
                 : 'Obtén un plan de comidas personalizado y únete a nuestro reto de 7 días de alta proteína. ¡Gratis para empezar!'}
             </p>
             <Link href="/get-started">
-              <Button size="lg" className="bg-white text-emerald-600 hover:bg-emerald-50">
+              <Button size="lg" className="bg-white text-cyan-600 hover:bg-cyan-50">
                 {language === 'en' ? 'Start 7-Day Challenge' : 'Iniciar Reto de 7 Días'}
                 <ArrowRight className="h-5 w-5 ml-2" />
               </Button>

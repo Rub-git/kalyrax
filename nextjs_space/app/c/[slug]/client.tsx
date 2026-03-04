@@ -109,7 +109,7 @@ export function ChallengeShareClient({ slug }: Props) {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500" />
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500" />
       </div>
     );
   }
@@ -129,7 +129,7 @@ export function ChallengeShareClient({ slug }: Props) {
                 : 'Este reto puede haber expirado o sido eliminado.'}
             </p>
             <Link href="/signup?ref=challenge">
-              <Button className="bg-emerald-600 hover:bg-emerald-700">
+              <Button className="bg-cyan-600 hover:bg-cyan-700">
                 {lang === 'en' ? 'Start Your Own Challenge' : 'Comienza Tu Propio Reto'}
               </Button>
             </Link>
@@ -163,7 +163,7 @@ export function ChallengeShareClient({ slug }: Props) {
       <div className="max-w-2xl mx-auto px-4 py-12">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 bg-emerald-500/20 text-emerald-400 px-4 py-2 rounded-full text-sm mb-4">
+          <div className="inline-flex items-center gap-2 bg-cyan-500/20 text-emerald-400 px-4 py-2 rounded-full text-sm mb-4">
             <Flame className="h-4 w-4" />
             {lang === 'en' ? 'Nutrition Challenge' : 'Reto de Nutrición'}
           </div>
@@ -203,7 +203,7 @@ export function ChallengeShareClient({ slug }: Props) {
         <Card className="bg-gray-800/50 border-gray-700 mb-8">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
-              <Target className="h-5 w-5 text-emerald-500" />
+              <Target className="h-5 w-5 text-cyan-500" />
               {lang === 'en' ? 'Challenge Progress' : 'Progreso del Reto'}
             </CardTitle>
           </CardHeader>
@@ -220,7 +220,7 @@ export function ChallengeShareClient({ slug }: Props) {
               </div>
               <div className="h-4 bg-gray-700 rounded-full overflow-hidden">
                 <div 
-                  className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 transition-all duration-500"
+                  className="h-full bg-gradient-to-r from-cyan-500 to-emerald-400 transition-all duration-500"
                   style={{ width: `${progressPercent}%` }}
                 />
               </div>
@@ -233,7 +233,7 @@ export function ChallengeShareClient({ slug }: Props) {
                   key={day.dayNumber}
                   className={`w-10 h-10 rounded-full flex items-center justify-center font-medium transition-all ${
                     day.completed
-                      ? 'bg-emerald-500 text-white'
+                      ? 'bg-cyan-500 text-white'
                       : 'bg-gray-700 text-gray-400'
                   }`}
                 >
@@ -353,7 +353,7 @@ export function ChallengeShareClient({ slug }: Props) {
             </div>
             <div className="h-4 bg-gray-700 rounded-full overflow-hidden">
               <div 
-                className="h-full bg-emerald-500"
+                className="h-full bg-cyan-500"
                 style={{ width: `${progressPercent}%` }}
               />
             </div>

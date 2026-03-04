@@ -165,8 +165,8 @@ export default function ChallengeStartPage() {
           <Card className="text-left">
             <CardContent className="py-6 space-y-4">
               <div className="flex items-start gap-3">
-                <div className="p-2 rounded-full bg-green-100 dark:bg-green-900/30">
-                  <Target className="h-5 w-5 text-green-600" />
+                <div className="p-2 rounded-full bg-blue-100 dark:bg-blue-950/30">
+                  <Target className="h-5 w-5 text-blue-700" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900 dark:text-white">
@@ -221,7 +221,7 @@ export default function ChallengeStartPage() {
           {/* CTA */}
           {autoStarting ? (
             <div className="space-y-3">
-              <div className="flex items-center justify-center gap-2 text-green-600">
+              <div className="flex items-center justify-center gap-2 text-blue-700">
                 <CheckCircle2 className="h-5 w-5" />
                 <span className="font-medium">
                   {t('Starting your challenge...', 'Iniciando tu reto...')}

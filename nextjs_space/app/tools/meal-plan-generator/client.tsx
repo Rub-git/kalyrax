@@ -69,7 +69,7 @@ export function MealPlanGeneratorClient() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-emerald-50">
+    <div className="min-h-screen bg-gradient-to-b from-white to-cyan-50">
       <Header />
       
       <main className="container mx-auto px-4 py-12">
@@ -79,7 +79,7 @@ export function MealPlanGeneratorClient() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-100 rounded-full text-emerald-700 text-sm font-medium mb-4">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-100 rounded-full text-cyan-700 text-sm font-medium mb-4">
             <Apple className="h-4 w-4" />
             {language === 'en' ? 'AI-Powered' : 'Impulsado por IA'}
           </div>
@@ -122,8 +122,8 @@ export function MealPlanGeneratorClient() {
                 transition={{ delay: 0.5 + i * 0.1 }}
                 className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100"
               >
-                <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mb-4">
-                  <feature.icon className="h-6 w-6 text-emerald-600" />
+                <div className="w-12 h-12 bg-cyan-100 rounded-xl flex items-center justify-center mb-4">
+                  <feature.icon className="h-6 w-6 text-cyan-600" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">
                   {feature.title[language as 'en' | 'es']}
@@ -136,7 +136,7 @@ export function MealPlanGeneratorClient() {
           </div>
 
           {/* Sample Meal Plan Preview */}
-          <div className="bg-gradient-to-r from-emerald-600 to-teal-600 p-8 rounded-2xl text-white mb-12">
+          <div className="bg-gradient-to-r from-cyan-600 to-teal-600 p-8 rounded-2xl text-white mb-12">
             <h3 className="text-2xl font-bold mb-6 text-center">
               {language === 'en' ? 'Sample Day in Your Meal Plan' : 'Día de Ejemplo en tu Plan'}
             </h3>
@@ -171,8 +171,8 @@ export function MealPlanGeneratorClient() {
             </h3>
             <div className="space-y-4">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-emerald-600 font-bold">1</span>
+                <div className="w-10 h-10 bg-cyan-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <span className="text-cyan-600 font-bold">1</span>
                 </div>
                 <div>
                   <p className="font-semibold">{language === 'en' ? 'Calculate Your Needs' : 'Calcula tus Necesidades'}</p>
@@ -184,8 +184,8 @@ export function MealPlanGeneratorClient() {
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-emerald-600 font-bold">2</span>
+                <div className="w-10 h-10 bg-cyan-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <span className="text-cyan-600 font-bold">2</span>
                 </div>
                 <div>
                   <p className="font-semibold">{language === 'en' ? 'Create Your Account' : 'Crea tu Cuenta'}</p>
@@ -197,8 +197,8 @@ export function MealPlanGeneratorClient() {
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-emerald-600 font-bold">3</span>
+                <div className="w-10 h-10 bg-cyan-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <span className="text-cyan-600 font-bold">3</span>
                 </div>
                 <div>
                   <p className="font-semibold">{language === 'en' ? 'Get Your Meal Plan' : 'Obtén tu Plan de Comidas'}</p>
@@ -220,17 +220,17 @@ export function MealPlanGeneratorClient() {
           transition={{ delay: 0.6 }}
           className="mt-16 text-center"
         >
-          <div className="max-w-2xl mx-auto bg-gradient-to-r from-emerald-600 to-teal-600 p-8 rounded-3xl text-white">
+          <div className="max-w-2xl mx-auto bg-gradient-to-r from-cyan-600 to-teal-600 p-8 rounded-3xl text-white">
             <h2 className="text-2xl md:text-3xl font-bold mb-4">
               {language === 'en' ? 'Ready to Get Your Meal Plan?' : '¿Listo para Obtener tu Plan de Comidas?'}
             </h2>
-            <p className="text-emerald-100 mb-6">
+            <p className="text-cyan-100 mb-6">
               {language === 'en'
                 ? 'Create your free account and join our 7-day challenge with personalized nutrition.'
                 : 'Crea tu cuenta gratuita y únete a nuestro reto de 7 días con nutrición personalizada.'}
             </p>
             <Link href="/get-started">
-              <Button size="lg" className="bg-white text-emerald-600 hover:bg-emerald-50">
+              <Button size="lg" className="bg-white text-cyan-600 hover:bg-cyan-50">
                 {language === 'en' ? 'Generate My Meal Plan' : 'Generar Mi Plan de Comidas'}
                 <ArrowRight className="h-5 w-5 ml-2" />
               </Button>

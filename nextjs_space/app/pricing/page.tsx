@@ -134,17 +134,17 @@ export default function PricingPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-green-50 to-white dark:from-gray-900 dark:to-gray-800">
+      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">
         <Header />
         <div className="flex items-center justify-center h-96">
-          <Loader2 className="w-8 h-8 animate-spin text-green-600" />
+          <Loader2 className="w-8 h-8 animate-spin text-blue-700" />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">
       <Header />
       <main className="container mx-auto px-4 py-12 max-w-6xl">
         {/* Hero Section */}
@@ -154,7 +154,7 @@ export default function PricingPage() {
           className="text-center mb-12"
         >
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-700 to-cyan-600 bg-clip-text text-transparent">
               {t('pricing')}
             </span>
           </h1>
@@ -172,7 +172,7 @@ export default function PricingPage() {
               onClick={() => setBillingCycle('monthly')}
               className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
                 billingCycle === 'monthly'
-                  ? 'bg-white dark:bg-gray-700 shadow-sm text-green-600'
+                  ? 'bg-white dark:bg-gray-700 shadow-sm text-blue-700'
                   : 'text-gray-600 dark:text-gray-300'
               }`}
             >
@@ -182,12 +182,12 @@ export default function PricingPage() {
               onClick={() => setBillingCycle('yearly')}
               className={`px-6 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-2 ${
                 billingCycle === 'yearly'
-                  ? 'bg-white dark:bg-gray-700 shadow-sm text-green-600'
+                  ? 'bg-white dark:bg-gray-700 shadow-sm text-blue-700'
                   : 'text-gray-600 dark:text-gray-300'
               }`}
             >
               {t('yearly')}
-              <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">
+              <span className="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded-full">
                 -{yearlySavings}%
               </span>
             </button>
@@ -226,8 +226,8 @@ export default function PricingPage() {
                 <div className="space-y-3 mb-6">
                   {freeFeatures.map((feature) => (
                     <div key={feature.key} className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                        <Check className="w-3 h-3 text-green-600" />
+                      <div className="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-950/30 flex items-center justify-center">
+                        <Check className="w-3 h-3 text-blue-700" />
                       </div>
                       <span className="text-sm">{t(`feature_${feature.key}`)}</span>
                     </div>
@@ -257,8 +257,8 @@ export default function PricingPage() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <Card className="h-full border-2 border-green-500 relative overflow-hidden">
-              <div className="absolute top-0 right-0 bg-green-500 text-white text-xs px-3 py-1 rounded-bl-lg font-medium">
+            <Card className="h-full border-2 border-blue-500 relative overflow-hidden">
+              <div className="absolute top-0 right-0 bg-blue-500 text-white text-xs px-3 py-1 rounded-bl-lg font-medium">
                 {t('mostPopular')}
               </div>
               <CardHeader className="pb-4">
@@ -266,7 +266,7 @@ export default function PricingPage() {
                   <Crown className="w-6 h-6 text-yellow-500" />
                   {t('proPlan')}
                   {subscription?.isPro && (
-                    <span className="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 px-2 py-1 rounded-full">
+                    <span className="text-xs bg-blue-100 dark:bg-blue-950/30 text-blue-800 px-2 py-1 rounded-full">
                       {subscription.isTrialing ? t('trialActive') : t('proActive')}
                     </span>
                   )}
@@ -297,7 +297,7 @@ export default function PricingPage() {
                 <div className="space-y-3 mb-6">
                   {proFeatures.map((feature) => (
                     <div key={feature.key} className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
+                      <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
                         <Check className="w-3 h-3 text-white" />
                       </div>
                       <span className="text-sm font-medium">{t(`feature_${feature.key}`)}</span>
@@ -307,7 +307,7 @@ export default function PricingPage() {
                 
                 {!subscription?.isPro && !subscription?.hasUsedTrial && (
                   <Button
-                    className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
+                    className="w-full bg-gradient-to-r from-blue-700 to-cyan-600 hover:from-blue-800 hover:to-cyan-700"
                     onClick={handleStartTrial}
                     disabled={actionLoading}
                   >
@@ -322,7 +322,7 @@ export default function PricingPage() {
 
                 {!subscription?.isPro && subscription?.hasUsedTrial && (
                   <Button
-                    className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
+                    className="w-full bg-gradient-to-r from-blue-700 to-cyan-600 hover:from-blue-800 hover:to-cyan-700"
                     onClick={handleUpgrade}
                     disabled={actionLoading}
                   >

@@ -44,7 +44,7 @@ export function SharePromptModal({
       case 'leaderboard':
         return <Trophy className="h-12 w-12 text-purple-500" />;
       default:
-        return <Share2 className="h-12 w-12 text-green-500" />;
+        return <Share2 className="h-12 w-12 text-blue-500" />;
     }
   };
 
@@ -59,7 +59,7 @@ export function SharePromptModal({
       case 'leaderboard':
         return 'from-purple-500 to-pink-500';
       default:
-        return 'from-green-500 to-emerald-500';
+        return 'from-blue-500 to-cyan-500';
     }
   };
 
@@ -149,7 +149,7 @@ export function SharePromptModal({
                 >
                   {copied ? (
                     <>
-                      <Check className="h-4 w-4 mr-2 text-green-500" />
+                      <Check className="h-4 w-4 mr-2 text-blue-500" />
                       {t('Copied!', '¡Copiado!')}
                     </>
                   ) : (

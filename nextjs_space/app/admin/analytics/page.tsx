@@ -99,7 +99,7 @@ export default function AnalyticsDashboardPage() {
   if (status === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-green-500" />
+        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
       </div>
     );
   }
@@ -145,7 +145,7 @@ export default function AnalyticsDashboardPage() {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
-              <BarChart3 className="h-8 w-8 text-green-500" />
+              <BarChart3 className="h-8 w-8 text-blue-500" />
               {t('Growth Analytics', 'Análisis de Crecimiento')}
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mt-1">
@@ -168,7 +168,7 @@ export default function AnalyticsDashboardPage() {
 
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="h-8 w-8 animate-spin text-green-500" />
+            <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
           </div>
         ) : error ? (
           <Card>
@@ -235,7 +235,7 @@ export default function AnalyticsDashboardPage() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <TrendingUp className="h-5 w-5 text-green-500" />
+                    <TrendingUp className="h-5 w-5 text-blue-500" />
                     {t('Viral Funnel', 'Embudo Viral')}
                   </CardTitle>
                 </CardHeader>
@@ -307,7 +307,7 @@ export default function AnalyticsDashboardPage() {
                           <tr key={stage.stage} className="border-b hover:bg-gray-50 dark:hover:bg-gray-800">
                             <td className="py-3 px-4 font-medium">{stage.stage}</td>
                             <td className="py-3 px-4 text-right font-semibold">{stage.count.toLocaleString()}</td>
-                            <td className="py-3 px-4 text-right text-green-600">{conversion}%</td>
+                            <td className="py-3 px-4 text-right text-blue-700">{conversion}%</td>
                             <td className="py-3 px-4 text-right text-red-500">{dropoff}%</td>
                           </tr>
                         );
@@ -336,7 +336,7 @@ function MetricCard({
   color: 'green' | 'blue' | 'amber' | 'purple';
 }) {
   const colors = {
-    green: 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400',
+    green: 'bg-blue-100 text-blue-700 dark:bg-blue-950/30 dark:text-blue-500',
     blue: 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400',
     amber: 'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400',
     purple: 'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400',
@@ -380,11 +380,11 @@ function RateCard({
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{title}</p>
         <div className="flex items-center gap-2">
           <span className={`text-2xl font-bold ${
-            isGood ? 'text-green-600' : isBad ? 'text-red-500' : 'text-gray-900 dark:text-white'
+            isGood ? 'text-blue-700' : isBad ? 'text-red-500' : 'text-gray-900 dark:text-white'
           }`}>
             {displayValue}
           </span>
-          {isGood && <ArrowUp className="h-4 w-4 text-green-500" />}
+          {isGood && <ArrowUp className="h-4 w-4 text-blue-500" />}
           {isBad && <ArrowDown className="h-4 w-4 text-red-500" />}
           {!isGood && !isBad && <Minus className="h-4 w-4 text-gray-400" />}
         </div>

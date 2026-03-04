@@ -145,15 +145,15 @@ export default function SharedPlanPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 flex items-center justify-center">
-        <Loader2 className="h-12 w-12 animate-spin text-green-600" />
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-100 flex items-center justify-center">
+        <Loader2 className="h-12 w-12 animate-spin text-blue-700" />
       </div>
     );
   }
 
   if (error || !planData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-100 flex items-center justify-center p-4">
         <Card className="max-w-md w-full text-center">
           <CardContent className="pt-8 pb-8">
             <h1 className="text-2xl font-bold text-gray-900 mb-4">
@@ -165,7 +165,7 @@ export default function SharedPlanPage() {
                 : 'This link may have expired or does not exist.'}
             </p>
             <Link href="/">
-              <Button className="bg-green-600 hover:bg-green-700">
+              <Button className="bg-blue-700 hover:bg-blue-800">
                 {language === 'es' ? 'Crear mi propio plan' : 'Create Your Own Plan'}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -179,13 +179,13 @@ export default function SharedPlanPage() {
   const dayPlan = planData.days?.[selectedDay];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-100">
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-sm border-b sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Apple className="h-8 w-8 text-green-600" />
-            <span className="text-xl font-bold text-green-800">Kalyrax</span>
+            <Apple className="h-8 w-8 text-blue-700" />
+            <span className="text-xl font-bold text-blue-900">Kalyrax</span>
           </div>
           <div className="flex items-center gap-2">
             <Button
@@ -258,8 +258,8 @@ export default function SharedPlanPage() {
                     {language === 'es' ? 'Grasas' : 'Fat'}
                   </div>
                 </div>
-                <div className="bg-green-50 rounded-lg p-4 text-center">
-                  <div className="text-2xl font-bold text-green-600">{planData.targets.fiberG}g</div>
+                <div className="bg-blue-50 rounded-lg p-4 text-center">
+                  <div className="text-2xl font-bold text-blue-700">{planData.targets.fiberG}g</div>
                   <div className="text-sm text-gray-600">
                     {language === 'es' ? 'Fibra' : 'Fiber'}
                   </div>
@@ -274,7 +274,7 @@ export default function SharedPlanPage() {
           <Button
             variant={showShoppingList ? 'outline' : 'default'}
             onClick={() => setShowShoppingList(false)}
-            className={!showShoppingList ? 'bg-green-600 hover:bg-green-700' : ''}
+            className={!showShoppingList ? 'bg-blue-700 hover:bg-blue-800' : ''}
           >
             <Calendar className="h-4 w-4 mr-2" />
             {language === 'es' ? 'Plan Semanal' : 'Weekly Plan'}
@@ -282,7 +282,7 @@ export default function SharedPlanPage() {
           <Button
             variant={showShoppingList ? 'default' : 'outline'}
             onClick={() => setShowShoppingList(true)}
-            className={showShoppingList ? 'bg-green-600 hover:bg-green-700' : ''}
+            className={showShoppingList ? 'bg-blue-700 hover:bg-blue-800' : ''}
           >
             <ShoppingCart className="h-4 w-4 mr-2" />
             {language === 'es' ? 'Lista de Compras' : 'Shopping List'}
@@ -299,7 +299,7 @@ export default function SharedPlanPage() {
                   variant={selectedDay === index ? 'default' : 'outline'}
                   onClick={() => setSelectedDay(index)}
                   className={`flex-shrink-0 ${
-                    selectedDay === index ? 'bg-green-600 hover:bg-green-700' : ''
+                    selectedDay === index ? 'bg-blue-700 hover:bg-blue-800' : ''
                   }`}
                 >
                   {language === 'es' ? DAYS_ES[index] : day}
@@ -319,7 +319,7 @@ export default function SharedPlanPage() {
                   <CardHeader className="pb-2">
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-lg flex items-center gap-2">
-                        <Utensils className="h-5 w-5 text-green-600" />
+                        <Utensils className="h-5 w-5 text-blue-700" />
                         {MEAL_TYPE_LABELS[meal.mealType] || meal.mealType}
                       </CardTitle>
                       <span className="text-sm bg-orange-100 text-orange-700 px-2 py-1 rounded">
@@ -372,7 +372,7 @@ export default function SharedPlanPage() {
             <Card className="bg-white/90 backdrop-blur">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <ShoppingCart className="h-5 w-5 text-green-600" />
+                  <ShoppingCart className="h-5 w-5 text-blue-700" />
                   {language === 'es' ? 'Lista de Compras' : 'Shopping List'}
                 </CardTitle>
               </CardHeader>
@@ -402,14 +402,14 @@ export default function SharedPlanPage() {
           transition={{ delay: 0.3 }}
           className="mt-12 text-center"
         >
-          <Card className="bg-gradient-to-r from-green-600 to-emerald-600 text-white border-0">
+          <Card className="bg-gradient-to-r from-blue-700 to-cyan-600 text-white border-0">
             <CardContent className="py-8">
               <h2 className="text-2xl md:text-3xl font-bold mb-4">
                 {language === 'es'
                   ? '¿Quieres tu propio plan personalizado?'
                   : 'Want your own personalized plan?'}
               </h2>
-              <p className="text-green-100 mb-6 max-w-xl mx-auto">
+              <p className="text-blue-100 mb-6 max-w-xl mx-auto">
                 {language === 'es'
                   ? 'Calcula tus calorías exactas, obtén un plan de comidas adaptado a tus objetivos y preferencias.'
                   : 'Calculate your exact calories, get a meal plan tailored to your goals and preferences.'}
@@ -417,7 +417,7 @@ export default function SharedPlanPage() {
               <Link href={`/signup?utm_source=${utmSource || 'shared_plan'}&ref=${slug}`}>
                 <Button
                   size="lg"
-                  className="bg-white text-green-600 hover:bg-green-50 font-bold"
+                  className="bg-white text-blue-700 hover:bg-blue-50 font-bold"
                 >
                   {language === 'es' ? 'Crear Mi Plan Gratis' : 'Create My Free Plan'}
                   <ArrowRight className="ml-2 h-5 w-5" />

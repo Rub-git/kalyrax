@@ -181,17 +181,17 @@ export function MacroCalculatorClient() {
           transition={{ delay: 0.6 }}
           className="mt-16 text-center"
         >
-          <div className="max-w-2xl mx-auto bg-gradient-to-r from-emerald-600 to-teal-600 p-8 rounded-3xl text-white">
+          <div className="max-w-2xl mx-auto bg-gradient-to-r from-cyan-600 to-teal-600 p-8 rounded-3xl text-white">
             <h2 className="text-2xl md:text-3xl font-bold mb-4">
               {language === 'en' ? 'Get Your Personalized Meal Plan' : 'Obtén tu Plan de Comidas Personalizado'}
             </h2>
-            <p className="text-emerald-100 mb-6">
+            <p className="text-cyan-100 mb-6">
               {language === 'en'
                 ? 'Take the next step with a 7-day meal plan tailored to your macro targets.'
                 : 'Da el siguiente paso con un plan de comidas de 7 días adaptado a tus metas de macros.'}
             </p>
             <Link href="/get-started">
-              <Button size="lg" className="bg-white text-emerald-600 hover:bg-emerald-50">
+              <Button size="lg" className="bg-white text-cyan-600 hover:bg-cyan-50">
                 {language === 'en' ? 'Start 7-Day Challenge' : 'Iniciar Reto de 7 Días'}
                 <ArrowRight className="h-5 w-5 ml-2" />
               </Button>

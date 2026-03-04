@@ -267,7 +267,7 @@ export default function ChallengePage() {
         {/* Header with Streak */}
         <div className="flex items-start justify-between mb-8">
           <div className="text-center flex-1">
-            <div className="inline-flex items-center gap-2 bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-4 py-2 rounded-full text-sm mb-4">
+            <div className="inline-flex items-center gap-2 bg-cyan-500/20 text-cyan-600 dark:text-emerald-400 px-4 py-2 rounded-full text-sm mb-4">
               <Flame className="h-4 w-4" />
               {t('challenge')}
             </div>
@@ -292,11 +292,11 @@ export default function ChallengePage() {
 
         {/* My Stats Quick View */}
         {myStats && myStats.totals.totalPoints > 0 && (
-          <Card className="mb-8 bg-gradient-to-r from-emerald-500/10 to-blue-500/10 border-emerald-500/20">
+          <Card className="mb-8 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border-cyan-500/20">
             <CardContent className="p-6">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
                 <div>
-                  <p className="text-2xl font-bold text-emerald-500">{myStats.totals.totalPoints}</p>
+                  <p className="text-2xl font-bold text-cyan-500">{myStats.totals.totalPoints}</p>
                   <p className="text-xs text-muted-foreground">{t('totalPoints')}</p>
                 </div>
                 <div>
@@ -329,7 +329,7 @@ export default function ChallengePage() {
                 <div className="flex items-start justify-between">
                   <div>
                     <CardTitle className="flex items-center gap-2">
-                      <Target className="h-5 w-5 text-emerald-500" />
+                      <Target className="h-5 w-5 text-cyan-500" />
                       {language === 'en' ? activeChallenge.template.name : activeChallenge.template.nameEs}
                     </CardTitle>
                     <CardDescription>
@@ -351,13 +351,13 @@ export default function ChallengePage() {
                     <span className="text-muted-foreground">
                       {daysCompleted} / {totalDays} {t('days')}
                     </span>
-                    <span className="font-medium text-emerald-500">
+                    <span className="font-medium text-cyan-500">
                       {Math.round(progressPercent)}%
                     </span>
                   </div>
                   <div className="h-4 bg-muted rounded-full overflow-hidden">
                     <motion.div 
-                      className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400"
+                      className="h-full bg-gradient-to-r from-cyan-500 to-emerald-400"
                       initial={{ width: 0 }}
                       animate={{ width: `${progressPercent}%` }}
                       transition={{ duration: 0.5 }}
@@ -372,9 +372,9 @@ export default function ChallengePage() {
                       key={day.dayNumber}
                       className={`w-12 h-12 rounded-full flex items-center justify-center font-medium transition-all ${
                         day.completed
-                          ? 'bg-emerald-500 text-white'
+                          ? 'bg-cyan-500 text-white'
                           : day.dayNumber === nextDay?.dayNumber
-                            ? 'bg-emerald-500/20 border-2 border-emerald-500 text-emerald-500'
+                            ? 'bg-cyan-500/20 border-2 border-cyan-500 text-cyan-500'
                             : 'bg-muted text-muted-foreground'
                       }`}
                     >
@@ -390,7 +390,7 @@ export default function ChallengePage() {
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0 }}
-                      className="text-center p-4 bg-emerald-500/20 rounded-lg text-emerald-600 dark:text-emerald-400 font-medium"
+                      className="text-center p-4 bg-cyan-500/20 rounded-lg text-cyan-600 dark:text-emerald-400 font-medium"
                     >
                       {completionMessage}
                     </motion.div>
@@ -422,7 +422,7 @@ export default function ChallengePage() {
                       <Button 
                         onClick={completeDay} 
                         disabled={completing}
-                        className="gap-2 bg-emerald-600 hover:bg-emerald-700"
+                        className="gap-2 bg-cyan-600 hover:bg-cyan-700"
                       >
                         {completing ? (
                           <span className="animate-spin">...</span>
@@ -469,7 +469,7 @@ export default function ChallengePage() {
             {templates.map((template) => (
               <Card key={template.id} className="overflow-hidden">
                 <div className="md:flex">
-                  <div className="md:w-1/3 bg-gradient-to-br from-emerald-500 to-blue-500 p-6 text-white flex flex-col justify-center">
+                  <div className="md:w-1/3 bg-gradient-to-br from-cyan-500 to-blue-500 p-6 text-white flex flex-col justify-center">
                     <Zap className="h-12 w-12 mb-4" />
                     <h3 className="text-xl font-bold mb-2">
                       {language === 'en' ? template.name : template.nameEs}
@@ -499,7 +499,7 @@ export default function ChallengePage() {
                     <Button 
                       onClick={() => startChallenge(template.id)}
                       disabled={starting}
-                      className="gap-2 bg-emerald-600 hover:bg-emerald-700"
+                      className="gap-2 bg-cyan-600 hover:bg-cyan-700"
                     >
                       {starting ? (
                         <span className="animate-spin">...</span>
@@ -652,7 +652,7 @@ export default function ChallengePage() {
             </div>
             <div className="h-4 bg-gray-700 rounded-full overflow-hidden">
               <div 
-                className="h-full bg-emerald-500"
+                className="h-full bg-cyan-500"
                 style={{ width: `${progressPercent}%` }}
               />
             </div>

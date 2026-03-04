@@ -39,7 +39,7 @@ export function UpgradeBanner({
 
   if (variant === 'sticky') {
     return (
-      <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-green-600 to-emerald-600 text-white p-3 z-40">
+      <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-blue-700 to-cyan-600 text-white p-3 z-40">
         <div className="container mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Crown className="w-5 h-5 text-yellow-300" />
@@ -51,7 +51,7 @@ export function UpgradeBanner({
             <Button
               size="sm"
               variant="secondary"
-              className="bg-white text-green-600 hover:bg-gray-100"
+              className="bg-white text-blue-700 hover:bg-gray-100"
               onClick={handleClick}
             >
               <Sparkles className="w-4 h-4 mr-1" />
@@ -72,10 +72,10 @@ export function UpgradeBanner({
   }
 
   return (
-    <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-lg p-4 border border-green-200 dark:border-green-800">
+    <div className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-emerald-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-900">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
+          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center">
             <Crown className="w-5 h-5 text-white" />
           </div>
           <div>
@@ -89,7 +89,7 @@ export function UpgradeBanner({
         </div>
         <Button
           size="sm"
-          className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
+          className="bg-gradient-to-r from-blue-700 to-cyan-600 hover:from-blue-800 hover:to-cyan-700"
           onClick={handleClick}
         >
           <Sparkles className="w-4 h-4 mr-1" />

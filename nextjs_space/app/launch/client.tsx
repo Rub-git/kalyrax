@@ -74,7 +74,7 @@ export function LaunchPageClient() {
       <main className="relative overflow-hidden">
         {/* Background decorations */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-emerald-500/20 rounded-full blur-3xl" />
+          <div className="absolute top-20 left-10 w-72 h-72 bg-cyan-500/20 rounded-full blur-3xl" />
           <div className="absolute top-40 right-20 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl" />
           <div className="absolute bottom-40 left-1/3 w-80 h-80 bg-cyan-500/20 rounded-full blur-3xl" />
         </div>
@@ -117,7 +117,7 @@ export function LaunchPageClient() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Link href="/get-started">
-                <Button size="lg" className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-6 text-lg">
+                <Button size="lg" className="bg-cyan-500 hover:bg-cyan-600 text-white px-8 py-6 text-lg">
                   <Sparkles className="h-5 w-5 mr-2" />
                   {language === 'en' ? 'Get Your Free Plan' : 'Obtén tu Plan Gratis'}
                   <ArrowRight className="h-5 w-5 ml-2" />
@@ -169,7 +169,7 @@ export function LaunchPageClient() {
                 transition={{ delay: i * 0.1 }}
                 className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors"
               >
-                <div className="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-cyan-500/20 rounded-xl flex items-center justify-center mb-4">
                   <feature.icon className="h-6 w-6 text-emerald-400" />
                 </div>
                 <h3 className="text-xl font-semibold text-white mb-2">
@@ -189,7 +189,7 @@ export function LaunchPageClient() {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-3xl p-8 md:p-12"
+            className="bg-gradient-to-r from-cyan-600 to-teal-600 rounded-3xl p-8 md:p-12"
           >
             <div className="flex flex-col md:flex-row items-center gap-8">
               <div className="flex-1">
@@ -200,7 +200,7 @@ export function LaunchPageClient() {
                 <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">
                   {language === 'en' ? '7-Day High Protein Challenge' : 'Reto de Alta Proteína de 7 Días'}
                 </h3>
-                <p className="text-emerald-100 text-lg mb-6">
+                <p className="text-cyan-100 text-lg mb-6">
                   {language === 'en'
                     ? 'Hit your daily protein targets, track your progress, and compete on the leaderboard. Perfect for beginners and fitness enthusiasts alike.'
                     : 'Alcanza tus metas diarias de proteína, sigue tu progreso y compite en la tabla de posiciones. Perfecto para principiantes y entusiastas del fitness.'}
@@ -219,7 +219,7 @@ export function LaunchPageClient() {
                   ))}
                 </ul>
                 <Link href="/get-started">
-                  <Button size="lg" className="bg-white text-emerald-600 hover:bg-emerald-50">
+                  <Button size="lg" className="bg-white text-cyan-600 hover:bg-cyan-50">
                     {language === 'en' ? 'Join Free Challenge' : 'Únete al Reto Gratis'}
                     <ArrowRight className="h-5 w-5 ml-2" />
                   </Button>
@@ -281,7 +281,7 @@ export function LaunchPageClient() {
               {language === 'en' ? 'Free to start. No credit card required.' : 'Gratis para empezar. No se requiere tarjeta de crédito.'}
             </p>
             <Link href="/get-started">
-              <Button size="lg" className="bg-emerald-500 hover:bg-emerald-600 text-white px-12 py-6 text-xl">
+              <Button size="lg" className="bg-cyan-500 hover:bg-cyan-600 text-white px-12 py-6 text-xl">
                 <Sparkles className="h-6 w-6 mr-2" />
                 {language === 'en' ? 'Create My Free Plan' : 'Crear Mi Plan Gratis'}
                 <ArrowRight className="h-6 w-6 ml-2" />

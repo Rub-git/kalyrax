@@ -89,7 +89,7 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <DisclaimerBanner />
       <Header />
 
@@ -120,7 +120,7 @@ export default function HomePage() {
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/get-started">
-                <Button size="lg" className="text-lg px-8 py-6 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600">
+                <Button size="lg" className="text-lg px-8 py-6 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-700 hover:to-cyan-600">
                   {language === 'es' ? 'Crear Mi Plan en 60s' : 'Create My Plan in 60s'}
                   <ChevronRight className="ml-2 h-5 w-5" />
                 </Button>
@@ -138,7 +138,7 @@ export default function HomePage() {
         <div className="absolute inset-0 -z-10 overflow-hidden">
           <div className="absolute left-1/2 top-0 -translate-x-1/2 blur-3xl">
             <div
-              className="aspect-[1155/678] w-[72.1875rem] bg-gradient-to-tr from-primary/30 to-green-200 opacity-30"
+              className="aspect-[1155/678] w-[72.1875rem] bg-gradient-to-tr from-primary/30 to-blue-200 opacity-30"
               style={{
                 clipPath:
                   'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
@@ -192,7 +192,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-green-600 to-emerald-600">
+      <section className="py-20 bg-gradient-to-r from-blue-700 to-cyan-600">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -206,7 +206,7 @@ export default function HomePage() {
                 ? '¿Listo para empezar?'
                 : 'Ready to get started?'}
             </h2>
-            <p className="text-lg text-green-100 mb-8 max-w-2xl mx-auto">
+            <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
               {language === 'es'
                 ? 'Ve tu plan nutricional en 60 segundos. Sin necesidad de registro.'
                 : 'See your nutrition plan in 60 seconds. No signup required.'}
@@ -215,7 +215,7 @@ export default function HomePage() {
               <Button
                 size="lg"
                 variant="secondary"
-                className="text-lg px-8 py-6 bg-white text-green-600 hover:bg-gray-100"
+                className="text-lg px-8 py-6 bg-white text-blue-700 hover:bg-gray-100"
               >
                 {language === 'es' ? 'Crear Mi Plan Gratis' : 'Create My Free Plan'}
                 <ChevronRight className="ml-2 h-5 w-5" />

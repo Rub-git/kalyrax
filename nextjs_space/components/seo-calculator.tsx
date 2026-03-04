@@ -138,10 +138,10 @@ export function SEOCalculator({ type, onCalculate }: SEOCalculatorProps) {
 
   return (
     <div className="w-full max-w-2xl mx-auto">
-      <Card className="border-2 border-emerald-100 shadow-xl">
+      <Card className="border-2 border-cyan-100 shadow-xl">
         <CardContent className="p-6 md:p-8">
           <div className="flex items-center gap-3 mb-6">
-            <div className="p-3 bg-emerald-100 rounded-xl text-emerald-600">
+            <div className="p-3 bg-cyan-100 rounded-xl text-cyan-600">
               {getIcon()}
             </div>
             <h2 className="text-2xl font-bold text-gray-900">{getTitle()}</h2>
@@ -162,7 +162,7 @@ export function SEOCalculator({ type, onCalculate }: SEOCalculatorProps) {
                     onClick={() => setFormData({ ...formData, unit: 'metric' })}
                     className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                       formData.unit === 'metric'
-                        ? 'bg-white shadow text-emerald-600'
+                        ? 'bg-white shadow text-cyan-600'
                         : 'text-gray-600 hover:text-gray-900'
                     }`}
                   >
@@ -172,7 +172,7 @@ export function SEOCalculator({ type, onCalculate }: SEOCalculatorProps) {
                     onClick={() => setFormData({ ...formData, unit: 'imperial' })}
                     className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                       formData.unit === 'imperial'
-                        ? 'bg-white shadow text-emerald-600'
+                        ? 'bg-white shadow text-cyan-600'
                         : 'text-gray-600 hover:text-gray-900'
                     }`}
                   >
@@ -188,7 +188,7 @@ export function SEOCalculator({ type, onCalculate }: SEOCalculatorProps) {
                       onClick={() => setFormData({ ...formData, sex: 'male' })}
                       className={`flex-1 py-3 px-4 rounded-lg border-2 font-medium transition-colors ${
                         formData.sex === 'male'
-                          ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
+                          ? 'border-cyan-500 bg-cyan-50 text-cyan-700'
                           : 'border-gray-200 hover:border-gray-300'
                       }`}
                     >
@@ -198,7 +198,7 @@ export function SEOCalculator({ type, onCalculate }: SEOCalculatorProps) {
                       onClick={() => setFormData({ ...formData, sex: 'female' })}
                       className={`flex-1 py-3 px-4 rounded-lg border-2 font-medium transition-colors ${
                         formData.sex === 'female'
-                          ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
+                          ? 'border-cyan-500 bg-cyan-50 text-cyan-700'
                           : 'border-gray-200 hover:border-gray-300'
                       }`}
                     >
@@ -264,7 +264,7 @@ export function SEOCalculator({ type, onCalculate }: SEOCalculatorProps) {
                         onClick={() => setFormData({ ...formData, activityLevel: option.value })}
                         className={`w-full text-left py-3 px-4 rounded-lg border-2 font-medium transition-colors ${
                           formData.activityLevel === option.value
-                            ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
+                            ? 'border-cyan-500 bg-cyan-50 text-cyan-700'
                             : 'border-gray-200 hover:border-gray-300'
                         }`}
                       >
@@ -277,7 +277,7 @@ export function SEOCalculator({ type, onCalculate }: SEOCalculatorProps) {
                 <Button
                   onClick={handleCalculate}
                   disabled={!isFormValid}
-                  className="w-full py-6 text-lg bg-emerald-600 hover:bg-emerald-700"
+                  className="w-full py-6 text-lg bg-cyan-600 hover:bg-cyan-700"
                 >
                   <Zap className="h-5 w-5 mr-2" />
                   {language === 'en' ? 'Calculate Now' : 'Calcular Ahora'}
@@ -293,13 +293,13 @@ export function SEOCalculator({ type, onCalculate }: SEOCalculatorProps) {
                 {result && (
                   <>
                     {/* Main Result */}
-                    <div className="text-center p-6 bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl">
+                    <div className="text-center p-6 bg-gradient-to-br from-cyan-50 to-teal-50 rounded-2xl">
                       {type === 'calorie' || type === 'meal_plan' ? (
                         <>
                           <p className="text-gray-600 mb-2">
                             {language === 'en' ? 'Your Daily Calories' : 'Tus Calorías Diarias'}
                           </p>
-                          <p className="text-5xl font-bold text-emerald-600">
+                          <p className="text-5xl font-bold text-cyan-600">
                             {result.tdee.toLocaleString()}
                           </p>
                           <p className="text-gray-500 mt-1">kcal/day</p>
@@ -309,7 +309,7 @@ export function SEOCalculator({ type, onCalculate }: SEOCalculatorProps) {
                           <p className="text-gray-600 mb-2">
                             {language === 'en' ? 'Your Daily Protein Target' : 'Tu Meta Diaria de Proteína'}
                           </p>
-                          <p className="text-5xl font-bold text-emerald-600">
+                          <p className="text-5xl font-bold text-cyan-600">
                             {result.proteinG}g
                           </p>
                           <p className="text-gray-500 mt-1">
@@ -352,7 +352,7 @@ export function SEOCalculator({ type, onCalculate }: SEOCalculatorProps) {
                     </div>
 
                     {/* CTA */}
-                    <div className="p-6 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl text-white">
+                    <div className="p-6 bg-gradient-to-r from-cyan-600 to-teal-600 rounded-2xl text-white">
                       <div className="flex items-start gap-3">
                         <div className="p-2 bg-white/20 rounded-lg">
                           <Dumbbell className="h-6 w-6" />
@@ -361,13 +361,13 @@ export function SEOCalculator({ type, onCalculate }: SEOCalculatorProps) {
                           <h3 className="font-semibold text-lg mb-1">
                             {language === 'en' ? 'Ready for the 7-Day Challenge?' : '¿Listo para el Reto de 7 Días?'}
                           </h3>
-                          <p className="text-emerald-100 text-sm mb-4">
+                          <p className="text-cyan-100 text-sm mb-4">
                             {language === 'en' 
                               ? 'Get a personalized meal plan and join our high-protein challenge to transform your nutrition.'
                               : 'Obtén un plan de comidas personalizado y únete a nuestro reto de alta proteína para transformar tu nutrición.'}
                           </p>
                           <Link href="/get-started">
-                            <Button className="bg-white text-emerald-600 hover:bg-emerald-50">
+                            <Button className="bg-white text-cyan-600 hover:bg-cyan-50">
                               {language === 'en' ? 'Start Free Challenge' : 'Iniciar Reto Gratis'}
                               <ArrowRight className="h-4 w-4 ml-2" />
                             </Button>

@@ -208,7 +208,7 @@ export default function ProfilePage() {
               {t('profile')}
             </h1>
             {saved && (
-              <span className="text-sm text-green-600 font-medium animate-fade-in">
+              <span className="text-sm text-blue-700 font-medium animate-fade-in">
                 ✓ {language === 'es' ? 'Guardado' : 'Saved'}
               </span>
             )}

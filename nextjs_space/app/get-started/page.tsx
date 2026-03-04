@@ -65,7 +65,7 @@ const GOALS = [
     labelEn: 'Eat Healthier', 
     labelEs: 'Comer Más Sano',
     icon: Apple,
-    color: 'bg-green-500'
+    color: 'bg-blue-500'
   },
   { 
     value: 'maintain_weight', 
@@ -298,13 +298,13 @@ export default function GetStartedPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">
       {/* Progress bar - visible on steps 2-6 */}
       {step > 1 && (
         <div className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm">
           <div className="h-2 bg-gray-200 dark:bg-gray-700">
             <motion.div
-              className="h-full bg-gradient-to-r from-green-500 to-emerald-500"
+              className="h-full bg-gradient-to-r from-blue-500 to-cyan-500"
               initial={{ width: 0 }}
               animate={{ width: `${progressPercent}%` }}
               transition={{ duration: 0.3 }}
@@ -325,7 +325,7 @@ export default function GetStartedPage() {
               className="w-full max-w-lg text-center space-y-8"
             >
               <div className="flex justify-center">
-                <div className="p-4 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 shadow-lg">
+                <div className="p-4 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 shadow-lg">
                   <Leaf className="h-16 w-16 text-white" />
                 </div>
               </div>
@@ -348,7 +348,7 @@ export default function GetStartedPage() {
               <Button
                 onClick={handleStart}
                 size="lg"
-                className="w-full max-w-xs h-14 text-lg font-semibold bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 shadow-lg"
+                className="w-full max-w-xs h-14 text-lg font-semibold bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 shadow-lg"
               >
                 {t('Start', 'Comenzar')}
                 <ChevronRight className="ml-2 h-5 w-5" />
@@ -356,7 +356,7 @@ export default function GetStartedPage() {
 
               <p className="text-sm text-gray-500">
                 {t('Already have an account?', '¿Ya tienes cuenta?')}{' '}
-                <Link href="/login" className="text-green-600 hover:underline font-medium">
+                <Link href="/login" className="text-blue-700 hover:underline font-medium">
                   {t('Sign in', 'Inicia sesión')}
                 </Link>
               </p>
@@ -386,7 +386,7 @@ export default function GetStartedPage() {
                       key={g.value}
                       onClick={() => handleGoalSelect(g.value)}
                       disabled={loading}
-                      className="flex items-center gap-4 p-5 rounded-2xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-green-500 hover:shadow-lg transition-all duration-200 disabled:opacity-50"
+                      className="flex items-center gap-4 p-5 rounded-2xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-blue-500 hover:shadow-lg transition-all duration-200 disabled:opacity-50"
                     >
                       <div className={`p-3 rounded-xl ${g.color}`}>
                         <Icon className="h-6 w-6 text-white" />
@@ -395,7 +395,7 @@ export default function GetStartedPage() {
                         {language === 'es' ? g.labelEs : g.labelEn}
                       </span>
                       {loading && goal === g.value && (
-                        <Loader2 className="ml-auto h-5 w-5 animate-spin text-green-500" />
+                        <Loader2 className="ml-auto h-5 w-5 animate-spin text-blue-500" />
                       )}
                     </button>
                   );
@@ -442,7 +442,7 @@ export default function GetStartedPage() {
                         onClick={() => setSex(s)}
                         className={`p-4 rounded-xl border-2 font-medium transition-all ${
                           sex === s
-                            ? 'border-green-500 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                            ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/30 text-blue-800 dark:text-blue-500'
                             : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
                         }`}
                       >
@@ -501,7 +501,7 @@ export default function GetStartedPage() {
                         onClick={() => setActivityLevel(level.value)}
                         className={`flex justify-between items-center p-3 rounded-xl border-2 transition-all ${
                           activityLevel === level.value
-                            ? 'border-green-500 bg-green-50 dark:bg-green-900/30'
+                            ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/30'
                             : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
                         }`}
                       >
@@ -509,7 +509,7 @@ export default function GetStartedPage() {
                           {language === 'es' ? level.labelEs : level.labelEn}
                         </span>
                         {activityLevel === level.value && (
-                          <Check className="h-5 w-5 text-green-500" />
+                          <Check className="h-5 w-5 text-blue-500" />
                         )}
                       </button>
                     ))}
@@ -521,7 +521,7 @@ export default function GetStartedPage() {
                 onClick={handleBasicDataSubmit}
                 disabled={loading}
                 size="lg"
-                className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600"
+                className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-700 hover:to-cyan-600"
               >
                 {loading ? (
                   <Loader2 className="h-5 w-5 animate-spin" />
@@ -557,11 +557,11 @@ export default function GetStartedPage() {
               className="w-full max-w-lg text-center space-y-8"
             >
               <div className="relative">
-                <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center animate-pulse">
+                <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center animate-pulse">
                   <Sparkles className="h-12 w-12 text-white" />
                 </div>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-32 h-32 rounded-full border-4 border-green-200 border-t-green-500 animate-spin" />
+                  <div className="w-32 h-32 rounded-full border-4 border-blue-200 border-t-blue-500 animate-spin" />
                 </div>
               </div>
 
@@ -589,7 +589,7 @@ export default function GetStartedPage() {
               className="w-full max-w-lg space-y-6"
             >
               <div className="text-center space-y-2">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 font-medium text-sm mb-2">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-950/30 text-blue-800 dark:text-blue-500 font-medium text-sm mb-2">
                   <Check className="h-4 w-4" />
                   {t('Plan Ready!', '¡Plan Listo!')}
                 </div>
@@ -599,7 +599,7 @@ export default function GetStartedPage() {
               </div>
 
               {/* Daily Calories */}
-              <Card className="bg-gradient-to-br from-green-500 to-emerald-600 border-0 text-white">
+              <Card className="bg-gradient-to-br from-blue-500 to-cyan-600 border-0 text-white">
                 <CardContent className="py-6 text-center">
                   <div className="flex items-center justify-center gap-2 mb-1">
                     <Flame className="h-6 w-6" />
@@ -662,7 +662,7 @@ export default function GetStartedPage() {
               <Card>
                 <CardContent className="py-6">
                   <div className="flex items-center gap-2 mb-4">
-                    <Utensils className="h-5 w-5 text-green-600" />
+                    <Utensils className="h-5 w-5 text-blue-700" />
                     <h3 className="font-semibold">
                       {t('Sample Meal Plan', 'Plan de Comidas de Ejemplo')}
                     </h3>
@@ -684,7 +684,7 @@ export default function GetStartedPage() {
                             </div>
                           </div>
                           <div className="text-right">
-                            <div className="font-medium text-green-600">
+                            <div className="font-medium text-blue-700">
                               {mealData.totalKcal} kcal
                             </div>
                           </div>
@@ -806,7 +806,7 @@ export default function GetStartedPage() {
                   type="submit"
                   disabled={registering}
                   size="lg"
-                  className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600"
+                  className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-700 hover:to-cyan-600"
                 >
                   {registering ? (
                     <Loader2 className="h-5 w-5 animate-spin" />
@@ -821,7 +821,7 @@ export default function GetStartedPage() {
                   <div className="w-full border-t border-gray-200 dark:border-gray-700" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-gradient-to-b from-green-50 to-white dark:from-gray-900 dark:to-gray-800 text-gray-500">
+                  <span className="px-4 bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 text-gray-500">
                     {t('or', 'o')}
                   </span>
                 </div>
@@ -865,7 +865,7 @@ export default function GetStartedPage() {
 
               <p className="text-center text-sm text-gray-500">
                 {t('Already have an account?', '¿Ya tienes cuenta?')}{' '}
-                <Link href="/login" className="text-green-600 hover:underline font-medium">
+                <Link href="/login" className="text-blue-700 hover:underline font-medium">
                   {t('Sign in', 'Inicia sesión')}
                 </Link>
               </p>

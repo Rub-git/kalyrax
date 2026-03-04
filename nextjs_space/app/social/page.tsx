@@ -225,7 +225,7 @@ export default function SocialPage() {
                         </div>
                         <div>
                           {user.friendshipStatus === 'accepted' ? (
-                            <span className="text-sm text-green-600 font-medium">{t('alreadyFriends')}</span>
+                            <span className="text-sm text-blue-700 font-medium">{t('alreadyFriends')}</span>
                           ) : user.isPendingFromMe ? (
                             <span className="text-sm text-amber-600 font-medium">{t('requestSent')}</span>
                           ) : user.friendshipStatus === 'pending' ? (

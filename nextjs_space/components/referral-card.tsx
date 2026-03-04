@@ -132,7 +132,7 @@ export function ReferralCard() {
                 onClick={copyLink}
                 className="flex-shrink-0"
               >
-                {copying ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
+                {copying ? <Check className="h-4 w-4 text-blue-500" /> : <Copy className="h-4 w-4" />}
               </Button>
             </div>
 
@@ -164,7 +164,7 @@ export function ReferralCard() {
                 </p>
               </div>
               <div className="text-center">
-                <p className="text-2xl font-bold text-green-600">{stats.convertedReferrals}</p>
+                <p className="text-2xl font-bold text-blue-700">{stats.convertedReferrals}</p>
                 <p className="text-xs text-gray-500">
                   {language === 'en' ? 'Friends Joined' : 'Amigos Unidos'}
                 </p>

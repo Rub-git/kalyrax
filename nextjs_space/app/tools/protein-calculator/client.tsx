@@ -181,8 +181,8 @@ export function ProteinCalculatorClient() {
                 </div>
               </div>
               <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-xl">
-                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <span className="text-green-600 font-bold">2</span>
+                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <span className="text-blue-700 font-bold">2</span>
                 </div>
                 <div>
                   <p className="font-semibold">{language === 'en' ? 'Active Lifestyle' : 'Estilo de Vida Activo'}</p>
@@ -213,17 +213,17 @@ export function ProteinCalculatorClient() {
           transition={{ delay: 0.6 }}
           className="mt-16 text-center"
         >
-          <div className="max-w-2xl mx-auto bg-gradient-to-r from-emerald-600 to-teal-600 p-8 rounded-3xl text-white">
+          <div className="max-w-2xl mx-auto bg-gradient-to-r from-cyan-600 to-teal-600 p-8 rounded-3xl text-white">
             <h2 className="text-2xl md:text-3xl font-bold mb-4">
               {language === 'en' ? 'Join the 7-Day High Protein Challenge' : 'Únete al Reto de 7 Días de Alta Proteína'}
             </h2>
-            <p className="text-emerald-100 mb-6">
+            <p className="text-cyan-100 mb-6">
               {language === 'en'
                 ? 'Get daily protein targets, meal ideas, and track your progress with our free challenge.'
                 : 'Obtén metas diarias de proteína, ideas de comidas y sigue tu progreso con nuestro reto gratuito.'}
             </p>
             <Link href="/get-started">
-              <Button size="lg" className="bg-white text-emerald-600 hover:bg-emerald-50">
+              <Button size="lg" className="bg-white text-cyan-600 hover:bg-cyan-50">
                 {language === 'en' ? 'Start Free Challenge' : 'Iniciar Reto Gratis'}
                 <ArrowRight className="h-5 w-5 ml-2" />
               </Button>

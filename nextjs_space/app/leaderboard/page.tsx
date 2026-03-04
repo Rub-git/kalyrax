@@ -237,7 +237,7 @@ export default function LeaderboardPage() {
                   id="publicOptIn"
                   onClick={() => setOptInStatus(s => ({ ...s, publicOptIn: !s.publicOptIn }))}
                   className={`w-12 h-6 rounded-full transition-colors ${
-                    optInStatus.publicOptIn ? 'bg-emerald-500' : 'bg-gray-300'
+                    optInStatus.publicOptIn ? 'bg-cyan-500' : 'bg-gray-300'
                   }`}
                 >
                   <div className={`w-5 h-5 rounded-full bg-white shadow transform transition-transform ${
@@ -285,7 +285,7 @@ export default function LeaderboardPage() {
 
         {/* My Stats */}
         {session?.user && myStats && myStats.totals.totalPoints > 0 && (
-          <Card className="mb-8 bg-gradient-to-r from-emerald-500/10 to-blue-500/10 border-emerald-500/20">
+          <Card className="mb-8 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border-cyan-500/20">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold flex items-center gap-2">
@@ -300,7 +300,7 @@ export default function LeaderboardPage() {
               </div>
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-emerald-500">{myStats.totals.totalPoints}</p>
+                  <p className="text-2xl font-bold text-cyan-500">{myStats.totals.totalPoints}</p>
                   <p className="text-xs text-muted-foreground">{t('totalPoints')}</p>
                 </div>
                 <div className="text-center">
@@ -446,7 +446,7 @@ export default function LeaderboardPage() {
 
         {/* CTA for non-authenticated users */}
         {!session?.user && (
-          <Card className="mt-8 bg-gradient-to-r from-emerald-500 to-blue-500">
+          <Card className="mt-8 bg-gradient-to-r from-cyan-500 to-blue-500">
             <CardContent className="p-6 text-center text-white">
               <Trophy className="h-12 w-12 mx-auto mb-4" />
               <h3 className="text-xl font-bold mb-2">
