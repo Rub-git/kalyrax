@@ -47,9 +47,9 @@ export function Header() {
             <Image
               src="/kalyrax-logo.png"
               alt="Kalyrax"
-              width={140}
-              height={40}
-              className="h-9 w-auto"
+              width={180}
+              height={50}
+              className="h-12 w-auto"
               priority
             />
           </Link>
