@@ -244,7 +244,7 @@ export function MealPlanGeneratorClient() {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm">
-              © 2024 NutriCoach. {language === 'en' ? 'All rights reserved.' : 'Todos los derechos reservados.'}
+              © 2026 Kalyrax. {language === 'en' ? 'All rights reserved.' : 'Todos los derechos reservados.'}
             </p>
             <div className="flex gap-6">
               <Link href="/tools/calorie-calculator" className="text-sm hover:text-white transition-colors">

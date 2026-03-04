@@ -15,7 +15,7 @@ const SAFETY_KEYWORDS = [
   'suicid', 'depresión severa', 'severe depression', 'medication', 'medicamento'
 ];
 
-const SYSTEM_PROMPT = `Eres NutriCoach, un asistente de nutrición amigable y profesional.
+const SYSTEM_PROMPT = `Eres Kalyrax, un asistente de nutrición amigable y profesional.
 
 REGLAS ESTRICTAS:
 1. NUNCA calcules calorías o macros tu mismo. SIEMPRE usa los valores del calculation_context proporcionado.

@@ -758,7 +758,7 @@ export default function MealPlanPage() {
         <div className="fixed -left-[9999px] top-0" aria-hidden="true">
           <div ref={planCardRef} className="bg-white p-6 w-[600px]">
             <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-green-700">NutriCoach</h2>
+              <h2 className="text-2xl font-bold text-green-700">Kalyrax</h2>
               <p className="text-gray-500">{language === 'es' ? 'Tu Plan Semanal' : 'Your Weekly Plan'}</p>
             </div>
             <div className="bg-green-50 rounded-lg p-4 mb-4">
@@ -781,7 +781,7 @@ export default function MealPlanPage() {
               </div>
             ))}
             <p className="text-xs text-gray-400 text-center mt-4">
-              {language === 'es' ? 'Crea tu plan en NutriCoach' : 'Create your plan at NutriCoach'}
+              {language === 'es' ? 'Crea tu plan en Kalyrax' : 'Create your plan at Kalyrax'}
             </p>
           </div>
         </div>

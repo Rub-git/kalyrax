@@ -108,7 +108,7 @@ export default function HomePage() {
               </div>
             </div>
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
-              <span className="text-primary">NutriCoach</span>
+              <span className="text-primary">Kalyrax</span>
             </h1>
             <p className="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
               {t('tagline')}
@@ -231,10 +231,10 @@ export default function HomePage() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center space-x-2">
               <Leaf className="h-5 w-5 text-primary" />
-              <span className="font-semibold text-primary">NutriCoach</span>
+              <span className="font-semibold text-primary">Kalyrax</span>
             </div>
             <p className="text-sm text-gray-500">
-              © {new Date().getFullYear()} NutriCoach.{' '}
+              © {new Date().getFullYear()} Kalyrax.{' '}
               {language === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
             </p>
           </div>

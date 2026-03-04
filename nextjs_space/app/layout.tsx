@@ -9,15 +9,15 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXTAUTH_URL ?? 'http://localhost:3000'),
-  title: 'NutriCoach - AI-Powered Nutrition Assistant',
-  description: 'Your personalized nutrition assistant with AI-powered recommendations, meal planning, and tracking.',
+  title: 'Kalyrax - AI-Powered Nutrition Assistant',
+  description: 'Your personalized AI nutrition coach with meal planning, tracking, and smart recommendations.',
   icons: {
     icon: '/favicon.svg',
     shortcut: '/favicon.svg',
   },
   openGraph: {
-    title: 'NutriCoach - AI-Powered Nutrition Assistant',
-    description: 'Your personalized nutrition assistant with AI-powered recommendations, meal planning, and tracking.',
+    title: 'Kalyrax - AI-Powered Nutrition Assistant',
+    description: 'Your personalized AI nutrition coach with meal planning, tracking, and smart recommendations.',
     images: ['/og-image.png'],
   },
 };

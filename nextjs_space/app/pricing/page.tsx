@@ -160,8 +160,8 @@ export default function PricingPage() {
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             {language === 'en'
-              ? 'Unlock your full nutrition potential with NutriCoach Pro'
-              : 'Desbloquea tu potencial nutricional completo con NutriCoach Pro'}
+              ? 'Unlock your full nutrition potential with Kalyrax Pro'
+              : 'Desbloquea tu potencial nutricional completo con Kalyrax Pro'}
           </p>
         </motion.div>
 

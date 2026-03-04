@@ -71,13 +71,13 @@ export function ReferralCard() {
     if (!stats) return;
     const link = `${window.location.origin}/get-started?ref=${stats.referralCode}`;
     const text = language === 'en' 
-      ? 'Join me on NutriCoach and get your personalized meal plan!'
-      : '¡Únete a NutriCoach y obtén tu plan de comidas personalizado!';
+      ? 'Join me on Kalyrax and get your personalized meal plan!'
+      : '¡Únete a Kalyrax y obtén tu plan de comidas personalizado!';
     
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'NutriCoach',
+          title: 'Kalyrax',
           text,
           url: link,
         });
@@ -113,8 +113,8 @@ export function ReferralCard() {
       <CardContent className="space-y-4">
         <p className="text-sm text-gray-600">
           {language === 'en'
-            ? 'Share NutriCoach with friends and help them start their nutrition journey!'
-            : '¡Comparte NutriCoach con amigos y ayúdalos a comenzar su viaje nutricional!'}
+            ? 'Share Kalyrax with friends and help them start their nutrition journey!'
+            : '¡Comparte Kalyrax con amigos y ayúdalos a comenzar su viaje nutricional!'}
         </p>
 
         {stats && (

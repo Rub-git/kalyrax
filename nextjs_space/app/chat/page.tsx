@@ -223,7 +223,7 @@ export default function ChatPage() {
                   <Sparkles className="h-8 w-8 text-primary" />
                 </div>
                 <h3 className="text-lg font-semibold mb-2">
-                  {language === 'es' ? '¡Hola! Soy NutriCoach' : 'Hi! I\'m NutriCoach'}
+                  {language === 'es' ? '¡Hola! Soy Kalyrax' : 'Hi! I\'m Kalyrax'}
                 </h3>
                 <p className="text-muted-foreground max-w-md mb-6">
                   {language === 'es'
@@ -329,8 +329,8 @@ export default function ChatPage() {
             <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
               <AlertCircle className="h-3 w-3" />
               {language === 'es'
-                ? 'NutriCoach no reemplaza el consejo médico profesional.'
-                : 'NutriCoach does not replace professional medical advice.'}
+                ? 'Kalyrax no reemplaza el consejo médico profesional.'
+                : 'Kalyrax does not replace professional medical advice.'}
             </div>
           </div>
         </Card>

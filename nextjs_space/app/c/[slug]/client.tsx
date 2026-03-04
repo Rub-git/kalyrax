@@ -330,7 +330,7 @@ export function ChallengeShareClient({ slug }: Props) {
           <div>
             <div className="flex items-center gap-2 text-emerald-400 mb-4">
               <Flame className="h-6 w-6" />
-              <span className="font-semibold">NutriCoach Challenge</span>
+              <span className="font-semibold">Kalyrax Challenge</span>
             </div>
             <h2 className="text-3xl font-bold text-white mb-2">{challengeName}</h2>
             {user && (

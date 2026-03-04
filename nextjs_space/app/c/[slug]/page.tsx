@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
     if (!share) {
       return {
-        title: 'Challenge Not Found | NutriCoach',
+        title: 'Challenge Not Found | Kalyrax',
         description: 'This challenge may have expired or been removed.',
       };
     }
@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     });
     const daysCompleted = progress.filter(p => p.completed).length;
 
-    const title = `${userName}'s ${templateName} Progress | NutriCoach`;
+    const title = `${userName}'s ${templateName} Progress | Kalyrax`;
     const description = `${userName} has completed ${daysCompleted}/${challengeInstance.template.durationDays} days of the ${templateName}. Join the challenge and transform your nutrition!`;
 
     return {
@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         title,
         description,
         type: 'website',
-        siteName: 'NutriCoach',
+        siteName: 'Kalyrax',
         images: ['/og-challenge.png'],
       },
       twitter: {
@@ -67,8 +67,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   } catch {
     return {
-      title: 'Challenge | NutriCoach',
-      description: 'Join the NutriCoach nutrition challenge and transform your health.',
+      title: 'Challenge | Kalyrax',
+      description: 'Join the Kalyrax nutrition challenge and transform your health.',
     };
   }
 }

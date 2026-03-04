@@ -73,8 +73,8 @@ export function StreakShareModal({ isOpen, onClose, data }: StreakShareModalProp
 
   const shareUrl = typeof window !== 'undefined' ? window.location.origin : '';
   const shareText = language === 'es'
-    ? `🔥 Llevo ${shareData?.currentStreak || 0} días de racha en NutriCoach! Únete a mi reto de nutrición.`
-    : `🔥 I'm on a ${shareData?.currentStreak || 0}-day streak on NutriCoach! Join my nutrition challenge.`;
+    ? `🔥 Llevo ${shareData?.currentStreak || 0} días de racha en Kalyrax! Únete a mi reto de nutrición.`
+    : `🔥 I'm on a ${shareData?.currentStreak || 0}-day streak on Kalyrax! Join my nutrition challenge.`;
 
   const handleCopyLink = async () => {
     try {
@@ -155,7 +155,7 @@ export function StreakShareModal({ isOpen, onClose, data }: StreakShareModalProp
                         )}
                       </div>
                       <div className="text-right">
-                        <p className="text-xs font-bold opacity-90">NutriCoach</p>
+                        <p className="text-xs font-bold opacity-90">Kalyrax</p>
                       </div>
                     </div>
                   </div>

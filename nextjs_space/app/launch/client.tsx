@@ -103,7 +103,7 @@ export function LaunchPageClient() {
 
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
               <span className="bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text text-transparent">
-                NutriCoach
+                Kalyrax
               </span>
               <br />
               {language === 'en' ? 'AI Nutrition Planning' : 'Planificación Nutricional IA'}
@@ -296,7 +296,7 @@ export function LaunchPageClient() {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-400 text-sm">
-              © 2024 NutriCoach. {language === 'en' ? 'All rights reserved.' : 'Todos los derechos reservados.'}
+              © 2026 Kalyrax. {language === 'en' ? 'All rights reserved.' : 'Todos los derechos reservados.'}
             </p>
             <div className="flex gap-6">
               <Link href="/tools/calorie-calculator" className="text-gray-400 text-sm hover:text-white transition-colors">

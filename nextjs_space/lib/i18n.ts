@@ -3,14 +3,14 @@ export type Language = 'en' | 'es';
 export const translations = {
   en: {
     // App
-    appName: 'NutriCoach',
+    appName: 'Kalyrax',
     tagline: 'Your AI-Powered Nutrition Assistant',
     
     // Navigation
     dashboard: 'Dashboard',
     mealPlan: 'Meal Plan',
     tracking: 'Tracking',
-    chat: 'NutriCoach Chat',
+    chat: 'Kalyrax Chat',
     profile: 'Profile',
     settings: 'Settings',
     logout: 'Sign Out',
@@ -113,7 +113,7 @@ export const translations = {
     searchFoods: 'Search foods...',
     
     // Chat
-    askNutriCoach: 'Ask NutriCoach...',
+    askKalyrax: 'Ask Kalyrax...',
     typeMessage: 'Type your message...',
     suggestedQuestions: 'Suggested Questions',
     explainCalculations: 'Explain my calculations',
@@ -235,7 +235,7 @@ export const translations = {
     
     // Share Card
     shareCardTitle: 'Check out my progress!',
-    shareCardCta: 'Join me on NutriCoach',
+    shareCardCta: 'Join me on Kalyrax',
     daysStrong: 'days strong',
     onTrack: 'On track',
     challengeAccepted: 'Challenge accepted',
@@ -347,7 +347,7 @@ export const translations = {
     completeTodayActivity: 'Complete an activity today',
     streakActivities: 'Qualifying activities',
     activityChallenge: 'Complete a challenge day',
-    activityChat: 'Chat with NutriCoach',
+    activityChat: 'Chat with Kalyrax',
     activityPlan: 'View your meal plan',
     shareStreak: 'Share Streak',
     streakFireIcon: '🔥',
@@ -366,7 +366,7 @@ export const translations = {
     // Streak Card
     streakCardTitle: 'My Streak',
     onFireStreak: 'On Fire!',
-    streakJoinCta: 'Start your streak on NutriCoach',
+    streakJoinCta: 'Start your streak on Kalyrax',
     
     // Social System
     social: 'Social',
@@ -501,7 +501,7 @@ export const translations = {
     
     // Growth & Acquisition
     referralInviteFriends: 'Invite Friends',
-    referralShareDesc: 'Share NutriCoach with friends and help them start their nutrition journey!',
+    referralShareDesc: 'Share Kalyrax with friends and help them start their nutrition journey!',
     referralLink: 'Referral Link',
     referralShareLink: 'Share Link',
     referralNewLink: 'New Link',
@@ -568,14 +568,14 @@ export const translations = {
   },
   es: {
     // App
-    appName: 'NutriCoach',
+    appName: 'Kalyrax',
     tagline: 'Tu Asistente de Nutrición con IA',
     
     // Navigation
     dashboard: 'Panel',
     mealPlan: 'Plan de Comidas',
     tracking: 'Seguimiento',
-    chat: 'Chat NutriCoach',
+    chat: 'Chat Kalyrax',
     profile: 'Perfil',
     settings: 'Configuración',
     logout: 'Cerrar Sesión',
@@ -678,7 +678,7 @@ export const translations = {
     searchFoods: 'Buscar alimentos...',
     
     // Chat
-    askNutriCoach: 'Pregunta a NutriCoach...',
+    askKalyrax: 'Pregunta a Kalyrax...',
     typeMessage: 'Escribe tu mensaje...',
     suggestedQuestions: 'Preguntas Sugeridas',
     explainCalculations: 'Explícame mis cálculos',
@@ -800,7 +800,7 @@ export const translations = {
     
     // Share Card
     shareCardTitle: '¡Mira mi progreso!',
-    shareCardCta: 'Únete en NutriCoach',
+    shareCardCta: 'Únete en Kalyrax',
     daysStrong: 'días de constancia',
     onTrack: 'En camino',
     challengeAccepted: 'Reto aceptado',
@@ -912,7 +912,7 @@ export const translations = {
     completeTodayActivity: 'Completa una actividad hoy',
     streakActivities: 'Actividades que califican',
     activityChallenge: 'Completa un día de reto',
-    activityChat: 'Chatea con NutriCoach',
+    activityChat: 'Chatea con Kalyrax',
     activityPlan: 'Ve tu plan de comidas',
     shareStreak: 'Compartir Racha',
     streakFireIcon: '🔥',
@@ -931,7 +931,7 @@ export const translations = {
     // Streak Card
     streakCardTitle: 'Mi Racha',
     onFireStreak: '¡En Llamas!',
-    streakJoinCta: 'Comienza tu racha en NutriCoach',
+    streakJoinCta: 'Comienza tu racha en Kalyrax',
     
     // Social System
     social: 'Social',
@@ -1066,7 +1066,7 @@ export const translations = {
     
     // Growth & Acquisition
     referralInviteFriends: 'Invitar Amigos',
-    referralShareDesc: '¡Comparte NutriCoach con amigos y ayúdalos a comenzar su viaje nutricional!',
+    referralShareDesc: '¡Comparte Kalyrax con amigos y ayúdalos a comenzar su viaje nutricional!',
     referralLink: 'Enlace de Referido',
     referralShareLink: 'Compartir Enlace',
     referralNewLink: 'Nuevo Enlace',
