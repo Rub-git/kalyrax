@@ -12,8 +12,9 @@ export const metadata: Metadata = {
   title: 'Kalyrax - AI-Powered Nutrition Assistant',
   description: 'Your personalized AI nutrition coach with meal planning, tracking, and smart recommendations.',
   icons: {
-    icon: '/favicon.svg',
-    shortcut: '/favicon.svg',
+    icon: '/kalyrax-icon.png',
+    shortcut: '/kalyrax-icon.png',
+    apple: '/kalyrax-icon.png',
   },
   openGraph: {
     title: 'Kalyrax - AI-Powered Nutrition Assistant',
