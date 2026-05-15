@@ -12,9 +12,13 @@ export const metadata: Metadata = {
   title: 'Kalyrax - AI-Powered Nutrition Assistant',
   description: 'Your personalized AI nutrition coach with meal planning, tracking, and smart recommendations.',
   icons: {
-    icon: '/kalyrax-icon.png',
-    shortcut: '/kalyrax-icon.png',
-    apple: '/kalyrax-icon.png',
+    icon: [
+      { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+    ],
+    shortcut: '/favicon-32.png',
+    apple: '/apple-touch-icon.png',
   },
   openGraph: {
     title: 'Kalyrax - AI-Powered Nutrition Assistant',
