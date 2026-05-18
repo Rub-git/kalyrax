@@ -111,7 +111,12 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <div className="mt-6 text-center text-sm">
+          <div className="mt-4 text-center">
+            <Link href="/forgot-password" className="text-sm text-muted-foreground hover:text-primary">
+              {language === 'es' ? '¿Olvidaste tu contraseña?' : 'Forgot your password?'}
+            </Link>
+          </div>
+          <div className="mt-4 text-center text-sm">
             <span className="text-muted-foreground">{t('dontHaveAccount')}</span>{' '}
             <Link href="/signup" className="text-primary font-medium hover:underline">
               {t('signup')}

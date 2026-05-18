@@ -233,7 +233,23 @@ export default function HomePage() {
               <Leaf className="h-5 w-5 text-primary" />
               <span className="font-semibold text-primary">Kalyrax</span>
             </div>
-            <p className="text-sm text-gray-500">
+            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+              <Link href="/help" className="hover:text-primary transition-colors">
+                {language === 'es' ? 'Ayuda' : 'Help'}
+              </Link>
+              <Link href="/contact" className="hover:text-primary transition-colors">
+                {language === 'es' ? 'Contacto' : 'Contact'}
+              </Link>
+              <Link href="/privacy" className="hover:text-primary transition-colors">
+                {language === 'es' ? 'Privacidad' : 'Privacy'}
+              </Link>
+              <Link href="/terms" className="hover:text-primary transition-colors">
+                {language === 'es' ? 'Términos' : 'Terms'}
+              </Link>
+            </div>
+          </div>
+          <div className="mt-4 text-center">
+            <p className="text-sm text-muted-foreground">
               © {new Date().getFullYear()} Kalyrax.{' '}
               {language === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
             </p>
