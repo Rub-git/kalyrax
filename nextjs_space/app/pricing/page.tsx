@@ -59,7 +59,7 @@ export default function PricingPage() {
     }
   };
 
-  const handleStartTrial = async () => {
+  const handleSubscribe = async () => {
     if (!session) {
       router.push('/signup?redirect=/pricing');
       return;
@@ -67,46 +67,47 @@ export default function PricingPage() {
 
     setActionLoading(true);
     try {
-      const res = await fetch('/api/subscription/trial', {
+      const res = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ billingCycle }),
       });
 
-      if (res.ok) {
-        await fetchSubscription();
-        router.push('/dashboard');
+      const data = await res.json();
+
+      if (res.ok && data.url) {
+        // Redirect to Stripe Checkout
+        window.location.href = data.url;
       } else {
-        const data = await res.json();
-        alert(data.error || 'Failed to start trial');
+        alert(data.error || (language === 'en' ? 'Failed to start checkout' : 'Error al iniciar el pago'));
       }
     } catch (error) {
-      console.error('Error starting trial:', error);
+      console.error('Error creating checkout session:', error);
+      alert(language === 'en' ? 'Something went wrong. Please try again.' : 'Algo salió mal. Inténtalo de nuevo.');
     } finally {
       setActionLoading(false);
     }
   };
 
-  const handleUpgrade = async () => {
-    if (!session) {
-      router.push('/signup?redirect=/pricing');
-      return;
-    }
-
+  const handleManageSubscription = async () => {
     setActionLoading(true);
     try {
-      const res = await fetch('/api/subscription/upgrade', {
+      const res = await fetch('/api/stripe/portal', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ billingCycle }),
       });
 
-      if (res.ok) {
-        await fetchSubscription();
-        router.push('/dashboard');
+      const data = await res.json();
+
+      if (res.ok && data.url) {
+        window.location.href = data.url;
+      } else {
+        // Fallback to profile page
+        router.push('/profile');
       }
     } catch (error) {
-      console.error('Error upgrading:', error);
+      console.error('Error opening portal:', error);
+      router.push('/profile');
     } finally {
       setActionLoading(false);
     }
@@ -305,10 +306,10 @@ export default function PricingPage() {
                   ))}
                 </div>
                 
-                {!subscription?.isPro && !subscription?.hasUsedTrial && (
+                {!subscription?.isPro && (
                   <Button
                     className="w-full bg-gradient-to-r from-blue-700 to-cyan-600 hover:from-blue-800 hover:to-cyan-700"
-                    onClick={handleStartTrial}
+                    onClick={handleSubscribe}
                     disabled={actionLoading}
                   >
                     {actionLoading ? (
@@ -316,22 +317,7 @@ export default function PricingPage() {
                     ) : (
                       <Sparkles className="w-4 h-4 mr-2" />
                     )}
-                    {t('startFreeTrial')}
-                  </Button>
-                )}
-
-                {!subscription?.isPro && subscription?.hasUsedTrial && (
-                  <Button
-                    className="w-full bg-gradient-to-r from-blue-700 to-cyan-600 hover:from-blue-800 hover:to-cyan-700"
-                    onClick={handleUpgrade}
-                    disabled={actionLoading}
-                  >
-                    {actionLoading ? (
-                      <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                    ) : (
-                      <ArrowRight className="w-4 h-4 mr-2" />
-                    )}
-                    {t('upgradeToPro')}
+                    {language === 'en' ? 'Start 7-Day Free Trial' : 'Iniciar Prueba Gratis de 7 Días'}
                   </Button>
                 )}
 
@@ -343,10 +329,10 @@ export default function PricingPage() {
                     <Button
                       variant="outline"
                       className="mt-2 text-amber-700 border-amber-300"
-                      onClick={handleUpgrade}
+                      onClick={handleManageSubscription}
                       disabled={actionLoading}
                     >
-                      {language === 'en' ? 'Upgrade Now' : 'Actualizar Ahora'}
+                      {language === 'en' ? 'Manage Subscription' : 'Gestionar Suscripción'}
                     </Button>
                   </div>
                 )}
@@ -355,8 +341,12 @@ export default function PricingPage() {
                   <Button
                     variant="outline"
                     className="w-full"
-                    onClick={() => router.push('/profile')}
+                    onClick={handleManageSubscription}
+                    disabled={actionLoading}
                   >
+                    {actionLoading ? (
+                      <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                    ) : null}
                     {t('manageSubscription')}
                   </Button>
                 )}
@@ -386,8 +376,8 @@ export default function PricingPage() {
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 {language === 'en'
-                  ? 'After your 7-day trial, you can choose to subscribe or continue with the free plan. No automatic charges.'
-                  : 'Después de tu prueba de 7 días, puedes elegir suscribirte o continuar con el plan gratis. Sin cargos automáticos.'}
+                  ? 'Your 7-day trial is completely free. After the trial, your selected plan will begin automatically. You can cancel anytime before the trial ends to avoid charges.'
+                  : 'Tu prueba de 7 días es completamente gratis. Después de la prueba, tu plan seleccionado comenzará automáticamente. Puedes cancelar en cualquier momento antes de que termine la prueba para evitar cargos.'}
               </p>
             </div>
             <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">

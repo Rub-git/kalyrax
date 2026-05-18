@@ -56,7 +56,7 @@ export function Paywall({
     }
   }, [isOpen, source]);
 
-  const handleStartTrial = async () => {
+  const handleGoToPricing = async () => {
     setLoading(true);
     try {
       // Track click
@@ -68,43 +68,15 @@ export function Paywall({
           source,
           clicked: true,
         }),
-      });
+      }).catch(() => {});
 
-      const res = await fetch('/api/subscription/trial', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ billingCycle: 'monthly' }),
-      });
-
-      if (res.ok) {
-        onClose();
-        window.location.reload();
-      } else {
-        const data = await res.json();
-        if (data.error === 'Free trial has already been used') {
-          router.push('/pricing');
-        }
-      }
+      onClose();
+      router.push('/pricing');
     } catch (error) {
-      console.error('Error starting trial:', error);
+      console.error('Error:', error);
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleViewPricing = async () => {
-    await fetch('/api/subscription/analytics', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        eventType: 'upgrade_prompt',
-        source,
-        clicked: true,
-      }),
-    }).catch(() => {});
-
-    onClose();
-    router.push('/pricing');
   };
 
   const getLimitMessage = () => {
@@ -208,28 +180,18 @@ export function Paywall({
 
               {/* CTA Buttons */}
               <div className="space-y-3">
-                {!hasUsedTrial ? (
-                  <Button
-                    className="w-full bg-gradient-to-r from-blue-700 to-cyan-600 hover:from-blue-800 hover:to-cyan-700"
-                    onClick={handleStartTrial}
-                    disabled={loading}
-                  >
-                    {loading ? (
-                      <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                    ) : (
-                      <Sparkles className="w-4 h-4 mr-2" />
-                    )}
-                    {t('startFreeTrial')}
-                  </Button>
-                ) : (
-                  <Button
-                    className="w-full bg-gradient-to-r from-blue-700 to-cyan-600 hover:from-blue-800 hover:to-cyan-700"
-                    onClick={handleViewPricing}
-                  >
-                    <ArrowRight className="w-4 h-4 mr-2" />
-                    {t('upgradeToPro')}
-                  </Button>
-                )}
+                <Button
+                  className="w-full bg-gradient-to-r from-blue-700 to-cyan-600 hover:from-blue-800 hover:to-cyan-700"
+                  onClick={handleGoToPricing}
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                  ) : (
+                    <Sparkles className="w-4 h-4 mr-2" />
+                  )}
+                  {language === 'en' ? 'Start 7-Day Free Trial' : 'Iniciar Prueba Gratis de 7 Días'}
+                </Button>
 
                 <Button variant="ghost" className="w-full" onClick={onClose}>
                   {language === 'en' ? 'Maybe later' : 'Quizás después'}
@@ -237,18 +199,16 @@ export function Paywall({
               </div>
 
               {/* Trial info */}
-              {!hasUsedTrial && (
-                <div className="text-center space-y-1">
-                  <p className="text-xs text-gray-500">
-                    {t('noCommitment')} • {t('cancelAnytime')}
-                  </p>
-                  <p className="text-xs text-gray-400">
-                    {language === 'en'
-                      ? `Then $${PRICING.pro.monthly}/month`
-                      : `Luego $${PRICING.pro.monthly}/mes`}
-                  </p>
-                </div>
-              )}
+              <div className="text-center space-y-1">
+                <p className="text-xs text-gray-500">
+                  {t('noCommitment')} • {t('cancelAnytime')}
+                </p>
+                <p className="text-xs text-gray-400">
+                  {language === 'en'
+                    ? `Then $${PRICING.pro.monthly}/month`
+                    : `Luego $${PRICING.pro.monthly}/mes`}
+                </p>
+              </div>
             </CardContent>
           </Card>
         </motion.div>
