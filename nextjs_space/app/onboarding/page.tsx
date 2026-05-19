@@ -55,8 +55,12 @@ export default function OnboardingPage() {
   // Form state
   const [age, setAge] = useState('');
   const [sex, setSex] = useState('');
-  const [weightKg, setWeightKg] = useState('');
-  const [heightCm, setHeightCm] = useState('');
+  const [weightUnit, setWeightUnit] = useState<'kg' | 'lb'>('kg');
+  const [heightUnit, setHeightUnit] = useState<'cm' | 'ft_in'>('cm');
+  const [weightDisplay, setWeightDisplay] = useState('');
+  const [heightCmDisplay, setHeightCmDisplay] = useState('');
+  const [heightFt, setHeightFt] = useState('');
+  const [heightIn, setHeightIn] = useState('');
   const [activityLevel, setActivityLevel] = useState('moderate');
   const [goal, setGoal] = useState('maintain');
   const [medicalFlags, setMedicalFlags] = useState<string[]>([]);
@@ -87,6 +91,63 @@ export default function OnboardingPage() {
     );
   };
 
+  const getWeightKg = (): number => {
+    if (weightUnit === 'kg') return parseFloat(weightDisplay) || 0;
+    return (parseFloat(weightDisplay) || 0) / 2.20462;
+  };
+
+  const getHeightCm = (): number => {
+    if (heightUnit === 'cm') return parseFloat(heightCmDisplay) || 0;
+    return (parseFloat(heightFt) || 0) * 30.48 + (parseFloat(heightIn) || 0) * 2.54;
+  };
+
+  const isWeightValid = (): boolean => {
+    const v = parseFloat(weightDisplay);
+    if (isNaN(v)) return false;
+    return weightUnit === 'kg' ? v >= 30 && v <= 300 : v >= 66 && v <= 660;
+  };
+
+  const isHeightValid = (): boolean => {
+    if (heightUnit === 'cm') {
+      const v = parseFloat(heightCmDisplay);
+      return !isNaN(v) && v >= 100 && v <= 250;
+    }
+    const ft = parseFloat(heightFt);
+    const inches = parseFloat(heightIn) || 0;
+    return !isNaN(ft) && ft >= 3 && ft <= 8 && inches >= 0 && inches <= 11;
+  };
+
+  const handleWeightUnitChange = (newUnit: 'kg' | 'lb') => {
+    if (weightDisplay) {
+      const v = parseFloat(weightDisplay);
+      if (!isNaN(v)) {
+        if (newUnit === 'lb' && weightUnit === 'kg') {
+          setWeightDisplay((v * 2.20462).toFixed(1));
+        } else if (newUnit === 'kg' && weightUnit === 'lb') {
+          setWeightDisplay((v / 2.20462).toFixed(1));
+        }
+      }
+    }
+    setWeightUnit(newUnit);
+  };
+
+  const handleHeightUnitChange = (newUnit: 'cm' | 'ft_in') => {
+    if (newUnit === 'ft_in' && heightUnit === 'cm' && heightCmDisplay) {
+      const cm = parseFloat(heightCmDisplay);
+      if (!isNaN(cm)) {
+        const totalInches = cm / 2.54;
+        const ft = Math.floor(totalInches / 12);
+        const inches = Math.round(totalInches % 12);
+        setHeightFt(ft.toString());
+        setHeightIn(inches.toString());
+      }
+    } else if (newUnit === 'cm' && heightUnit === 'ft_in') {
+      const cm = (parseFloat(heightFt) || 0) * 30.48 + (parseFloat(heightIn) || 0) * 2.54;
+      if (cm > 0) setHeightCmDisplay(Math.round(cm).toString());
+    }
+    setHeightUnit(newUnit);
+  };
+
   const handleSubmit = async () => {
     setError('');
     setLoading(true);
@@ -99,8 +160,8 @@ export default function OnboardingPage() {
         body: JSON.stringify({
           age: Number(age),
           sex,
-          weightKg: Number(weightKg),
-          heightCm: Number(heightCm),
+          weightKg: getWeightKg(),
+          heightCm: getHeightCm(),
           activityLevel,
           goal,
           medicalFlags,
@@ -119,8 +180,8 @@ export default function OnboardingPage() {
         body: JSON.stringify({
           age: Number(age),
           sex,
-          weightKg: Number(weightKg),
-          heightCm: Number(heightCm),
+          weightKg: getWeightKg(),
+          heightCm: getHeightCm(),
           activityLevel,
           goal,
           saveToProfile: true,
@@ -139,7 +200,10 @@ export default function OnboardingPage() {
   };
 
   const canProceed = () => {
-    if (step === 1) return age && sex && weightKg && heightCm;
+    if (step === 1) {
+      const heightFilled = heightUnit === 'cm' ? heightCmDisplay : heightFt;
+      return age && sex && weightDisplay && heightFilled && isWeightValid() && isHeightValid();
+    }
     if (step === 2) return activityLevel && goal;
     return true;
   };
@@ -215,31 +279,93 @@ export default function OnboardingPage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="weight">{t('weight')} (kg)</Label>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="weight">{t('weight')}</Label>
+                      <div className="flex rounded-md overflow-hidden border text-xs">
+                        <button type="button" onClick={() => handleWeightUnitChange('kg')}
+                          className={`px-2 py-1 ${weightUnit === 'kg' ? 'bg-primary text-primary-foreground' : 'bg-background'}`}>
+                          kg
+                        </button>
+                        <button type="button" onClick={() => handleWeightUnitChange('lb')}
+                          className={`px-2 py-1 ${weightUnit === 'lb' ? 'bg-primary text-primary-foreground' : 'bg-background'}`}>
+                          lb
+                        </button>
+                      </div>
+                    </div>
                     <Input
                       id="weight"
                       type="number"
-                      placeholder="70"
-                      value={weightKg}
-                      onChange={(e) => setWeightKg(e.target.value)}
-                      min={20}
-                      max={500}
+                      placeholder={weightUnit === 'kg' ? '70' : '154'}
+                      value={weightDisplay}
+                      onChange={(e) => setWeightDisplay(e.target.value)}
                       step={0.1}
                     />
+                    {weightDisplay && !isWeightValid() && (
+                      <p className="text-xs text-destructive">
+                        {weightUnit === 'kg'
+                          ? (language === 'es' ? 'Rango válido: 30–300 kg' : 'Valid range: 30–300 kg')
+                          : (language === 'es' ? 'Rango válido: 66–660 lb' : 'Valid range: 66–660 lb')}
+                      </p>
+                    )}
                   </div>
+
                   <div className="space-y-2">
-                    <Label htmlFor="height">{t('height')} (cm)</Label>
-                    <Input
-                      id="height"
-                      type="number"
-                      placeholder="170"
-                      value={heightCm}
-                      onChange={(e) => setHeightCm(e.target.value)}
-                      min={50}
-                      max={300}
-                    />
+                    <div className="flex items-center justify-between">
+                      <Label>{t('height')}</Label>
+                      <div className="flex rounded-md overflow-hidden border text-xs">
+                        <button type="button" onClick={() => handleHeightUnitChange('cm')}
+                          className={`px-2 py-1 ${heightUnit === 'cm' ? 'bg-primary text-primary-foreground' : 'bg-background'}`}>
+                          cm
+                        </button>
+                        <button type="button" onClick={() => handleHeightUnitChange('ft_in')}
+                          className={`px-2 py-1 ${heightUnit === 'ft_in' ? 'bg-primary text-primary-foreground' : 'bg-background'}`}>
+                          ft/in
+                        </button>
+                      </div>
+                    </div>
+                    {heightUnit === 'cm' ? (
+                      <Input
+                        id="height"
+                        type="number"
+                        placeholder="170"
+                        value={heightCmDisplay}
+                        onChange={(e) => setHeightCmDisplay(e.target.value)}
+                      />
+                    ) : (
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="space-y-1">
+                          <Input
+                            type="number"
+                            placeholder="5"
+                            value={heightFt}
+                            onChange={(e) => setHeightFt(e.target.value)}
+                            min={3}
+                            max={8}
+                          />
+                          <p className="text-xs text-muted-foreground text-center">ft</p>
+                        </div>
+                        <div className="space-y-1">
+                          <Input
+                            type="number"
+                            placeholder="7"
+                            value={heightIn}
+                            onChange={(e) => setHeightIn(e.target.value)}
+                            min={0}
+                            max={11}
+                          />
+                          <p className="text-xs text-muted-foreground text-center">in</p>
+                        </div>
+                      </div>
+                    )}
+                    {!isHeightValid() && (heightUnit === 'cm' ? heightCmDisplay : heightFt) && (
+                      <p className="text-xs text-destructive">
+                        {heightUnit === 'cm'
+                          ? (language === 'es' ? 'Rango válido: 100–250 cm' : 'Valid range: 100–250 cm')
+                          : (language === 'es' ? 'Rango válido: 3–8 ft, 0–11 in' : 'Valid range: 3–8 ft, 0–11 in')}
+                      </p>
+                    )}
                   </div>
                 </div>
               </motion.div>

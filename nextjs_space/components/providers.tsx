@@ -4,6 +4,7 @@ import { SessionProvider } from 'next-auth/react';
 import { ThemeProvider } from './theme-provider';
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import { Language, t } from '@/lib/i18n';
+import { PwaRegister } from './pwa-register';
 
 // Language context
 interface LanguageContextType {
@@ -72,6 +73,7 @@ export function Providers({ children }: { children: ReactNode }) {
         disableTransitionOnChange
       >
         <LanguageProvider>
+          <PwaRegister />
           {children}
         </LanguageProvider>
       </ThemeProvider>

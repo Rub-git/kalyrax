@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic';
 
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
+import { Prisma } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import { 
   calculateNutrition, 
@@ -30,6 +31,43 @@ const ACTIVITY_MAP: Record<string, ActivityLevel> = {
   very_active: 'very_active',
 };
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function getLocalizedError(language: string | undefined, key: string): string {
+  const isEs = language === 'es';
+
+  const messages: Record<string, { es: string; en: string }> = {
+    MISSING_FIELDS: {
+      es: 'Email y contraseña son obligatorios',
+      en: 'Email and password are required',
+    },
+    INVALID_EMAIL: {
+      es: 'El correo no es valido',
+      en: 'Invalid email format',
+    },
+    WEAK_PASSWORD: {
+      es: 'La contraseña debe tener al menos 6 caracteres',
+      en: 'Password must be at least 6 characters',
+    },
+    USER_EXISTS: {
+      es: 'Ya existe una cuenta con este correo. Inicia sesion.',
+      en: 'An account with this email already exists. Please sign in.',
+    },
+    DB_UNAVAILABLE: {
+      es: 'Servicio temporalmente no disponible. Intenta de nuevo en unos minutos.',
+      en: 'Service temporarily unavailable. Please try again in a few minutes.',
+    },
+    CREATE_FAILED: {
+      es: 'Error al crear cuenta',
+      en: 'Failed to create account',
+    },
+  };
+
+  const fallback = messages.CREATE_FAILED;
+  const selected = messages[key] ?? fallback;
+  return isEs ? selected.es : selected.en;
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -50,20 +88,36 @@ export async function POST(request: NextRequest) {
 
     if (!email || !password) {
       return NextResponse.json(
-        { error: 'Email and password are required' },
+        { error: getLocalizedError(language, 'MISSING_FIELDS'), code: 'MISSING_FIELDS' },
+        { status: 400 }
+      );
+    }
+
+    const normalizedEmail = String(email).trim().toLowerCase();
+
+    if (!EMAIL_REGEX.test(normalizedEmail)) {
+      return NextResponse.json(
+        { error: getLocalizedError(language, 'INVALID_EMAIL'), code: 'INVALID_EMAIL' },
+        { status: 400 }
+      );
+    }
+
+    if (String(password).length < 6) {
+      return NextResponse.json(
+        { error: getLocalizedError(language, 'WEAK_PASSWORD'), code: 'WEAK_PASSWORD' },
         { status: 400 }
       );
     }
 
     // Check if user exists
     const existingUser = await prisma.user.findUnique({
-      where: { email },
+      where: { email: normalizedEmail },
     });
 
     if (existingUser) {
       return NextResponse.json(
-        { error: 'User already exists' },
-        { status: 400 }
+        { error: getLocalizedError(language, 'USER_EXISTS'), code: 'USER_EXISTS' },
+        { status: 409 }
       );
     }
 
@@ -83,7 +137,7 @@ export async function POST(request: NextRequest) {
     // Create user with referral tracking
     const user = await prisma.user.create({
       data: {
-        email,
+        email: normalizedEmail,
         passwordHash,
         name: name ?? null,
         languagePreference: language ?? 'en',
@@ -239,8 +293,28 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error('Signup error:', error);
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2002') {
+        return NextResponse.json(
+          { error: getLocalizedError(undefined, 'USER_EXISTS'), code: 'USER_EXISTS' },
+          { status: 409 }
+        );
+      }
+    }
+
+    if (
+      error instanceof Prisma.PrismaClientInitializationError ||
+      error instanceof Prisma.PrismaClientUnknownRequestError
+    ) {
+      return NextResponse.json(
+        { error: getLocalizedError(undefined, 'DB_UNAVAILABLE'), code: 'DB_UNAVAILABLE' },
+        { status: 503 }
+      );
+    }
+
     return NextResponse.json(
-      { error: 'Failed to create account' },
+      { error: getLocalizedError(undefined, 'CREATE_FAILED'), code: 'CREATE_FAILED' },
       { status: 500 }
     );
   }

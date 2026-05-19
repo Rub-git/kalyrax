@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Kalyrax icon">
+  <defs>
+    <linearGradient id="kalyraxGradient" x1="48" y1="70" x2="190" y2="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#5A44E6"/>
+      <stop offset="100%" stop-color="#59CFE3"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="58" y="72" width="22" height="126" rx="11" fill="url(#kalyraxGradient)"/>
+  <rect x="68" y="126" width="138" height="22" rx="11" transform="rotate(-43 68 126)" fill="url(#kalyraxGradient)"/>
+  <rect x="68" y="126" width="104" height="22" rx="11" transform="rotate(46 68 126)" fill="#1B3378"/>
+
+  <circle cx="69" cy="70" r="18" fill="#5A44E6"/>
+  <circle cx="69" cy="198" r="18" fill="#1B3378"/>
+  <circle cx="188" cy="52" r="20" fill="#59CFE3"/>
+  <circle cx="190" cy="206" r="20" fill="#274A95"/>
+</svg>

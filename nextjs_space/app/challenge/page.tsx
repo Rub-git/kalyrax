@@ -659,7 +659,7 @@ export default function ChallengePage() {
           </div>
 
           <div className="text-center">
-            <p className="text-emerald-400 font-medium">nutricoach-app-n5uoea.abacusai.app/challenge</p>
+            <p className="text-emerald-400 font-medium">/challenge</p>
           </div>
         </div>
       </div>

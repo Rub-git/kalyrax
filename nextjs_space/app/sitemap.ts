@@ -1,10 +1,11 @@
 import { MetadataRoute } from 'next';
 import prisma from '@/lib/db';
+import { getSiteUrl } from '@/lib/site-url';
 
 export const dynamic = 'force-dynamic';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXTAUTH_URL || 'https://nutricoach-app-n5uoea.abacusai.app';
+  const baseUrl = getSiteUrl();
 
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [

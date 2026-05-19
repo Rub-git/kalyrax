@@ -19,20 +19,38 @@ export default function LoginPage() {
   const router = useRouter();
   const { t, language } = useLanguage();
 
+  const invalidCredentialsText =
+    language === 'es'
+      ? 'Correo o contraseña incorrectos. Si esta cuenta no existe, primero regístrate.'
+      : 'Incorrect email or password. If this account does not exist yet, sign up first.';
+
+  const authTemporarilyUnavailableText =
+    language === 'es'
+      ? 'Inicio de sesión temporalmente no disponible. Intenta de nuevo en unos minutos.'
+      : 'Sign-in is temporarily unavailable. Please try again in a few minutes.';
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
     try {
+      const normalizedEmail = email.trim().toLowerCase();
+
       const result = await signIn('credentials', {
-        email,
+        email: normalizedEmail,
         password,
         redirect: false,
       });
 
       if (result?.error) {
-        setError(language === 'es' ? 'Credenciales inválidas' : 'Invalid credentials');
+        if (result.error.includes('AuthServiceUnavailable')) {
+          setError(authTemporarilyUnavailableText);
+        } else if (result.error === 'CredentialsSignin' || result.status === 401) {
+          setError(invalidCredentialsText);
+        } else {
+          setError(language === 'es' ? 'Error al iniciar sesión' : 'Login failed');
+        }
       } else {
         router.replace('/dashboard');
       }
@@ -73,11 +91,13 @@ export default function LoginPage() {
                 <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="email@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="pl-10"
+                  autoComplete="email"
                   required
                 />
               </div>
@@ -89,11 +109,13 @@ export default function LoginPage() {
                 <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="password"
+                  name="password"
                   type="password"
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="pl-10"
+                  autoComplete="current-password"
                   required
                 />
               </div>

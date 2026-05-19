@@ -38,23 +38,29 @@ export default function SignupPage() {
     setLoading(true);
 
     try {
+      const normalizedEmail = email.trim().toLowerCase();
+
       const res = await fetch('/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password, language }),
+        body: JSON.stringify({ name, email: normalizedEmail, password, language }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || (language === 'es' ? 'Error al crear cuenta' : 'Failed to create account'));
-        setLoading(false);
+        const fallback =
+          language === 'es'
+            ? 'No pudimos crear la cuenta. Intenta nuevamente.'
+            : 'We could not create the account. Please try again.';
+
+        setError(data.error || fallback);
         return;
       }
 
       // Auto sign in after signup
       const result = await signIn('credentials', {
-        email,
+        email: normalizedEmail,
         password,
         redirect: false,
       });
@@ -101,11 +107,13 @@ export default function SignupPage() {
                 <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="name"
+                  name="name"
                   type="text"
                   placeholder={language === 'es' ? 'Tu nombre' : 'Your name'}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="pl-10"
+                  autoComplete="name"
                   required
                 />
               </div>
@@ -117,11 +125,13 @@ export default function SignupPage() {
                 <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="email@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="pl-10"
+                  autoComplete="email"
                   required
                 />
               </div>
@@ -133,11 +143,13 @@ export default function SignupPage() {
                 <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="password"
+                  name="password"
                   type="password"
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="pl-10"
+                  autoComplete="new-password"
                   required
                   minLength={6}
                 />
@@ -150,11 +162,13 @@ export default function SignupPage() {
                 <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="confirmPassword"
+                  name="confirmPassword"
                   type="password"
                   placeholder="••••••••"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   className="pl-10"
+                  autoComplete="new-password"
                   required
                   minLength={6}
                 />

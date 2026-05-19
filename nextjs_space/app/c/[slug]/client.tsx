@@ -360,7 +360,7 @@ export function ChallengeShareClient({ slug }: Props) {
           </div>
 
           <div className="text-center">
-            <p className="text-emerald-400 font-medium">nutricoach-app-n5uoea.abacusai.app/c/{slug}</p>
+            <p className="text-emerald-400 font-medium">/c/{slug}</p>
           </div>
         </div>
       </div>

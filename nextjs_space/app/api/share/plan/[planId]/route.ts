@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth-options';
 import { prisma } from '@/lib/db';
+import { getSiteUrl } from '@/lib/site-url';
 
 // Generate a short unique slug
 function generateSlug(): string {
@@ -54,7 +55,7 @@ export async function POST(
 
     if (existingShare) {
       // Return existing share link
-      const baseUrl = process.env.NEXTAUTH_URL || 'https://nutricoach.abacusai.app';
+      const baseUrl = getSiteUrl();
       return NextResponse.json({
         success: true,
         data: {
@@ -85,7 +86,7 @@ export async function POST(
       },
     });
 
-    const baseUrl = process.env.NEXTAUTH_URL || 'https://nutricoach.abacusai.app';
+    const baseUrl = getSiteUrl();
 
     return NextResponse.json({
       success: true,
