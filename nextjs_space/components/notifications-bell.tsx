@@ -48,10 +48,11 @@ export function NotificationsBell() {
   const fetchUnreadCount = async () => {
     try {
       const res = await fetch('/api/notifications?countOnly=true');
+      if (!res.ok) return;
       const data = await res.json();
       setUnreadCount(data.count || 0);
     } catch (error) {
-      console.error('Error fetching notification count:', error);
+      // Silently fail - user may not be authenticated
     }
   };
 
@@ -59,10 +60,11 @@ export function NotificationsBell() {
     setLoading(true);
     try {
       const res = await fetch('/api/notifications');
+      if (!res.ok) { setLoading(false); return; }
       const data = await res.json();
       setNotifications(data.notifications || []);
     } catch (error) {
-      console.error('Error fetching notifications:', error);
+      // Silently fail - user may not be authenticated
     } finally {
       setLoading(false);
     }

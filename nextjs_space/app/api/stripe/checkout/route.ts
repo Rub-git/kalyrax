@@ -6,8 +6,9 @@ import { prisma } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
+// Stripe Checkout API - v2
 export async function POST(request: NextRequest) {
-  console.log('[Stripe Checkout] POST called');
+  console.log('[Stripe Checkout] POST called - v2');
   
   try {
     const session = await getServerSession(authOptions);

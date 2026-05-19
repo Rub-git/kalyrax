@@ -8,13 +8,15 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.userId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const { searchParams } = new URL(request.url);
     const unreadOnly = searchParams.get('unreadOnly') === 'true';
     const countOnly = searchParams.get('countOnly') === 'true';
+
+    if (!session?.user?.userId) {
+      // Return empty data for unauthenticated requests to avoid console errors
+      if (countOnly) return NextResponse.json({ count: 0 });
+      return NextResponse.json({ notifications: [] });
+    }
 
     if (countOnly) {
       const count = await getUnreadNotificationCount(session.user.userId);
