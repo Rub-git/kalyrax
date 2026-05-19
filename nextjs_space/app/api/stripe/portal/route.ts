@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth-options';
-import { stripe } from '@/lib/stripe';
+import { getStripe } from '@/lib/stripe';
 import { prisma } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
 
     const origin = request.headers.get('origin') || process.env.NEXTAUTH_URL || 'https://kalyrax.com';
 
-    const portalSession = await stripe.billingPortal.sessions.create({
+    const portalSession = await getStripe().billingPortal.sessions.create({
       customer: subscription.stripeCustomerId,
       return_url: `${origin}/dashboard`,
     });

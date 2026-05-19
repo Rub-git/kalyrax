@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { stripe } from '@/lib/stripe';
+import { getStripe } from '@/lib/stripe';
 import { prisma } from '@/lib/db';
 import { trackSubscriptionEvent } from '@/lib/subscription';
 import Stripe from 'stripe';
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
 
     if (webhookSecret) {
       // Verify signature in production
-      event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
+      event = getStripe().webhooks.constructEvent(rawBody, signature, webhookSecret);
     } else {
       // In development without webhook secret, parse the event directly
       console.warn('[Stripe Webhook] No STRIPE_WEBHOOK_SECRET set - skipping signature verification');
@@ -110,7 +110,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   console.log(`[Stripe Webhook] Checkout completed for user ${userId}, subscription: ${stripeSubscriptionId}`);
 
   // Get subscription details from Stripe
-  const stripeSubscription = await stripe.subscriptions.retrieve(stripeSubscriptionId);
+  const stripeSubscription = await getStripe().subscriptions.retrieve(stripeSubscriptionId);
 
   const now = new Date();
   const currentPeriodEnd = new Date((stripeSubscription as any).current_period_end * 1000);

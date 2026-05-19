@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth-options';
-import { stripe, getStripePrices } from '@/lib/stripe';
+import { getStripe, getStripePrices } from '@/lib/stripe';
 import { prisma } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
 
     if (!stripeCustomerId) {
       // Check if customer exists in Stripe by email
-      const existingCustomers = await stripe.customers.list({
+      const existingCustomers = await getStripe().customers.list({
         email: userEmail,
         limit: 1,
       });
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
       if (existingCustomers.data.length > 0) {
         stripeCustomerId = existingCustomers.data[0].id;
       } else {
-        const customer = await stripe.customers.create({
+        const customer = await getStripe().customers.create({
           email: userEmail,
           name: session.user.name || undefined,
           metadata: {
@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
     const origin = request.headers.get('origin') || process.env.NEXTAUTH_URL || 'https://kalyrax.com';
 
     // Create Stripe Checkout Session
-    const checkoutSession = await stripe.checkout.sessions.create({
+    const checkoutSession = await getStripe().checkout.sessions.create({
       customer: stripeCustomerId,
       mode: 'subscription',
       payment_method_types: ['card'],
@@ -113,9 +113,14 @@ export async function POST(request: NextRequest) {
       sessionId: checkoutSession.id,
     });
   } catch (error: any) {
-    console.error('[Stripe] Checkout error:', error);
+    console.error('[Stripe] Checkout error:', error?.message || error);
+    console.error('[Stripe] Checkout error stack:', error?.stack);
+    console.error('[Stripe] Checkout error type:', error?.type);
+    console.error('[Stripe] STRIPE_SECRET_KEY set:', !!process.env.STRIPE_SECRET_KEY);
+    console.error('[Stripe] STRIPE_PRICE_PRO_MONTHLY set:', !!process.env.STRIPE_PRICE_PRO_MONTHLY);
+    console.error('[Stripe] STRIPE_PRICE_PRO_YEARLY set:', !!process.env.STRIPE_PRICE_PRO_YEARLY);
     return NextResponse.json(
-      { error: 'Failed to create checkout session' },
+      { error: error?.message || 'Failed to create checkout session' },
       { status: 500 }
     );
   }
